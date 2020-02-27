@@ -1,0 +1,73 @@
+<div id="draw" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Trading Platform Management</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/draw-management"> Trading Platform Management </a> > <b> Trading Platform Add </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Add Trading Platform </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button routerLink="/apps/draw-management" class="add-item add-item--back-button"> Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="content-card">
+                <form [formGroup]="DrawManagementForm" (ngSubmit)="onSubmit()">
+                    <mat-radio-group aria-label="Please select the applicable Charter Party.">
+                        <mat-label>Please select the applicable Charter Party.</mat-label>
+                        <br>
+                        <br>
+                        <mat-radio-button *ngFor="let CharterPartyTypeData of CharterPartyTypeData" [ngClass]="{'d-none': CharterPartyTypeData.isActive === 'N'}"  [value]="CharterPartyTypeData.id" value="1" (click)="setApplicabelCharterParty(CharterPartyTypeData.id)"> {{CharterPartyTypeData.name}} </mat-radio-button>
+                    </mat-radio-group>
+                    <br>
+                    <br>
+                    <mat-label>Select charter party type and it's year.</mat-label>
+                    <br>
+                    <br>
+                    <select placeholder="select C/P Form" formControlName="formId"  (change)="changeCPForm($event)" required>
+                        <option [value]="0">--- Select ---</option>
+                        <option *ngFor="let cpformData of cpFormData"  [ngClass]="{'d-none': cpformData.isActive === 'N'}" [value]="cpformData.id">{{cpformData.cpformName}}</option>
+                    </select>
+
+                    <select placeholder="select C/P Form" formControlName="vesselId"  (change)="changeVesselEvent($event)">
+                        <option [value]="0">--- Select ---</option>
+                        <option *ngFor="let VesselData of VesselData"  [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id">{{VesselData.vessel_name}}</option>
+                    </select>
+                    
+                    <mat-form-field  class="full-width" appearance="outline">
+                        <mat-label>C/P Date* </mat-label>
+                        <input formControlName="cpDate" matInput [matDatepicker]="picker" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="DrawManagementForm.get('cpDate').hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    <select placeholder="select Charter" formControlName="chartererId"  (change)="changeChartererType($event)">
+                        <option [value]="0">--- Select ---</option>
+                        <option *ngFor="let ChartereInfoData of ChartereInfoData"  [ngClass]="{'d-none': ChartereInfoData.isActive === 'N'}"  [value]="ChartereInfoData.id">{{ChartereInfoData.username}}</option>
+                    </select>
+                    <br>
+                    <br>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

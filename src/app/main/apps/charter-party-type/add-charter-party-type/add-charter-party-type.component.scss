@@ -1,0 +1,225 @@
+@import 'src/@fuse/scss/fuse';
+
+#clause-category {
+    .heading {
+        padding: 3rem;
+        h2 {
+            margin: 0;
+            padding-bottom: 2rem;
+        }
+        .link-tag {
+            position: absolute;
+            right: 3%;
+            top: 6%;
+            display: inline-table;
+            a {
+                color: #000 !important;
+                cursor: pointer;
+                text-decoration: none !important;
+                letter-spacing: 0.2rem;
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin: 0px 0.5rem;
+                margin-right: 0;
+            }
+            mat-icon {
+                position: relative;
+                top: 4px;
+                cursor: pointer;
+            }
+        }
+    }
+    .custom-search-field {
+        .mat-form-field-infix {
+            margin-top: -5px;
+        }
+        input {
+            line-height: 30px;
+            margin-top: -5px;
+        }
+
+
+        .mat-form-field-flex {
+            padding: 0px 30px;
+        }
+        .mat-form-field-appearance-legacy .mat-form-field-infix {
+            /* padding: 10px; */
+            padding-left: 10px;
+        }
+    
+        .search {
+            margin-left: -25px;
+        }
+    
+        .mat-form-field {
+            display: inline-block;
+            position: relative;
+            text-align: left;
+        }
+        .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+            /* padding-bottom: 1.25em; */
+            width: max-content;
+            float: right;
+            border-bottom: none;
+            margin-top: -11px;
+        }
+    
+        .mat-form-field-flex {
+            display: inline-flex;
+            // border: 1px solid #000;
+            // border-radius: 50px;
+            box-sizing: border-box;
+            width: 100%;
+            box-sizing: border-box;
+            width: 100%;
+        }
+    }
+    .row-col-6 {
+        padding: 10px;
+        width: 50%;
+        .example-full-width {
+            width: 95%;
+        }
+    }
+    .header-row {
+        display: flex;
+        width: 100%;
+        .row-col-3 {
+            padding: 10px;
+            width: 50%;
+        }
+      
+        a {
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        .home {
+             position: relative;
+            top: 3px;
+        }    
+    }
+    .action-head {
+        text-align: center;
+    }
+    .action {
+        text-align: center;
+    }
+    .sc {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    .add-item {
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        box-shadow: 0px 2px 5px #0000009c;
+        cursor: pointer;
+        font-size: 15px;
+        letter-spacing: 0.6px;
+        &--back-button {
+            float: right;
+            background: #f7a000;
+        }
+    }
+    .required {
+        color: red;
+        span {
+            color: '#fff';
+            margin-left: 5px;
+        }
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .mat-form-field {
+        font-size: 14px;
+        // width: 100%;
+    }
+
+    .action-head {
+        text-align: center;
+    }
+    .action {
+        text-align: center;
+    }
+    .sc {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+   
+    th {
+        font-weight: 900;
+        color: #000;
+        font-size: 15px;
+    }
+
+    
+    .main-tab {
+        display: flex;
+        padding: 2rem;
+        padding-bottom: 0;
+    }
+    .mat-elevation-z8 {
+        background: #fff;
+        border-radius: 10px;
+        border-top: 2px solid #1e88e5;
+    }
+    
+
+    .content {
+        overflow: hidden;
+
+        .sidebar {
+            &:not(.locked-open) {
+                background: white;
+            }
+        }
+    }
+   .three-section {
+       width: 33.33%;
+       padding: 10px;
+    }
+    form {
+       padding: 30px;
+        select {
+            width: 48%;
+            padding: 16px;
+            margin-left: 10px;
+            margin-right: 7px;
+            border-radius: 5px;
+            border-color: #ddd;
+            position: relative;
+            top: -2px;
+        
+        }
+       .full-width {
+        width: 50%;
+        padding: 0px 10px;
+      
+       }
+       .cst-modal__button {
+            padding: 12px 20px !important;
+            border: none;
+            margin-bottom: 20px !important; 
+            color: #fff;
+            float: right;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px #00000085;
+            outline: none;
+            &--submit {
+                background: #1e88e5;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+.d-none {
+    display: none !important;
+}

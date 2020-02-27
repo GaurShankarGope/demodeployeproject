@@ -1,0 +1,85 @@
+<div id="draw" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>Invited Users </h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> >  Invited User
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab" *ngIf="inviteTableView">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> Invited Users List </h2>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                        <button class="add-item add-item--main-button" style="float:right" (click)="inviteFormAndTableView(2)"> Invite User</button>
+                    </div>
+                </div>
+            </div>
+            <div class="main-tab" *ngIf="inviteFormView">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> Invite User </h2>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                        <button class="add-item add-item--back-button" style="float:right" (click)="inviteFormAndTableView(1)"> Back</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <table mat-table [dataSource]="dataSource" *ngIf="inviteTableView">
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> Identifier </th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+                <ng-container matColumnDef="email_id">
+                    <th mat-header-cell *matHeaderCellDef> Email ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.email_id}} </td>
+                </ng-container>
+                <ng-container matColumnDef="invitedBy">
+                    <th mat-header-cell *matHeaderCellDef> Invited By </th>
+                    <td mat-cell *matCellDef="let element"> {{element.invitedBy}} </td>
+                </ng-container>
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                </ng-container>
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef> Time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div class="no_data_found" *ngIf="dataSource.filteredData.length === 0 && inviteTableView">
+                No Records Found!
+            </div>
+            <mat-paginator #paginator showFirstLastButtons showFirstLastButtons [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" *ngIf="inviteTableView"></mat-paginator>
+
+            <div class="content-card" *ngIf="inviteFormView" style="margin-left: -10px !important; margin-top: -29px !important">
+                <form [formGroup]="inviteForm" (ngSubmit)="inviteUser()">
+                    <mat-form-field  class="full-width" appearance="outline" class="customFormfullWidth">
+                        <mat-label>Email ID* </mat-label>
+                        <input formControlName="email_id" matInput placeholder="Email ID">
+                        <mat-error *ngIf="inviteForm.get('email_id').hasError('required')">
+                            Email ID is required
+                        </mat-error>
+                        <mat-error *ngIf="!inviteForm.get('email_id').hasError('required') && inviteForm.get('email_id').hasError('pattern') && inviteForm.get('email_id').touched">
+                            Please enter valid email id
+                        </mat-error>
+                    </mat-form-field>
+                    <button class="cst-modal__button cst-modal__button--submit " type="submit" style="width: 200px;">Send Invitation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

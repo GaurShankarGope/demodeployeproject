@@ -1,0 +1,76 @@
+<div id="cp-form" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>CP Form Management</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/cp-form-management"> CP Form
+                        Management </a> > <b> CP Form Add </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Add CP Form </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button routerLink="/apps/cp-form-management" class="add-item add-item--back-button"> Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="content-card" style="width: 50%;">
+                <form [formGroup]="cpManagementForm" (ngSubmit)="onSubmit()">
+                    <mat-form-field class="full-width" appearance="outline" style="width: 100% !important;">
+                        <mat-label>CP Form Name* </mat-label>
+                        <input matInput formControlName="cpformName">
+                        <mat-error *ngIf="cpManagementForm.get('cpformName').hasError('required')">
+                            CP Form Name Is Required
+                        </mat-error>
+                         <mat-error *ngIf="cpManagementForm.get('cpformName').hasError('pattern')">
+                            Enter valid CP Form Name
+                        </mat-error>
+                    </mat-form-field>
+                    <br>
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" style="float: right;
+                    margin-right: 10px;
+                    font-size: 25px;" (click)="showHelpModal();" >help</mat-icon>
+                    <br>
+                    <mat-form-field class="full-width" appearance="outline" style="width: 100% !important;">
+                        <mat-label>Description Name* </mat-label>
+                        <textarea matInput formControlName="description" rows="20"></textarea>
+                        <mat-error *ngIf="cpManagementForm.get('description').hasError('required')">
+                            Description Is Required
+                        </mat-error>
+                    </mat-form-field>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : helpModal}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title">Fromula For Dynamic Input</h4>
+                        <button class="cst-modal__close" (click)="showHelpModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__body">
+                        <h4>For Set Dynamic Input You Will Need To Put #text@value</h4>
+                        <h4>For Example => This Is Dynamic Input #text@dyanmicvalue</h4>
+                    </div>
+                    <div class="cst-modal__footer">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

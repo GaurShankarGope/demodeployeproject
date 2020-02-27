@@ -1,0 +1,150 @@
+<div id="alert" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Alert Management</h2>
+            </div>
+            <div class="row-col-6">
+                <div>
+
+                </div>
+            </div>
+            <div class="row-col-3">
+                <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <b> Alert
+                    Management </b>
+            </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+
+            <div class="main-tab">
+
+
+
+                <div class="header-row">
+                    <div class="row-col-6">
+                        <h2> Alert Category </h2>
+                    </div>
+                    <div class="row-col-6">
+                            <button class="button button--add-alert-option" (click)="showAddAlertModal()">
+                                <span> + </span> Add Alert Category
+                            </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="content-card">
+                <table mat-table [dataSource]="dataSource" matSort>
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial NO. </th>
+                        <td mat-cell *matCellDef="let row; let i = index;"> {{i+1}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="categoryName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Alert Category List </th>
+                        <td mat-cell *matCellDef="let row"> {{row.categoryName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="action"> Action </th>
+                        <td mat-cell *matCellDef="let row" class="action">
+                            <button mat-button class="click-icon click-icon--edit">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon"
+                                    (click)="editalert(row.id, row.categoryName)">edit</mat-icon>
+                            </button>
+                            <button mat-button class="click-icon click-icon--delete" (click)="showDeleteModal(row.id)">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
+                            </button>
+
+                            <button mat-button class="click-icon click-icon--remove" (click)="goSubAlert(row)" routerLink="">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">remove_red_eye</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Alert Modal -->
+    <div class="cst-modal" [ngClass]="{'cst-modal--active' : showAlertModalStatus}">
+        <div class="cst-modal__overlay"></div>
+        <div class="cst-modal__content">
+            <div class="cst-modal__header">
+                <h4 class="cst-modal__title">Add Alert</h4>
+                <button class="cst-modal__close" (click)="showAddAlertModal()">&times;</button>
+            </div>
+            <form [formGroup]="addAlertForm">
+                <div class="cst-modal__body">
+                    <mat-form-field appearance="outline">
+                        <input matInput type="text" (keyup)="enableAddSubmit($event.target.value)" placeholder="Enter Alert here" formControlName="roleName">
+                        <mat-error *ngIf="addAlertForm.get('roleName').hasError('required')">
+                            Alert Name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="cst-modal__footer">
+                    <button class="cst-modal__button cst-modal__button--add" [disabled]="enableSubmitAddStatus" (click)="AddAlert()">Add</button>
+                    <button class="cst-modal__button cst-modal__button--cancel" (click)="showAddAlertModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Add Alert model-end -->
+
+    <!-- Alert Delete Modal -->
+    <div class="cst-modal" [ngClass]="{'cst-modal--active' : showModaldeleteStatus}">
+        <div class="cst-modal__overlay"></div>
+        <div class="cst-modal__content">
+            <div class="cst-modal__header">
+                <h4 class="cst-modal__title" style="margin: 0 auto;">Are you sure you want to delete this record??</h4>
+                <button class="cst-modal__close">&times;</button>
+            </div>
+            <div class="cst-modal__footer">
+                <button class="cst-modal__button cst-modal__button--delete" >Delete</button>
+                
+            </div>
+        </div>
+    </div>
+    <!-- Alert Delete Modal-end -->
+
+
+    <!-- Edit Alert Modal -->
+    <div class="cst-modal" [ngClass]="{'cst-modal--active' : editshowModalStatus}">
+        <div class="cst-modal__overlay"></div>
+        <div class="cst-modal__content">
+            <div class="cst-modal__header">
+                <h4 class="cst-modal__title">Edit Alert Category</h4>
+                <button class="cst-modal__close" (click)="editshowModal()">&times;</button>
+            </div>
+            <form [formGroup]="alertUpdateForm">
+                <div class="cst-modal__body">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Alert Name</mat-label>
+                        <input matInput type="text"  placeholder="Edit Alert here" formControlName="roleName"
+                            (keyup)="enableSubmit($event.target.value)">
+                        <mat-error *ngIf="alertUpdateForm.get('roleName').hasError('required')">
+                            Alert Name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="cst-modal__footer">
+                    <button class="cst-modal__button cst-modal__button--add" [disabled]="enableSubmitStatus"
+                        (click)="updatealert()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Alert Modal -->
+
+
+</div>

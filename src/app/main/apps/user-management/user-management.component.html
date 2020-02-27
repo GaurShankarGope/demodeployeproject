@@ -1,0 +1,119 @@
+<div id="user" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>User Management</h2>
+            </div>
+            <div class="row-col-6"></div>
+
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <b> User
+                        Management </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <button class="add-item add-item--main-button" routerLink="/apps/user-management/add-user"> Add User </button>
+                    </div>
+                    <div class="row-col-6">
+                        <div>
+                            <mat-form-field style="width: 50%;">
+                                <mat-select placeholder="Select" (selectionChange)="doFilter($event.value)"
+                                [(ngModel)]="filterValue">
+                                    <mat-option>-- None --</mat-option>
+                                    <mat-option *ngFor="let item of roleListData" [ngClass]="{'d-none': item.isActive === 'N'}" [value]="item.id">
+                                        {{item.roleName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button (click)="resetRole()" class="resetrole"> Reset </button>
+                        </div>
+                    </div>
+                    <div class="row-col-3">
+                        <mat-form-field floatLabel="never" class="custom-search-field">
+                            <mat-icon class="search">search</mat-icon> <input matInput
+                                (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </div>
+                <table mat-table [dataSource]="dataSource" matSort>
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> S NO. </th>
+                        <td mat-cell *matCellDef="let row; let i = index;"> {{i+1}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="username">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> UserName </th>
+                        <td mat-cell *matCellDef="let row"> {{row.username}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="role">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                        <td mat-cell *matCellDef="let row"> {{row.roleName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mobileno">
+                        
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+                        <td mat-cell *matCellDef="let row"> {{row.mobileNo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="action-head"> Action </th>
+                        <td mat-cell *matCellDef="let row" class="action">
+                            <button mat-button class="click-icon click-icon--edit">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="editUser(row)">
+                                    edit</mat-icon>
+                            </button>
+
+                            <button mat-button class="click-icon click-icon--delete" (click)="showDeleteModal(row.id)">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <div class="no_data_found" *ngIf="dataSource.filteredData.length === 0">
+                    No Records Found!
+                </div>
+                <mat-paginator showFirstLastButtons [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>
+    </div>
+
+
+    <!-- Delete-Modal -->
+    <div class="cst-modal" [ngClass]="{'cst-modal--active' : showModalStatus}">
+        <div class="cst-modal__overlay"></div>
+        <div class="cst-modal__content">
+            <div class="cst-modal__header">
+                <h4 class="cst-modal__title">"Are you sure you want to delete this record??"</h4>
+                <button class="cst-modal__close" (click)="hideDeleteModal()">&times;</button>
+            </div>
+            <div class="cst-modal__footer">
+                <button class="cst-modal__button cst-modal__button--delete" (click)="deleteRole()">Delete</button>
+                <button class="cst-modal__button cst-modal__button--cancel" (click)="hideDeleteModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- Delete-Modal-end -->
+
+
+</div>

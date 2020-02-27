@@ -1,0 +1,36 @@
+<div id="draw" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>Draw C/P Platform</h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/draw-management"> Draw C/P Platform</a>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> Select Draw C/P Platform </h2>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                        <button class="add-item add-item--back-button" style="float:right" (click)="drawManagementView()"> Existing Draw C/P Platform</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <mat-radio-group class="customFormfullWidth" style="margin-top: 20px;">
+                <mat-label class="labelCustom">Please select the applicable Charter Party.</mat-label>
+                <br>
+                <mat-radio-button class="customFormfullWidth radioButtonClass" *ngFor="let CharterPartyTypeData of CharterPartyTypeData" (click)="setApplicabelCharterParty(CharterPartyTypeData.id)"> {{CharterPartyTypeData.name}} </mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+</div>

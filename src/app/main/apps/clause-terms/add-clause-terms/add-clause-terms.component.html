@@ -1,0 +1,92 @@
+<div id="clause-terms" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Clause Category Terms Management</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/clause-terms-management"> Clause Category Terms Management </a> > <b> Clause Category Terms Add </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Add Clause Category Terms </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button routerLink="/apps/clause-terms-management" class="add-item add-item--back-button"> Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="content-card" style="width: 50% !important;">
+                <form [formGroup]="clauseTermsForm" (ngSubmit)="onSubmit()">
+                    <mat-form-field class="full-width" appearance="outline" style="width: 100% !important;">
+                        <mat-label>CP Form*</mat-label>
+                        <mat-select formControlName="cpFormId" matSelect (selectionChange)="onChangeCPForm($event)">
+                            <mat-option *ngFor="let cpFormListData of cpFormListData" [ngClass]="{'d-none': cpFormListData.isActive === 'N'}" [value]="cpFormListData.id"> {{cpFormListData.cpformName}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="clauseTermsForm.get('cpFormId').hasError('required')"> CP Form Is Required</mat-error>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="full-width" appearance="outline" style="width: 100% !important;">
+                        <mat-label>Clause Category*</mat-label>
+                        <mat-select formControlName="parentId" matSelect >
+                            <mat-option *ngFor="let clauseTermsData of cpFormListData" [ngClass]="{'d-none': clauseTermsData.isActive === 'N'}" [value]="clauseTermsData.id"> {{clauseTermsData.name}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="clauseTermsForm.get('parentId').hasError('required')"> Clause Category Is Required</mat-error>
+                    </mat-form-field>
+                    <!-- <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>No Of Position ( Only Numbers )* </mat-label>
+                        <input type="number" matInput formControlName="nos">
+                        <mat-error *ngIf="clauseTermsForm.get('nos').hasError('required')">
+                            Nos Is Required
+                        </mat-error>
+                    </mat-form-field> -->
+                    <br>
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" style="float: right;
+                    margin-right: 10px;
+                    font-size: 25px;" (click)="showHelpModal();" >help</mat-icon>
+                    <br>
+                    <mat-form-field class="full-width" appearance="outline" style="width: 100% !important;">
+                        <mat-label>Clause Category Terms* </mat-label>
+                        <textarea matInput formControlName="termsName" rows="20"></textarea>
+                        <mat-error *ngIf="clauseTermsForm.get('termsName').hasError('required')">
+                            Clause Category Term Is Required
+                        </mat-error>
+                    </mat-form-field>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : helpModal}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title">Fromula For Dynamic Input</h4>
+                        <button class="cst-modal__close" (click)="showHelpModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__body">
+                        <h4>For Set Dynamic Datepicker You Will Need To Put #date@value</h4>
+                        <h4>For Example => This Is Dynamic Datepicker #date@{{current_date}}</h4>
+                        <br>
+                        <h4>For Set Dynamic Timepicker You Will Need To Put #time||value</h4>
+                        <h4>For Example => This Is Dynamic Timepicker #time@{{current_time}}</h4>
+                        <br>
+                        <h4>For Set Dynamic Numberpicker You Will Need To Put #number||value</h4>
+                        <h4>For Example => This Is Dynamic Numberpicker #number@11</h4>
+                    </div>
+                    <div class="cst-modal__footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

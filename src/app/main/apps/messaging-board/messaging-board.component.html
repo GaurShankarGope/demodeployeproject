@@ -1,0 +1,253 @@
+<div id="message" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>Message Center</h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> >  Message Center
+                </div>
+            </div>
+        </div>
+        <!-- Main Buttons Start -->
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <!-- <button class="add-item add-item--main-button" style="width: 250px !important;margin: 30px !important;" (click)="showHideModules(1)"> Nudges</button>
+                    <button class="add-item add-item--main-button" style="width: 250px !important;margin: 30px !important;" (click)="showHideModules(3)"> System Alerts</button>
+                    <button class="add-item add-item--main-button" style="width: 250px !important;margin: 30px !important;" (click)="showHideModules(4)"> News And Notification</button> -->
+                    
+                    <!-- gauri button style change -->
+                    <div class="mat-tab-link-container">
+                        <button mat-button class="tab-button" [ngClass]="{'active': step==='step1'}" (click)="step='step1'"
+                            (click)="showHideModules(1)">Nudges</button>
+                        <button mat-button class="tab-button" [ngClass]="{'active': step==='step2'}" (click)="step='step2'"
+                            (click)="showHideModules(3)">System Alerts</button>
+                            <button mat-button class="tab-button" [ngClass]="{'active': step==='step3'}" (click)="step='step3'"
+                            (click)="showHideModules(4)">News And Notification</button>
+                    </div>
+                    <!-- end gauri button style change -->
+                </div>
+            </div>
+        </div>
+        <!-- Main Buttons End -->
+        <!-- Nudges Records Server Side Start -->
+        <div class="mat-elevation-z8" *ngIf="nudgesTableDiv" style="margin-top: 50px;">
+            <div class="content-card" style="margin: 35px; width: 95%; margin-top: 10px;">
+                <table>
+                    <tr>
+                        <th style="width:60%; text-align: left;">
+                            <label style="font-size: 25px; margin-left: 18px;;">Nudges</label>
+                        </th>
+                        <th>
+                            <mat-form-field floatLabel="never" class="custom-search-field">
+                                <mat-icon class="search">search</mat-icon> <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                            </mat-form-field>
+                        </th>
+                        <th>
+                            <button class="add-item add-item--main-button" style="width: 200px !important; margin-top: -20px;" (click)="showHideModules(2)">Add Nudges</button>
+                        </th>
+                    </tr>
+                </table>
+                <hr>
+                <table mat-table [dataSource]="messageCenterRecords">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Identifier </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="tradingId">
+                        <th mat-header-cell *matHeaderCellDef> Fixture </th>
+                        <td mat-cell *matCellDef="let element"> {{element.tradingId}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="createdDateInfo" >
+                        <th mat-header-cell *matHeaderCellDef> Created Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.createdDateInfo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="createdTimeInfo">
+                        <th mat-header-cell *matHeaderCellDef> Time </th>
+                        <td mat-cell *matCellDef="let element"> {{element.createdTimeInfo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="createdByName" >
+                        <th mat-header-cell *matHeaderCellDef> Created By </th>
+                        <td mat-cell *matCellDef="let element"> {{element.createdByName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="message">
+                        <th mat-header-cell *matHeaderCellDef> Message </th>
+                        <td mat-cell *matCellDef="let element"> <h4 class="customElips"  matTooltip="{{element.message}}" > {{element.message}} </h4> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="action-head"> Action</th>
+                        <td mat-cell  *matCellDef="let row" class="action">
+                            <mat-label *ngIf="row.total_read == 3"><i class="material-icons" style="color: green;">check</i></mat-label>
+                            <mat-label *ngIf="row.total_read != 3"><i class="material-icons">check</i></mat-label>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <ng-container *ngIf="nudgesTableDiv">
+                    <div class="no_data_found"   *ngIf="messageCenterRecords.filteredData.length === 0">
+                        No Records Found!
+                    </div>
+                </ng-container>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                
+                <!-- <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator> -->
+            </div>
+        </div>
+        <!-- Nudges Records Server Side End -->
+        <!-- Nudges Form Start -->
+        <div class="mat-elevation-z8" *ngIf="nudgesFormDiv" style="margin-top: 50px;">
+            <div class="content-card" style="margin: 35px; width: 95%; margin-top: 10px;">
+                <table>
+                    <tr>
+                        <th style="width:80%; text-align: left;">
+                            <label style="font-size: 25px; margin-left: 18px;">Nudges</label>
+                        </th>
+                        <th>
+                            <button class="add-item add-item--main-button" style="width: 200px !important; margin-top: 0px;" (click)="showHideModules(1)">Back</button>
+                        </th>
+                    </tr>
+                </table>
+                <hr>
+                <form [formGroup]="NudgesMessageCenterForm" (ngSubmit)="NudgesMessageCenterFormSubmit()">
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Fixture*</mat-label>
+                        <mat-select formControlName="tradingId" matSelect (selectionChange)="onChangeFixture($event)" >
+                            <mat-option 
+                                *ngFor="let tradingRecordsResponseArray of tradingRecordsResponseArray" 
+                                [ngClass]="{'d-none': tradingRecordsResponseArray.isActive === 'N'}" 
+                                [value]="tradingRecordsResponseArray.id"
+                            > 
+                                {{tradingRecordsResponseArray.identifier}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="NudgesMessageCenterForm.get('tradingId').hasError('required')"> Fixture Is Required</mat-error>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field  class="customFormfullWidthTextArea" appearance="outline">
+                        <mat-label>Message* </mat-label>
+                        <textarea matInput formControlName="message" cols="10" rows="10"></textarea>
+                        <mat-error *ngIf="NudgesMessageCenterForm.get('message').hasError('required')"> Message is required</mat-error>
+                    </mat-form-field>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit " type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+        <!-- Nudges Form End -->
+        <!-- Notification Records Server Side Start -->
+        <div class="mat-elevation-z8" *ngIf="notificationTableDiv" style="margin-top: 50px;">
+            <div class="content-card" style="margin: 35px; width: 95%; margin-top: 10px;">
+                <table>
+                    <tr>
+                        <th style="width:60%; text-align: left;">
+                            <label style="font-size: 25px; margin-left: 18px;;">News And Notification</label>
+                        </th>
+                    </tr>
+                </table>
+                <hr>
+                <table mat-table [dataSource]="notificationRecords">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Identifier </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="notification">
+                        <th mat-header-cell *matHeaderCellDef> Notification </th>
+                        <td mat-cell *matCellDef="let element"> {{element.notification}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="createdAt" >
+                        <th mat-header-cell *matHeaderCellDef> Created Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsNotificaiton"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsNotificaiton;"></tr>
+                </table>
+                <ng-container *ngIf="notificationTableDiv">
+                    <div class="no_data_found"   *ngIf="notificationRecords.filteredData.length === 0">
+                        No Notificaiton
+                    </div>
+                </ng-container>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+                <!-- <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator> -->
+            </div>
+        </div>
+        <!-- Notification Records Server Side End -->
+        <!-- System Alerts Records Server Side Start -->
+        <div class="mat-elevation-z8" *ngIf="systemAlertsDiv" style="margin-top: 50px;">
+            <div class="content-card" style="margin: 35px; width: 95%; margin-top: 10px;">
+                <table>
+                    <tr>
+                        <th style="width:80%; text-align: left;">
+                            <label style="font-size: 25px; margin-left: 18px;">System Alerts</label>
+                        </th>
+                        <th>
+                            <button class="add-item add-item--main-button" style="width: 200px !important; margin-top: 0px;" (click)="showHideModules(1)">Back</button>
+                        </th>
+                    </tr>
+                </table>
+                <form [formGroup]="SystemAlertsCenterForm" (ngSubmit)="SystemAlertsRecordsServerSide()">
+                    <mat-form-field  class="customFormfullWidth" appearance="outline">
+                        <mat-label>Start Date* </mat-label>
+                        <input formControlName="date1" matInput [matDatepicker]="date1Picker" placeholder="Start Date" (dateChange)="SystemAlertsRecordsServerSide()">
+                        <mat-datepicker-toggle matSuffix [for]="date1Picker"></mat-datepicker-toggle>
+                        <mat-datepicker #date1Picker></mat-datepicker>
+                        <mat-error *ngIf="SystemAlertsCenterForm.get('date1').hasError('required')">
+                            Start Date is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field  class="customFormfullWidth" appearance="outline">
+                        <mat-label>End Date* </mat-label>
+                        <input formControlName="date2" matInput [matDatepicker]="date2Picker" placeholder="End Date" (dateChange)="SystemAlertsRecordsServerSide()">
+                        <mat-datepicker-toggle matSuffix [for]="date2Picker"></mat-datepicker-toggle>
+                        <mat-datepicker #date2Picker></mat-datepicker>
+                        <mat-error *ngIf="SystemAlertsCenterForm.get('date2').hasError('required')">
+                            End Date is required
+                        </mat-error>
+                    </mat-form-field>
+                </form>
+                <table mat-table [dataSource]="tradingProgressRecords">
+                    <ng-container matColumnDef="identifier">
+                        <th mat-header-cell *matHeaderCellDef>  </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <mat-accordion>
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            <h4 class="matCheckboxLayoutCustom"> 
+                                                <b style="margin-left: 10px;">{{ element.identifier }} - {{ element.vesselName }} - {{ element.companyName }} </b>
+                                            </h4>
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div style="max-height: 200px; overflow: scroll;">
+                                        <table>
+                                            <tr *ngFor="let dynamicData of element.progressMessages; let i= index">
+                                                <td>{{ dynamicData.message }}</td>
+                                                <td>{{ dynamicData.time }}</td>
+                                                <td>{{ dynamicData.progessDate }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsTradingProgress"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsTradingProgress;"></tr>
+                </table>
+                <ng-container *ngIf="systemAlertsDiv">
+                    <div class="no_data_found"   *ngIf="tradingProgressRecords.filteredData.length === 0">
+                        No Records Found!
+                    </div>
+                </ng-container>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <!-- <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator> -->
+            </div>
+        </div>
+        <!-- System Alerts Records Server Side End -->
+    </div>
+</div>

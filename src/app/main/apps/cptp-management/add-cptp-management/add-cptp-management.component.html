@@ -1,0 +1,73 @@
+<div id="cptp" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Charter Party Trading Platform</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/cptp-management"> Charter Party Trading Platform </a> > <b> Start New Trade </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Start New Trade </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button routerLink="/apps/cptp-management" class="add-item add-item--back-button"> Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="content-card">
+                <form [formGroup]="CPTPManagementForm" (ngSubmit)="onSubmit()" class="customForm">
+
+                    <mat-radio-group class="full-width" name="charterPartyTypeList" aria-label="Please select the applicable Charter Party." >
+                        <mat-label>Please select the applicable Charter Party.</mat-label>
+                        <br>
+                        <mat-radio-button *ngFor="let CharterPartyTypeData of CharterPartyTypeData" [checked]="CharterPartyTypeData.id == 5"  [ngClass]="{'d-none': CharterPartyTypeData.isActive === 'N'}"  [value]="CharterPartyTypeData.id" value="1" (click)="setApplicabelCharterParty(CharterPartyTypeData.id)"> {{CharterPartyTypeData.name}} </mat-radio-button>
+                        <br>
+                    </mat-radio-group>
+                    <br>
+                    <mat-label>Select charter party type and it's year.</mat-label>
+                    <br>
+                    
+                    <select class="customFormfullWidth" placeholder="select C/P Form" formControlName="formId"  (change)="changeCPForm($event)" required>
+                        <option [value]="0">--- Select CP Form ---</option>
+                        <option *ngFor="let cpformData of cpFormData"  ng-model="cpFormModel"  [ngClass]="{'d-none': cpformData.isActive === 'N'}" [value]="cpformData.id">{{cpformData.cpformName}}</option>
+                    </select>
+
+                    <select class="customFormfullWidth" placeholder="select C/P Form" formControlName="vesselId"  (change)="changeVesselEvent($event)">
+                        <option [value]="0">--- Select Vessel ---</option>
+                        <option *ngFor="let VesselData of VesselData"  [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id">{{VesselData.vessel_name}}</option>
+                    </select>
+                    
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>C/P Date* </mat-label>
+                        <input formControlName="cpDate" matInput [matDatepicker]="picker" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="CPTPManagementForm.get('cpDate').hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    <select class="customFormfullWidth" placeholder="select Charter" formControlName="chartererId"  (change)="changeChartererType($event)">
+                        <option [value]="0">--- Select Charter ---</option>
+                        <option *ngFor="let ChartereInfoData of ChartereInfoData"  [ngClass]="{'d-none': ChartereInfoData.isActive === 'N'}"  [value]="ChartereInfoData.id">{{ChartereInfoData.username}}</option>
+                    </select>
+                    <br>
+                    <br>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

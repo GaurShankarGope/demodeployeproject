@@ -1,0 +1,46 @@
+<div id="user" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>User List</h2>
+            </div>
+            <div class="row-col-6"></div>
+
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <b>
+                        User List </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                   
+                   
+                    <div class="content-card">
+                        <div class="row-col-4  main-card " *ngFor="let c of userListData">
+
+                            <mat-icon class="contacts main-card-icon">contacts</mat-icon>
+                    
+                        <div class="row-col-12 contact-detail">
+                            <div class="h4"><b>Name : </b>{{c.fullName}}</div>
+                            <hr>
+                            <div class="h4"><b>Email : </b><a href="mailto:{{c.email}}">{{c.email}}</a></div>
+                            <hr>
+                            <div class="h4"><b>Designation :</b> {{c.roleName}}</div>
+
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- contact card  -->
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div id="draw" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Draw C/P Platform Management</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/draw-management"> Draw C/P Platform Management </a> > <b> Draw C/P Platform Management Edit </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Edit Draw C/P Platform </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button routerLink="/apps/draw-management" class="add-item add-item--back-button"> Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="content-card" style="margin-top: -40px !important">
+                <form [formGroup]="DrawManagementForm" (ngSubmit)="onSubmit()">
+                    <br>
+                    <br>
+                    <br>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>CP Form*</mat-label>
+                        <mat-select formControlName="formId" matSelect (selectionChange)="changeCPForm($event)">
+                            <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('formId').hasError('required')"> CP Form Is Required</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel*</mat-label>
+                        <mat-select formControlName="vesselId" matSelect (selectionChange)="changeVesselEvent($event)">
+                            <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('vesselId').hasError('required')"> Vessel Is Required</mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field  class="customFormfullWidth" appearance="outline">
+                        <mat-label>C/P Date* </mat-label>
+                        <input formControlName="cpDate" matInput [matDatepicker]="picker" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="DrawManagementForm.get('cpDate').hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel*</mat-label>
+                        <mat-select formControlName="chartererId" matSelect (selectionChange)="changeVesselEvent($event)">
+                            <mat-option *ngFor="let ChartereInfoData of ChartereInfoData" [ngClass]="{'d-none': ChartereInfoData.isActive === 'N'}" [value]="ChartereInfoData.id"> {{ChartereInfoData.username}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('chartererId').hasError('required')"> Vessel Is Required</mat-error>
+                    </mat-form-field>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+</div>

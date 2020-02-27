@@ -1,0 +1,224 @@
+<div id="edit-alert" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <div class="heading center">
+        <!-- <div>
+            <h2>Broker Management</h2>
+        </div> -->
+
+        <div class="header-row">
+                <div class="row-col-3">
+                    <h2>Broker Management</h2>
+                </div>
+                <div class="row-col-6">
+                    <div>
+                        <!-- <mat-form-field style="width: 50%;">
+                            <mat-select placeholder="Filter by"  (selectionChange)="doFilter($event.value)" [(ngModel)]="filterValue">
+                               
+                                <mat-option *ngFor="let role of roleListData" [value]="role.roleName">
+                                {{role.roleName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+                </div>
+                <div class="row-col-3">
+                    <mat-icon class="home">home</mat-icon> <a routerLink=""> Home </a> > <a routerLink=""> Broker Management </a>
+                </div>
+            </div>
+
+        <div class="mat-elevation-z8">
+
+            <div class="main-tab">
+                <!-- <mat-grid-list cols="3" rowHeight="2:1">
+                    <mat-grid-tile>
+                        <button class="add-role" (click)="showModal()"> Add User </button>
+                    </mat-grid-tile>s
+                    <mat-grid-tile>
+                        <div>
+                            <div>
+                                <mat-form-field>
+                                    <mat-label>Filter by - </mat-label>
+                                    <mat-select>
+                                        <mat-option *ngFor="let role of roleListData" [value]="role.roleName">
+                                        {{role.roleName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field floatLabel="never" class="custom-search-field">
+                            <mat-icon class="search">search</mat-icon> <input matInput 
+                                (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list> -->
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <button class="add-role" (click)="showModal()"> Add Broker </button>
+                    </div>
+                    <div class="row-col-6">
+                        <div>
+                            <!-- <mat-form-field style="width: 50%;">
+                                <mat-select placeholder="Filter by"  (selectionChange)="doFilter($event.value)" [(ngModel)]="filterValue">
+                                   
+                                    <mat-option *ngFor="let role of roleListData" [value]="role.roleName">
+                                    {{role.roleName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+                        </div>
+                    </div>
+                    <div class="row-col-3">
+                        <mat-form-field floatLabel="never" class="custom-search-field">
+                            <mat-icon class="search">search</mat-icon> <input matInput 
+                                (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- <button class="add-role" (click)="showModal()"> Add User </button> -->
+                
+
+                
+            </div>
+
+            <div class="content-card">
+                <table mat-table [dataSource]="dataSource" matSort>
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial NO. </th>
+                        <td mat-cell *matCellDef="let row; let i = index;"> {{i+1}} </td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="username">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> UserName </th>
+                        <td mat-cell *matCellDef="let row"> {{row.username}} </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mobileno">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+                            <td mat-cell *matCellDef="let row"> {{row.mobileNo}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="company">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Company </th>
+                        <td mat-cell *matCellDef="let row"> {{row.company}} </td>
+                    </ng-container>
+
+                 
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+                        <td mat-cell *matCellDef="let row"> 
+                            <button mat-button class="edit_button">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon"
+                                    (click)="editRole(row.id,row.roleName)">edit</mat-icon>
+                            </button>
+                            <button mat-button class="delete_button">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="cst-modal" [ngClass]="{'cst-modal--active' : showModalStatus}">
+        <div class="cst-modal__overlay"></div>
+        <div class="cst-modal__content">
+            <div class="cst-modal__header">
+                <h4 class="cst-modal__title">Add User Details</h4>
+                <button class="cst-modal__close" data-dismiss="modal" #fileInput (click)="showModal()">&times;</button>
+            </div>
+            <div class="cst-modal__body">
+                <div class="form-row">
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Select Role*</label>
+                        <select id="inputState" class="cst-modal__form-control" [(ngModel)]="userRole">
+                            <option>Select One Role</option>
+                            <option *ngFor="let role of roleListData">{{role.roleName}}</option>
+                        </select>
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Username*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="roleName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Mobile Phone*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="mobileNo" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Password*</label>
+                        <input class="cst-modal__form-field" type="password" [(ngModel)]="password" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Repeat Password*</label>
+                        <input class="cst-modal__form-field" type="password" [(ngModel)]="confirmPaassword" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">First Name*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="firstName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Last Name*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="lastName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Company Name*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="companyName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Business Phone*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="businessPhone" />
+                    </div>
+                    <!-- <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Select Role*</label>
+                        <select id="inputState" class="cst-modal__form-control" [(ngModel)]="userRole">
+                            <option>Select One Role</option>
+                            <option *ngFor="let role of roleListRes">{{role.roleName}}</option>
+                        </select>
+                    </div> -->
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Email*</label>
+                        <input class="cst-modal__form-field" type="email" [(ngModel)]="email" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Select Location*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="userLocation" />
+                    </div>
+                    <p class="required">*<span>This field is required</span></p>
+                </div>
+
+            </div>
+            <div class="cst-modal__footer">
+                <button class="cst-modal__button" (click)="addRole()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ADD CONTACT BUTTON -->
+<!-- <button mat-fab class="accent" id="add-contact-button" (click)="newContact()" aria-label="add contact"
+    [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}">
+    <mat-icon>person_add</mat-icon>
+</button> -->
+<!-- / ADD CONTACT BUTTON -->

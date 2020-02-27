@@ -1,0 +1,155 @@
+<div id="edit-user" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <!-- TOP BACKGROUND -->
+        <div class="top-bg accent"></div>
+        <!-- / TOP BACKGROUND -->
+        <div class="heading center">
+            <!-- <div>
+                <h2>Broker Management</h2>
+            </div> -->
+    
+            <div class="header-row">
+                <div class="row-col-3">
+                    <h2>User Management</h2>
+                </div>
+    
+                <div class="row-col-3">
+                    <div style="float: right;">
+                        <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a routerLink="/apps/user-management"> User
+                            Management </a> > <b> Edit User </b>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mat-elevation-z8">
+    
+                <div class="main-tab">
+                    <div class="header-row">
+                        <div class="row-col-3">
+                            <h2 style="padding-bottom: 0;"> Edit User </h2>
+                        </div>
+                        <div class="row-col-3">
+                            <button routerLink="/apps/user-management" class="add-item add-item--back-button"> Back </button>
+                        </div>
+                    </div>
+    
+                </div>
+                <hr>
+                <div class="content-card">
+                    <form [formGroup]="userManagementeditForm" (ngSubmit)=" onSubmit()">
+                       
+                        <select placeholder="select role" id="inputState" formControlName="userRoleId" (change)="changeRole($event)">
+                            <option [value]="">Select role</option>
+                            <option *ngFor="let role of roleListData"  [ngClass]="{'d-none': role.isActive === 'N'}" [value]="role.id">{{role.roleName}}</option>
+                        </select>
+                   
+                        <mat-form-field  class="full-width" >
+                            <mat-label>User Name</mat-label>
+                            <input  matInput formControlName="username">
+                            <mat-error *ngIf="userManagementeditForm.get('username').hasError('required')">
+                                User Name is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('username').hasError('username')">
+                                Please enter a valid User Name
+                            </mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field class="full-width" >
+                            <mat-icon class="icon_space" aria-hidden="false" aria-label="Example call icon">call</mat-icon>
+                            <mat-label>Mobile Number</mat-label>
+                            <input (keypress)="numberOnly($event)" onKeyPress="if(this.value.length==12) return false;" min="10" matInput formControlName="mobileNo">
+                            <mat-error *ngIf="userManagementeditForm.get('mobileNo').hasError('required')">
+                                Mobile number is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('mobileNo').hasError('mobileNo')">
+                                Please enter a valid mobile no
+                            </mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field class="full-width">
+                            <mat-icon class="icon_space" aria-hidden="false" aria-label="Example Whatsapp icon">Whatsapp</mat-icon>
+                            <mat-label> WhatsApp ID *</mat-label>
+                            <input matInput formControlName="whatsappId">
+                            <mat-error *ngIf="userManagementeditForm.get('whatsappId').hasError('required')">
+                                WhatsApp ID is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('whatsappId').hasError('whatsappId')">
+                                Please enter a valid   WhatsApp ID is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('whatsappId').hasError('pattern')">
+                                Enter valid WhatsApp ID is required
+                            </mat-error>
+                        </mat-form-field>
+    
+                          <mat-form-field class="full-width">
+                            <mat-icon class="icon_space" aria-hidden="false" aria-label="Example skype icon">Skype</mat-icon>
+                            <mat-label>Skype ID *</mat-label>
+                            <input matInput formControlName="skypeId">
+                            <mat-error *ngIf="userManagementeditForm.get('skypeId').hasError('required')">
+                                Skype Id is required
+                            </mat-error>
+                         
+                        </mat-form-field>
+                        
+    
+                        <mat-form-field class="full-width" >
+                            <mat-icon class="icon_space" aria-hidden="false" aria-label="Example account_circle icon">account_circle</mat-icon>
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName">
+                            <mat-error *ngIf="userManagementeditForm.get('firstName').hasError('required')">
+                                FirstName is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('firstName').hasError('firstName')">
+                                Please enter a valid FirstName
+                            </mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field class="full-width" >
+                            <mat-icon class="icon_space" aria-hidden="false" aria-label="Example account_circle icon">account_circle</mat-icon>
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName">
+                            <mat-error *ngIf="userManagementeditForm.get('lastName').hasError('required')">
+                                LastName is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('lastName').hasError('lastName')">
+                                Please enter a valid LastName
+                            </mat-error>
+                        </mat-form-field>
+    
+                            <!-- <select  placeholder="select company" id="inputState" (change)="changecompany($event)" matInput  formControlName="companyName">
+                                    <option *ngFor="let company of companyListData" [value]="company.id">{{company.companyName}}</option>
+                            </select>
+                     -->
+                        <mat-form-field  class="full-width" >
+                            <mat-icon class="icon_space" aria-hidden="false" aria-label="Example mail icon">mail</mat-icon>
+                            <mat-label>Email</mat-label>
+                            <input  matInput formControlName="email">
+                            <mat-error *ngIf="userManagementeditForm.get('email').hasError('required')">
+                                Email is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('email').hasError('email')">
+                                Please enter a valid email address
+                            </mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field class="full-width" >
+                            <mat-icon class="icon_space" aria-hidden="false" aria-label="Example pin_drop icon">pin_drop</mat-icon>
+                            <mat-label>Enter Location</mat-label>
+                            <input matInput formControlName="address">
+                            <mat-error *ngIf="userManagementeditForm.get('address').hasError('required')">
+                                Location is required
+                            </mat-error>
+                            <mat-error *ngIf="userManagementeditForm.get('address').hasError('address')">
+                                Please enter a valid Location
+                            </mat-error>
+                        </mat-form-field>
+                      
+                        <button [disabled]="enableSubmitStatus" class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                       
+                    </form>
+                </div>
+            </div>
+    
+        </div>
+    
+    </div>

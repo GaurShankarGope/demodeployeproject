@@ -1,0 +1,197 @@
+<div id="add-alert" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <div class="heading center">
+        <!-- <div>
+            <h2>Broker Management</h2>
+        </div> -->
+
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Broker Management</h2>
+            </div>
+
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <b> Broker
+                        Management </b> > <b> Add Broker </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Add Broker </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button class="add-role"> Back </button>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+            <div class="content-card">
+                <form>
+                    <div class="main-tab">
+                        <div class="header-row">
+                            <div class="row-col-6">
+                                <mat-form-field floatLabel="never" class="example-full-width">
+                                    <input matInput placeholder="Name *">
+                                </mat-form-field>
+                            </div>
+                            <div class="row-col-6">
+                                <mat-form-field floatLabel="never" class="example-full-width">
+                                    <input matInput placeholder="Company Name *">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-tab">
+                        <div class="header-row">
+                            <div class="row-col-6">
+                                <mat-form-field floatLabel="never" class="example-full-width">
+                                    <input matInput placeholder="Business Phone *">
+                                </mat-form-field>
+                            </div>
+                            <div class="row-col-6">
+                                <mat-form-field floatLabel="never" class="example-full-width">
+                                    <input matInput placeholder="Select Role *">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-tab">
+                        <div class="header-row">
+                            <div class="row-col-6">
+                                <mat-form-field floatLabel="never" class="example-full-width">
+                                    <input matInput placeholder="Mobile Phone *">
+                                </mat-form-field>
+                            </div>
+                            <div class="row-col-6">
+                                <mat-form-field floatLabel="never" class="example-full-width">
+                                    <input matInput placeholder="Email *">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="main-tab">
+                        <div class="header-row">
+                            <div class="row-col-6">
+                                <p> * This Field is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-col-6">
+                        <button class="add-role-save"> Save </button>
+                    </div> -->
+                </form>
+
+                <div class="row">
+                    <div class="three-section col-md-3">
+                        <div ng-app="" class="section" *ngFor="let username of roleListData">
+                                <div class="head">
+                                    <mat-checkbox type="checkbox" [(ngModel)]="username.selected"
+                                        [name]="username.moduleName" (change)="changeSelectAccess($event, username)"
+                                        ng-model="selectall">{{username}}</mat-checkbox>
+                                </div>
+                                <div *ngFor="let item of userMangeName.action_arr">
+                                <mat-checkbox [name]="item.actionName" [(ngModel)]="item.selected"
+                                        (change)="changeSelectAccess($event, item)" type="checkbox" ng-checked="selectall">
+                                        {{item.activename}} </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="three-section col-md-3">
+
+                    </div>
+                    <div class="three-section col-md-3">
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <div class="cst-modal" [ngClass]="{'cst-modal--active' : showModalStatus}">
+        <div class="cst-modal__overlay"></div>
+        <div class="cst-modal__content">
+            <div class="cst-modal__header">
+                <h4 class="cst-modal__title">Add User Details</h4>
+                <button class="cst-modal__close" (click)="showModal()">&times;</button>
+            </div>
+            <div class="cst-modal__body">
+                <div class="form-row">
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Select Role*</label>
+                        <select id="inputState" class="cst-modal__form-control" [(ngModel)]="userRole">
+                            <option>Select One Role</option>
+                            <option *ngFor="let role of roleListData">{{role.roleName}}</option>
+                        </select>
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Username*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="roleName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Mobile Phone*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="mobileNo" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Password*</label>
+                        <input class="cst-modal__form-field" type="password" [(ngModel)]="password" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Repeat Password*</label>
+                        <input class="cst-modal__form-field" type="password" [(ngModel)]="confirmPaassword" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">First Name*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="firstName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Last Name*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="lastName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Company Name*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="companyName" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Business Phone*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="businessPhone" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Email*</label>
+                        <input class="cst-modal__form-field" type="email" [(ngModel)]="email" />
+                    </div>
+                    <div class="cst-modal__form-group col-md-6">
+                        <label class=" cst-modal__form-label">Select Location*</label>
+                        <input class="cst-modal__form-field" type="text" [(ngModel)]="userLocation" />
+                    </div>
+                    <p class="required">*<span>This field is required</span></p>
+                </div>
+
+            </div>
+            <div class="cst-modal__footer">
+                <button class="cst-modal__button" (click)="addRole()">Submit</button>
+            </div>
+        </div>
+    </div> -->
+
+</div>
+
+<!-- ADD CONTACT BUTTON -->
+<!-- <button mat-fab class="accent" id="add-contact-button" (click)="newContact()" aria-label="add contact"
+    [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}">
+    <mat-icon>person_add</mat-icon>
+</button> -->
+<!-- / ADD CONTACT BUTTON -->

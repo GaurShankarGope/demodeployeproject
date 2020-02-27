@@ -1,0 +1,2182 @@
+<div id="ofcm" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>{{pageTitle}}</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/ofc-management"> {{pageTitle}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+
+            <div class="content-card" style="margin-left: -10px !important; margin-top: 20px !important">
+                <button *ngIf="drawStatus" class="submit-item submit-item--back-button"
+                    style="float: right; margin-right: 20px;" (click)="viewLogs()">View Logs</button>
+                <br>
+                <br>
+                <div id="printDiv" style="display: none;">
+                    <table style="width: 100% !important; text-align: left; margin-left: 50px;">
+                        <tr>
+                            <th style="width: 60%;">Logs</th>
+                            <th style="width: 40%;">Date & Time</th>
+                        </tr>
+                        <tr *ngFor="let logsData of tradingLogsResponseData;">
+                            <th style="width: 60%;">
+                                <label>{{ logsData.message }}</label>
+                            </th>
+                            <th style="width: 40%;">
+                                {{ logsData.dateTimeInfo }} at {{ logsData.time }}
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-card" *ngIf="firstScreenStdBid"
+                style="margin-left: -10px !important; margin-top: 20px !important">
+
+                <table style="float: right; width: 500px !important;">
+                    <tr class="tableTr" *ngIf="charterLogin">
+                        <td style="width: 270px;color: #1e88e5;">Owner</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">{{ this.ownerName }}</td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 270px;color: #1e88e5;">Charterer</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">{{ this.chartererName }}</td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 270px;color: #1e88e5;">Broker</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">{{ this.brokerName }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form [formGroup]="drawCPPreambleForm" style="text-align: center;" *ngIf="drawCPFormView">
+                                <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label>CP FORM*</mat-label>
+                                    <mat-select formControlName="cpFormId" (selectionChange)="formIdchangeMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let performaData of cpFormAllRecordsData"
+                                            [ngClass]="{'d-none': performaData.isActive === 'N'}"
+                                            [value]="performaData.id"> {{performaData.cpformName}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label><i class="material-icons">location_city</i> City</mat-label>
+                                    <mat-select formControlName="cityId" (selectionChange)="changeCityMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"
+                                            [value]="cityManagementData.id"> {{cityManagementData.cityName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;"></td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;"></td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;"></td>
+                    </tr>
+                </table>
+
+
+
+                <table style="margin-top: 40px; clear: both;">
+                    <tr>
+                        <td class="customFontWeight" style="width: 25%;"></td>
+                        <td class="customFontWeight"
+                            style="width: 33%; text-align: center; font-size: 25px; font-weight: bold;">{{ cpFormName }}
+                        </td>
+                        <td class="customFontWeight" style="width: 33%;;"></td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 style="margin-left: 40px; font-size: 20px; margin-top: -10px; font-weight: bold;">THIS
+                                CHARTER PARTY, made and concluded in {{ cityName }} on {{ dateMonthYearString }} </h4>
+                            <h4
+                                style="margin-left: 40px; font-size: 20px; margin-top: -10px; font-weight: bold; margin-bottom: 40px;">
+                                as *Registered Owners/*Disponent Owners/*Time Chartered Owners (the “Owners”) of the
+                                Vessel described below *delete as applicable
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> This fixture is subject to :
+                                {{ fixture_subject }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;">
+                                Which is to be lifted by {{ lifted_time }} on {{ lifted_date }} at {{ lifted_city }}
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;">
+                                Charter Party Place {{ lifted_charter_party_place }}
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;">
+                                Charteres fully style {{ lifted_charter_fully_style }} and Domicile
+                                {{ lifted_charter_domicile }}
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;">
+                                Owners full style {{ lifted_owner_fully_style }} and Domicile
+                                {{ lifted_owner_domicile }} as {{ lifted_owner_type }}
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> IMO : {{ lifted_vessel_imo }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Flag : {{ lifted_vessel_flag }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Built (year) :
+                                {{ lifted_vessel_year_built }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Dwat Metric Tons :
+                                {{ lifted_vessel_dwat_metric_tons }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Draft Summer Marks :
+                                {{ lifted_vessel_draft_on_marks }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Length Overall (LOA) :
+                                {{ lifted_vessel_loa }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Beam : {{ lifted_vessel_beam }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Holds : {{ lifted_vessel_holds }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Hatches : {{ lifted_vessel_hatches }}
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Gear : {{ lifted_vessel_gear }} </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px;"> Safe Working Load (SWL) :
+                                {{ lifted_vessel_swl }} </h4>
+                        </td>
+                    </tr>
+                </table>
+
+                <table style="float: right; width: 500px !important;">
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;">
+                            <button class="submit-item submit-item--back-button" title="Next" *ngIf="firstScreen"
+                                style="float: right ;  margin: 35px;" (click)="secondScreenView()">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_forward</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="content-card" *ngIf="firstScreenStdBidBroker"
+                style="margin-left: -10px !important; margin-top: 20px !important;">
+
+                <h4 style="margin-top: -35px;
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: -25px;
+                padding: 30px;
+                    ">Charterer are pleased to bid firm to owners for reply.</h4>
+                <hr style="width: 99%;">
+
+
+                <form [formGroup]="stdBidForm" style="text-align: center;">
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>CP FORM*</mat-label>
+                        <mat-select formControlName="cpFormId" matSelect>
+                            <mat-option *ngFor="let performaData of cpFormRecordsServerSideResponseData"
+                                [ngClass]="{'d-none': performaData.isActive === 'N'}" [value]="performaData.id">
+                                {{performaData.cpformName}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="stdBidForm.get('cpFormId').hasError('required')"> CP FORM Is Required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+
+                        <mat-label><i class="material-icons">location_city</i> City</mat-label>
+                        <mat-select formControlName="cityIdStdBid" matSelect>
+                            <mat-option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"
+                                [ngClass]="{'d-none': cityManagementData.isActive === 'N'}"
+                                [value]="cityManagementData.id"> {{cityManagementData.cityName}} </mat-option>
+                        </mat-select>
+
+                        <mat-error *ngIf="stdBidForm.get('cityIdStdBid').hasError('required')"> City Is Required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label> <i class="material-icons">access_time</i> Validate Time* </mat-label>
+                        <input [format]=24 matInput formControlName="cpTimeStdBid" class="timePickerCustomCSS "
+                            [ngxTimepicker]="cpTimeStdBid">
+                        <ngx-material-timepicker #cpTimeStdBid></ngx-material-timepicker>
+                        <mat-error *ngIf="stdBidForm.get('cpTimeStdBid').hasError('required')"> Valididate Time is
+                            required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label> <i class="material-icons">date_range</i> C/P Date* </mat-label>
+                        <input formControlName="cpDateStdBid" matInput [min]="current_date"
+                            [matDatepicker]="cpDateStdBid" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="cpDateStdBid"></mat-datepicker-toggle>
+                        <mat-datepicker #cpDateStdBid></mat-datepicker>
+                        <mat-error *ngIf="stdBidForm.get('cpDateStdBid').hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>This fixture is subject to</mat-label>
+                        <input matInput formControlName="fixture_subject">
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Which is to be lifted by characters by</mat-label>
+                        <input matInput formControlName="lifted_by">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label> <i class="material-icons">access_time</i> Time</mat-label>
+                        <input [format]=24 matInput formControlName="lifted_time" class="timePickerCustomCSS "
+                            [ngxTimepicker]="lifted_time">
+                        <ngx-material-timepicker #lifted_time></ngx-material-timepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label> <i class="material-icons">date_range</i> Date</mat-label>
+                        <input formControlName="lifted_date" matInput [min]="current_date" [matDatepicker]="lifted_date"
+                            placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="lifted_date"></mat-datepicker-toggle>
+                        <mat-datepicker #lifted_date></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label><i class="material-icons">location_city</i> City</mat-label>
+                        <mat-select formControlName="lifted_city" matSelect>
+                            <mat-option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"
+                                [ngClass]="{'d-none': cityManagementData.isActive === 'N'}"
+                                [value]="cityManagementData.id"> {{cityManagementData.cityName}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label><i class="material-icons">location_city</i> Charter Party Place</mat-label>
+                        <mat-select formControlName="lifted_charter_party_place" matSelect>
+                            <mat-option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"
+                                [ngClass]="{'d-none': cityManagementData.isActive === 'N'}"
+                                [value]="cityManagementData.id"> {{cityManagementData.cityName}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charterer Fully Style</mat-label>
+                        <input matInput formControlName="lifted_charter_fully_style">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Domicile</mat-label>
+                        <input matInput formControlName="lifted_charter_domicile">
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Owner Fully Style</mat-label>
+                        <input matInput formControlName="lifted_owner_fully_style">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Domicile</mat-label>
+                        <input matInput formControlName="lifted_owner_domicile">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Owner Type</mat-label>
+                        <mat-select formControlName="lifted_owner_type" matSelect>
+                            <mat-option [value]="1"> Type 1 </mat-option>
+                            <mat-option [value]="2"> Type 2 </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel Name</mat-label>
+                        <input matInput formControlName="lifted_vessel_name">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>IMO Number</mat-label>
+                        <input matInput formControlName="lifted_vessel_imo">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Flag</mat-label>
+                        <input matInput formControlName="lifted_vessel_flag">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Year Built</mat-label>
+                        <input matInput formControlName="lifted_vessel_year_built">
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Dwat Metric Tons</mat-label>
+                        <input matInput formControlName="lifted_vessel_dwat_metric_tons">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Draft Summer Marks</mat-label>
+                        <input matInput formControlName="lifted_vessel_draft_on_marks">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Length Oveall (LOA)</mat-label>
+                        <input matInput formControlName="lifted_vessel_loa">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Beam</mat-label>
+                        <input matInput formControlName="lifted_vessel_beam">
+                    </mat-form-field>
+
+                    <br>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Holds</mat-label>
+                        <input matInput formControlName="lifted_vessel_holds">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Hatches</mat-label>
+                        <input matInput formControlName="lifted_vessel_hatches">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Gear</mat-label>
+                        <input matInput formControlName="lifted_vessel_gear">
+                    </mat-form-field>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Safe Working Load ( SWL )</mat-label>
+                        <input matInput formControlName="lifted_vessel_swl">
+                    </mat-form-field>
+
+                </form>
+
+                <table style="float: right; width: 500px !important;">
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;">
+                            <button class="submit-item submit-item--back-button display_hover"
+                                *ngIf="firstScreenStdBidBroker" style="float: right;  margin: 35px;"
+                                (click)="secondScreenView()"> <span class="display_"></span>
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_forward</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="content-card" *ngIf="firstScreen"
+                style="margin-left: -10px !important; margin-top: 20px !important">
+
+                <table style="float: right; width: 500px !important;">
+                    <tr class="tableTr" *ngIf="charterLogin">
+                        <td style="width: 270px;color: #1e88e5;">Owner</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">
+                            <form *ngIf="ownerDropdownView" [formGroup]="ownerDropDownForm"
+                                style="margin-left: -30px !important; padding: 0px !important;">
+                                <mat-form-field class="customFormfullWidth" appearance="outline"
+                                    style="margin-bottom: -30px!important; width:80% !important; ">
+                                    <mat-label>Owner</mat-label>
+                                    <mat-select matSelect formControlName="ownerId"
+                                        (selectionChange)="onChangeOwner($event)">
+                                        <mat-option *ngFor="let ownerData of ownerRecordsServerSideResponseData"
+                                            [ngClass]="{'d-none': ownerData.isActive === 'N'}" [value]="ownerData.id">
+                                            {{ownerData.username}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            <h4 *ngIf="ownerNameView" style="font-size: 25px !important;
+                                        font-weight: bold !important;
+                                        text-align: left;    margin-top: 0px;
+                                margin-bottom: 0px;">{{ ownerName }}</h4>
+                        </td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 270px;color: #1e88e5;">Vessel</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">
+                            <form *ngIf="vesselDropdownView" [formGroup]="vesselDropDownForm"
+                                style="margin-left: -30px !important;  padding: 0px !important;">
+                                <mat-form-field class="customFormfullWidth" appearance="outline"
+                                    style=" width:80% !important;">
+                                    <mat-label>Vessel</mat-label>
+                                    <mat-select formControlName="vesselId" matSelect
+                                        (selectionChange)="onChangeVessel($event)">
+                                        <mat-option *ngFor="let vesselData of vesselRecordsServerSideResponseData"
+                                            [ngClass]="{'d-none': vesselData.isActive === 'N'}" [value]="vesselData.id">
+                                            {{vesselData.vessel_name}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            <h4 *ngIf="vesselNameView" style="font-size: 25px !important;
+                                        font-weight: bold !important;
+                                        text-align: left;    margin-top: 0px;
+                                margin-bottom: 0px;">{{ vesselName }}</h4>
+                        </td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 270px;color: #1e88e5;">Charterer</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">
+                            <form *ngIf="chartererDropdownView" [formGroup]="chartererDropDownForm"
+                                style="margin-left: -30px !important;   padding: 0px !important;">
+                                <mat-form-field class="customFormfullWidth" appearance="outline"
+                                    style="margin-bottom: -30px !important; width:80% !important;">
+                                    <mat-label>Charterer</mat-label>
+                                    <mat-select matSelect formControlName="chartererId"
+                                        (selectionChange)="onChangeCharterer($event)">
+                                        <mat-option *ngFor="let chartererData of chartererRecordsServerSideResponseData"
+                                            [ngClass]="{'d-none': chartererData.isActive === 'N'}"
+                                            [value]="chartererData.id"> {{chartererData.username}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            <h4 *ngIf="ownerNameView" style="font-size: 25px !important;
+                                        font-weight: bold !important;
+                                        text-align: left;    margin-top: 0px;
+                                margin-bottom: 0px;">{{ chartererName }}</h4>
+                        </td>
+                    </tr>
+
+                    <tr class="tableTr">
+                        <td style="width: 270px;color: #1e88e5;">Broker</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">{{ this.brokerName }}</td>
+                    </tr>
+
+                    <tr class="tableTr" *ngIf="drawStatus">
+                        <td style="width: 270px;color: #1e88e5;">C/P Form</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">
+                            <form *ngIf="!cpform" [formGroup]="clauseFormFirstScreen"
+                                style="margin-left: -30px !important;   padding: 0px !important;">
+                                <mat-form-field class="customFormfullWidth" style=" width:80% !important;"
+                                    appearance="outline">
+                                    <mat-label>CP FORM*</mat-label>
+                                    <mat-select formControlName="cpFormId" (selectionChange)="formIdchangeMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let performaData of cpFormAllRecordsData"
+                                            [ngClass]="{'d-none': performaData.isActive === 'N'}"
+                                            [value]="performaData.id"> {{performaData.cpformName}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            <h4 *ngIf="cpform" style="font-size: 25px !important;
+                                                font-weight: bold !important;
+                                                text-align: left;    margin-top: 0px;
+                                        margin-bottom: 0px;">{{ cpFormName }}</h4>
+                        </td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 270px;color: #1e88e5;">City</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">
+                            <form *ngIf="!cityView" [formGroup]="clauseFormFirstScreen"
+                                style="margin-left: -30px !important;   padding: 0px !important;">
+                                <!-- <mat-form-field class="customFormfullWidth"  style=" width:80% !important;" appearance="outline">
+                                            <mat-label>CP FORM*</mat-label>
+                                            <mat-select formControlName="cpFormId" (selectionChange)="formIdchangeMat($event)"
+                                                matSelect>
+                                                <mat-option *ngFor="let performaData of cpFormAllRecordsData"
+                                                    [ngClass]="{'d-none': performaData.isActive === 'N'}"
+                                                    [value]="performaData.id"> {{performaData.cpformName}} </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+
+                                <mat-form-field class="customFormfullWidth" style=" width:80% !important;"
+                                    appearance="outline">
+                                    <mat-label><i class="material-icons">location_city</i> City</mat-label>
+                                    <mat-select formControlName="cityId" (selectionChange)="changeCityMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"
+                                            [value]="cityManagementData.id"> {{cityManagementData.cityName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            <h4 *ngIf="cityView" style="font-size: 25px !important;
+                                            font-weight: bold !important;
+                                            text-align: left;    margin-top: 0px;
+                                    margin-bottom: 0px;">{{ cityName }}</h4>
+                        </td>
+                    </tr>
+                    <tr class="tableTr" *ngIf="drawStatus">
+                        <td style="width: 270px;color: #1e88e5;">Validate Time</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">
+                            <form *ngIf="!timeView" [formGroup]="clauseFormFirstScreen"
+                                style="margin-left: -30px !important;   padding: 0px !important;">
+                                <mat-form-field class="customFormfullWidth" style=" width:80% !important;"
+                                    appearance="outline">
+                                    <mat-label>Valididate Time* </mat-label>
+                                    <input [format]=24 matInput formControlName="cpTime" class="timePickerCustomCSS "
+                                        [ngxTimepicker]="cpTime">
+                                    <ngx-material-timepicker #cpTime></ngx-material-timepicker>
+                                    <mat-error *ngIf="clauseForm.get('cpTime').hasError('required')">
+                                        Valididate Time is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </form>
+                            <h4 *ngIf="timeView" style="font-size: 25px !important;
+                                        font-weight: bold !important;
+                                        text-align: left;    margin-top: 0px;
+                                margin-bottom: 0px;">{{ cpTime }}</h4>
+                        </td>
+                    </tr>
+                    <tr class="tableTr" *ngIf="drawStatus">
+                        <td style="width: 270px;color: #1e88e5;">Time Zone</td>
+                        <td style="width: 100px;">:</td>
+                        <td style="width: 200px;">
+                            <form *ngIf="!timeView" [formGroup]="clauseFormFirstScreen"
+                                style="margin-left: -30px !important;   padding: 0px !important;">
+                                <mat-form-field class="customFormfullWidth" style=" width:80% !important;"
+                                    appearance="outline">
+                                    <mat-label>Timezone</mat-label>
+                                    <mat-select formControlName="timezone" (selectionChange)="changeTimezone($event)"
+                                        matSelect>
+                                        <mat-option value="America/Belize">(GMT-06:00) Saskatchewan, Central America
+                                        </mat-option>
+                                        <mat-option value="America/Cancun">(GMT-06:00) Guadalajara, Mexico City,
+                                            Monterrey</mat-option>
+                                        <mat-option value="Chile/EasterIsland">(GMT-06:00) Easter Island</mat-option>
+                                        <mat-option value="America/Chicago">(GMT-06:00) Central Time (US & Canada)
+                                        </mat-option>
+                                        <mat-option value="America/New_York">(GMT-05:00) Eastern Time (US & Canada)
+                                        </mat-option>
+                                        <mat-option value="America/Havana">(GMT-05:00) Cuba</mat-option>
+                                        <mat-option value="America/Bogota">(GMT-05:00) Bogota, Lima, Quito, Rio Branco
+                                        </mat-option>
+                                        <mat-option value="America/Caracas">(GMT-04:30) Caracas</mat-option>
+                                        <mat-option value="America/Santiago">(GMT-04:00) Santiago</mat-option>
+                                        <mat-option value="America/La_Paz">(GMT-04:00) La Paz</mat-option>
+                                        <mat-option value="Atlantic/Stanley">(GMT-04:00) Faukland Islands</mat-option>
+                                        <mat-option value="America/Campo_Grande">(GMT-04:00) Brazil</mat-option>
+                                        <mat-option value="America/Goose_Bay">(GMT-04:00) Atlantic Time (Goose Bay)
+                                        </mat-option>
+                                        <mat-option value="America/Glace_Bay">(GMT-04:00) Atlantic Time (Canada)
+                                        </mat-option>
+                                        <mat-option value="America/St_Johns">(GMT-03:30) Newfoundland</mat-option>
+                                        <mat-option value="America/Araguaina">(GMT-03:00) UTC-3</mat-option>
+                                        <mat-option value="America/Montevideo">(GMT-03:00) Montevideo</mat-option>
+                                        <mat-option value="America/Miquelon">(GMT-03:00) Miquelon, St. Pierre
+                                        </mat-option>
+                                        <mat-option value="America/Godthab">(GMT-03:00) Greenland</mat-option>
+                                        <mat-option value="America/Argentina/Buenos_Aires">(GMT-03:00) Buenos Aires
+                                        </mat-option>
+                                        <mat-option value="America/Sao_Paulo">(GMT-03:00) Brasilia</mat-option>
+                                        <mat-option value="America/Noronha">(GMT-02:00) Mid-Atlantic</mat-option>
+                                        <mat-option value="Atlantic/Cape_Verde">(GMT-01:00) Cape Verde Is.</mat-option>
+                                        <mat-option value="Atlantic/Azores">(GMT-01:00) Azores</mat-option>
+                                        <mat-option value="Europe/Belfast">(GMT) Greenwich Mean Time : Belfast
+                                        </mat-option>
+                                        <mat-option value="Europe/Dublin">(GMT) Greenwich Mean Time : Dublin
+                                        </mat-option>
+                                        <mat-option value="Europe/Lisbon">(GMT) Greenwich Mean Time : Lisbon
+                                        </mat-option>
+                                        <mat-option value="Europe/London">(GMT) Greenwich Mean Time : London
+                                        </mat-option>
+                                        <mat-option value="Africa/Abidjan">(GMT) Monrovia, Reykjavik</mat-option>
+                                        <mat-option value="Europe/Amsterdam">(GMT+01:00) Amsterdam, Berlin, Bern, Rome,
+                                            Stockholm, Vienna</mat-option>
+                                        <mat-option value="Europe/Belgrade">(GMT+01:00) Belgrade, Bratislava, Budapest,
+                                            Ljubljana, Prague</mat-option>
+                                        <mat-option value="Europe/Brussels">(GMT+01:00) Brussels, Copenhagen, Madrid,
+                                            Paris</mat-option>
+                                        <mat-option value="Africa/Algiers">(GMT+01:00) West Central Africa</mat-option>
+                                        <mat-option value="Africa/Windhoek">(GMT+01:00) Windhoek</mat-option>
+                                        <mat-option value="Asia/Beirut">(GMT+02:00) Beirut</mat-option>
+                                        <mat-option value="Africa/Cairo">(GMT+02:00) Cairo</mat-option>
+                                        <mat-option value="Asia/Gaza">(GMT+02:00) Gaza</mat-option>
+                                        <mat-option value="Africa/Blantyre">(GMT+02:00) Harare, Pretoria</mat-option>
+                                        <mat-option value="Asia/Jerusalem">(GMT+02:00) Jerusalem</mat-option>
+                                        <mat-option value="Europe/Minsk">(GMT+02:00) Minsk</mat-option>
+                                        <mat-option value="Asia/Damascus">(GMT+02:00) Syria</mat-option>
+                                        <mat-option value="Europe/Moscow">(GMT+03:00) Moscow, St. Petersburg, Volgograd
+                                        </mat-option>
+                                        <mat-option value="Africa/Addis_Ababa">(GMT+03:00) Nairobi</mat-option>
+                                        <mat-option value="Asia/Tehran">(GMT+03:30) Tehran</mat-option>
+                                        <mat-option value="Asia/Dubai">(GMT+04:00) Abu Dhabi, Muscat</mat-option>
+                                        <mat-option value="Asia/Yerevan">(GMT+04:00) Yerevan</mat-option>
+                                        <mat-option value="Asia/Kabul">(GMT+04:30) Kabul</mat-option>
+                                        <mat-option value="Asia/Yekaterinburg">(GMT+05:00) Ekaterinburg</mat-option>
+                                        <mat-option value="Asia/Tashkent">(GMT+05:00) Tashkent</mat-option>
+                                        <mat-option value="Asia/Kolkata">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi
+                                        </mat-option>
+                                        <mat-option value="Asia/Katmandu">(GMT+05:45) Kathmandu</mat-option>
+                                        <mat-option value="Asia/Dhaka">(GMT+06:00) Astana, Dhaka</mat-option>
+                                        <mat-option value="Asia/Novosibirsk">(GMT+06:00) Novosibirsk</mat-option>
+                                        <mat-option value="Asia/Rangoon">(GMT+06:30) Yangon (Rangoon)</mat-option>
+                                        <mat-option value="Asia/Bangkok">(GMT+07:00) Bangkok, Hanoi, Jakarta
+                                        </mat-option>
+                                        <mat-option value="Asia/Krasnoyarsk">(GMT+07:00) Krasnoyarsk</mat-option>
+                                        <mat-option value="Asia/Hong_Kong">(GMT+08:00) Beijing, Chongqing, Hong Kong,
+                                            Urumqi</mat-option>
+                                        <mat-option value="Asia/Irkutsk">(GMT+08:00) Irkutsk, Ulaan Bataar</mat-option>
+                                        <mat-option value="Australia/Perth">(GMT+08:00) Perth</mat-option>
+                                        <mat-option value="Australia/Eucla">(GMT+08:45) Eucla</mat-option>
+                                        <mat-option value="Asia/Tokyo">(GMT+09:00) Osaka, Sapporo, Tokyo</mat-option>
+                                        <mat-option value="Asia/Seoul">(GMT+09:00) Seoul</mat-option>
+                                        <mat-option value="Asia/Yakutsk">(GMT+09:00) Yakutsk</mat-option>
+                                        <mat-option value="Australia/Adelaide">(GMT+09:30) Adelaide</mat-option>
+                                        <mat-option value="Australia/Darwin">(GMT+09:30) Darwin</mat-option>
+                                        <mat-option value="Australia/Brisbane">(GMT+10:00) Brisbane</mat-option>
+                                        <mat-option value="Australia/Hobart">(GMT+10:00) Hobart</mat-option>
+                                        <mat-option value="Asia/Vladivostok">(GMT+10:00) Vladivostok</mat-option>
+                                        <mat-option value="Australia/Lord_Howe">(GMT+10:30) Lord Howe Island
+                                        </mat-option>
+                                        <mat-option value="Etc/GMT-11">(GMT+11:00) Solomon Is., New Caledonia
+                                        </mat-option>
+                                        <mat-option value="Asia/Magadan">(GMT+11:00) Magadan</mat-option>
+                                        <mat-option value="Pacific/Norfolk">(GMT+11:30) Norfolk Island</mat-option>
+                                        <mat-option value="Asia/Anadyr">(GMT+12:00) Anadyr, Kamchatka</mat-option>
+                                        <mat-option value="Pacific/Auckland">(GMT+12:00) Auckland, Wellington
+                                        </mat-option>
+                                        <mat-option value="Etc/GMT-12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.
+                                        </mat-option>
+                                        <mat-option value="Pacific/Chatham">(GMT+12:45) Chatham Islands</mat-option>
+                                        <mat-option value="Pacific/Tongatapu">(GMT+13:00) Nuku'alofa</mat-option>
+                                        <mat-option value="Pacific/Kiritimati">(GMT+14:00) Kiritimati</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            <!-- <h4 *ngIf="timeZone" style="font-size: 25px !important;
+                                            font-weight: bold !important;
+                                            text-align: left;    margin-top: 0px;
+                                    margin-bottom: 0px;">{{ selectedTimeZone }}</h4> -->
+                        </td>
+                    </tr>
+
+
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;"></td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;"></td>
+                    </tr>
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;"></td>
+                    </tr>
+                </table>
+
+
+
+                <table style="margin-top: 40px; clear: both;">
+                    <!-- <tr>
+                        <td class="customFontWeight" style="width: 25%;"></td>
+                        <td class="customFontWeight"
+                            style="width: 33%; text-align: center; font-size: 25px; font-weight: bold;">
+                            <h1>{{ cpFormName }}</h1>
+                        </td>
+                        <td class="customFontWeight" style="width: 33%;;"></td>
+                    </tr> -->
+                    <tr>
+                        <td class="customFontWeight"></td>
+                        <td class="customFontWeight"
+                            style="width: 100%; text-align: center; font-size: 22px; font-weight: bold;">
+
+                            <br>
+                            <h2 style="font-size: 27px;font-weight: bold;color: black; width: 100%;">
+                                {{ cpFormName }}</h2>
+                            <h2 style="font-size: 27px;font-weight: bold;color: black; width: 100%;">
+                                TIME
+                                CHARTER</h2>
+                            <h2
+                                style="margin-left: 40px; font-size: 20px; font-weight: bold; width: 94%; color: black;">
+                                New York Produce Exchange Form©</h2>
+                            <h2 style="font-size: 20px; font-weight: bold;width: 100%; color: black;">
+                                November
+                                6th, 1913 – Amended October 20th, 1921; August 6th,
+                                1931;</h2>
+                            <h2 style="font-size: 20px; font-weight: bold; width: 100%; color: black;">
+                                October 3rd, 1946; </h2>
+                            <h2 style="font-size: 20px; font-weight: bold; width: 100%; color: black;">
+                                Revised June 12th 1981; September 14th 1993; June 3rd, 2015.
+                            </h2>
+
+
+                        </td>
+                        <td class="customFontWeight" style="width: 33%;;"></td>
+                    </tr>
+
+                    <br><br>
+                    <tr *ngIf="drawStatus">
+                        <td class="customFontWeight" colspan="3">
+                            <h4 style="margin-left: 40px; font-size: 20px; margin-top: -20px; font-weight: bold;">
+
+                            </h4>
+                            <h4 style="margin-left: 20px; font-size: 20px; margin-top: -20px; font-weight: bold;">
+                                <textarea style="margin-top: -2px !important;
+                                margin-bottom: -2px !important;
+                                width: 96% !important;
+                                height: 152px !important;
+                                border-bottom: 1px solid #e2e2e2 !important;" matInput cols="6"
+                                    class="inputPrintCustom" placeholder="Good morning Paul,
+
+I have drafted the following bid for your approval.   Please review same and let me know
+
+We are pleased to bid firm subject to Owners replying by _________ hours ________ time."
+                                    [(ngModel)]="heading_msg">Good morning Paul,
+
+                                I have drafted the following bid for your approval.   Please review same and let me know
+                                
+                                We are pleased to bid firm subject to Owners replying by _________ hours ________ time. </textarea>
+                            </h4>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td class="customFontWeight" colspan="3">
+
+                            <form [formGroup]="clauseFormFirstScreen" style="text-align: center;"
+                                *ngIf="tradeCPFormView">
+                                <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label>CP FORM*</mat-label>
+                                    <mat-select formControlName="cpFormId" (selectionChange)="formIdchangeMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let performaData of cpFormAllRecordsData"
+                                            [ngClass]="{'d-none': performaData.isActive === 'N'}"
+                                            [value]="performaData.id"> {{performaData.cpformName}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label><i class="material-icons">location_city</i> City</mat-label>
+                                    <mat-select formControlName="cityId" (selectionChange)="changeCityMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"
+                                            [value]="cityManagementData.id"> {{cityManagementData.cityName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label>Valididate Time* </mat-label>
+                                    <input [format]=24 matInput formControlName="cpTime" class="timePickerCustomCSS "
+                                        [ngxTimepicker]="cpTime">
+                                    <ngx-material-timepicker #cpTime></ngx-material-timepicker>
+                                    <mat-error *ngIf="clauseForm.get('cpTime').hasError('required')">
+                                        Valididate Time is required
+                                    </mat-error>
+                                </mat-form-field> -->
+                                <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label>Timezone</mat-label>
+                                    <mat-select formControlName="timezone" (selectionChange)="changeTimezone($event)"
+                                        matSelect>
+                                        <mat-option value="America/Belize">(GMT-06:00) Saskatchewan, Central America
+                                        </mat-option>
+                                        <mat-option value="America/Cancun">(GMT-06:00) Guadalajara, Mexico City,
+                                            Monterrey</mat-option>
+                                        <mat-option value="Chile/EasterIsland">(GMT-06:00) Easter Island</mat-option>
+                                        <mat-option value="America/Chicago">(GMT-06:00) Central Time (US & Canada)
+                                        </mat-option>
+                                        <mat-option value="America/New_York">(GMT-05:00) Eastern Time (US & Canada)
+                                        </mat-option>
+                                        <mat-option value="America/Havana">(GMT-05:00) Cuba</mat-option>
+                                        <mat-option value="America/Bogota">(GMT-05:00) Bogota, Lima, Quito, Rio Branco
+                                        </mat-option>
+                                        <mat-option value="America/Caracas">(GMT-04:30) Caracas</mat-option>
+                                        <mat-option value="America/Santiago">(GMT-04:00) Santiago</mat-option>
+                                        <mat-option value="America/La_Paz">(GMT-04:00) La Paz</mat-option>
+                                        <mat-option value="Atlantic/Stanley">(GMT-04:00) Faukland Islands</mat-option>
+                                        <mat-option value="America/Campo_Grande">(GMT-04:00) Brazil</mat-option>
+                                        <mat-option value="America/Goose_Bay">(GMT-04:00) Atlantic Time (Goose Bay)
+                                        </mat-option>
+                                        <mat-option value="America/Glace_Bay">(GMT-04:00) Atlantic Time (Canada)
+                                        </mat-option>
+                                        <mat-option value="America/St_Johns">(GMT-03:30) Newfoundland</mat-option>
+                                        <mat-option value="America/Araguaina">(GMT-03:00) UTC-3</mat-option>
+                                        <mat-option value="America/Montevideo">(GMT-03:00) Montevideo</mat-option>
+                                        <mat-option value="America/Miquelon">(GMT-03:00) Miquelon, St. Pierre
+                                        </mat-option>
+                                        <mat-option value="America/Godthab">(GMT-03:00) Greenland</mat-option>
+                                        <mat-option value="America/Argentina/Buenos_Aires">(GMT-03:00) Buenos Aires
+                                        </mat-option>
+                                        <mat-option value="America/Sao_Paulo">(GMT-03:00) Brasilia</mat-option>
+                                        <mat-option value="America/Noronha">(GMT-02:00) Mid-Atlantic</mat-option>
+                                        <mat-option value="Atlantic/Cape_Verde">(GMT-01:00) Cape Verde Is.</mat-option>
+                                        <mat-option value="Atlantic/Azores">(GMT-01:00) Azores</mat-option>
+                                        <mat-option value="Europe/Belfast">(GMT) Greenwich Mean Time : Belfast
+                                        </mat-option>
+                                        <mat-option value="Europe/Dublin">(GMT) Greenwich Mean Time : Dublin
+                                        </mat-option>
+                                        <mat-option value="Europe/Lisbon">(GMT) Greenwich Mean Time : Lisbon
+                                        </mat-option>
+                                        <mat-option value="Europe/London">(GMT) Greenwich Mean Time : London
+                                        </mat-option>
+                                        <mat-option value="Africa/Abidjan">(GMT) Monrovia, Reykjavik</mat-option>
+                                        <mat-option value="Europe/Amsterdam">(GMT+01:00) Amsterdam, Berlin, Bern, Rome,
+                                            Stockholm, Vienna</mat-option>
+                                        <mat-option value="Europe/Belgrade">(GMT+01:00) Belgrade, Bratislava, Budapest,
+                                            Ljubljana, Prague</mat-option>
+                                        <mat-option value="Europe/Brussels">(GMT+01:00) Brussels, Copenhagen, Madrid,
+                                            Paris</mat-option>
+                                        <mat-option value="Africa/Algiers">(GMT+01:00) West Central Africa</mat-option>
+                                        <mat-option value="Africa/Windhoek">(GMT+01:00) Windhoek</mat-option>
+                                        <mat-option value="Asia/Beirut">(GMT+02:00) Beirut</mat-option>
+                                        <mat-option value="Africa/Cairo">(GMT+02:00) Cairo</mat-option>
+                                        <mat-option value="Asia/Gaza">(GMT+02:00) Gaza</mat-option>
+                                        <mat-option value="Africa/Blantyre">(GMT+02:00) Harare, Pretoria</mat-option>
+                                        <mat-option value="Asia/Jerusalem">(GMT+02:00) Jerusalem</mat-option>
+                                        <mat-option value="Europe/Minsk">(GMT+02:00) Minsk</mat-option>
+                                        <mat-option value="Asia/Damascus">(GMT+02:00) Syria</mat-option>
+                                        <mat-option value="Europe/Moscow">(GMT+03:00) Moscow, St. Petersburg, Volgograd
+                                        </mat-option>
+                                        <mat-option value="Africa/Addis_Ababa">(GMT+03:00) Nairobi</mat-option>
+                                        <mat-option value="Asia/Tehran">(GMT+03:30) Tehran</mat-option>
+                                        <mat-option value="Asia/Dubai">(GMT+04:00) Abu Dhabi, Muscat</mat-option>
+                                        <mat-option value="Asia/Yerevan">(GMT+04:00) Yerevan</mat-option>
+                                        <mat-option value="Asia/Kabul">(GMT+04:30) Kabul</mat-option>
+                                        <mat-option value="Asia/Yekaterinburg">(GMT+05:00) Ekaterinburg</mat-option>
+                                        <mat-option value="Asia/Tashkent">(GMT+05:00) Tashkent</mat-option>
+                                        <mat-option value="Asia/Kolkata">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi
+                                        </mat-option>
+                                        <mat-option value="Asia/Katmandu">(GMT+05:45) Kathmandu</mat-option>
+                                        <mat-option value="Asia/Dhaka">(GMT+06:00) Astana, Dhaka</mat-option>
+                                        <mat-option value="Asia/Novosibirsk">(GMT+06:00) Novosibirsk</mat-option>
+                                        <mat-option value="Asia/Rangoon">(GMT+06:30) Yangon (Rangoon)</mat-option>
+                                        <mat-option value="Asia/Bangkok">(GMT+07:00) Bangkok, Hanoi, Jakarta
+                                        </mat-option>
+                                        <mat-option value="Asia/Krasnoyarsk">(GMT+07:00) Krasnoyarsk</mat-option>
+                                        <mat-option value="Asia/Hong_Kong">(GMT+08:00) Beijing, Chongqing, Hong Kong,
+                                            Urumqi</mat-option>
+                                        <mat-option value="Asia/Irkutsk">(GMT+08:00) Irkutsk, Ulaan Bataar</mat-option>
+                                        <mat-option value="Australia/Perth">(GMT+08:00) Perth</mat-option>
+                                        <mat-option value="Australia/Eucla">(GMT+08:45) Eucla</mat-option>
+                                        <mat-option value="Asia/Tokyo">(GMT+09:00) Osaka, Sapporo, Tokyo</mat-option>
+                                        <mat-option value="Asia/Seoul">(GMT+09:00) Seoul</mat-option>
+                                        <mat-option value="Asia/Yakutsk">(GMT+09:00) Yakutsk</mat-option>
+                                        <mat-option value="Australia/Adelaide">(GMT+09:30) Adelaide</mat-option>
+                                        <mat-option value="Australia/Darwin">(GMT+09:30) Darwin</mat-option>
+                                        <mat-option value="Australia/Brisbane">(GMT+10:00) Brisbane</mat-option>
+                                        <mat-option value="Australia/Hobart">(GMT+10:00) Hobart</mat-option>
+                                        <mat-option value="Asia/Vladivostok">(GMT+10:00) Vladivostok</mat-option>
+                                        <mat-option value="Australia/Lord_Howe">(GMT+10:30) Lord Howe Island
+                                        </mat-option>
+                                        <mat-option value="Etc/GMT-11">(GMT+11:00) Solomon Is., New Caledonia
+                                        </mat-option>
+                                        <mat-option value="Asia/Magadan">(GMT+11:00) Magadan</mat-option>
+                                        <mat-option value="Pacific/Norfolk">(GMT+11:30) Norfolk Island</mat-option>
+                                        <mat-option value="Asia/Anadyr">(GMT+12:00) Anadyr, Kamchatka</mat-option>
+                                        <mat-option value="Pacific/Auckland">(GMT+12:00) Auckland, Wellington
+                                        </mat-option>
+                                        <mat-option value="Etc/GMT-12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.
+                                        </mat-option>
+                                        <mat-option value="Pacific/Chatham">(GMT+12:45) Chatham Islands</mat-option>
+                                        <mat-option value="Pacific/Tongatapu">(GMT+13:00) Nuku'alofa</mat-option>
+                                        <mat-option value="Pacific/Kiritimati">(GMT+14:00) Kiritimati</mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                            </form>
+
+                            <form [formGroup]="drawCPPreambleForm" style="text-align: center;" *ngIf="drawCPFormView">
+                                <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label>CP FORM*</mat-label>
+                                    <mat-select formControlName="cpFormId" (selectionChange)="formIdchangeMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let performaData of cpFormAllRecordsData"
+                                            [ngClass]="{'d-none': performaData.isActive === 'N'}"
+                                            [value]="performaData.id"> {{performaData.cpformName}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                                    <mat-label><i class="material-icons">location_city</i> City</mat-label>
+                                    <mat-select formControlName="cityId" (selectionChange)="changeCityMat($event)"
+                                        matSelect>
+                                        <mat-option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"
+                                            [value]="cityManagementData.id"> {{cityManagementData.cityName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                            </form>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4
+                                style="margin-left: 40px; font-size: 16px; margin-top: -90px; font-family: Arial;  color: black;">
+                                <b>THIS CHARTER PARTY,</b> made and concluded in <u> {{ cityName }}</u>
+                                on <u> {{ dateMonthYearString }} </u> day of (Month) 20 (Year) <br>
+                                Between   <mark> {{ownerName}}    of      (Owners domicile) </mark> </h4>
+                            <h4 style="margin-left: 40px; font-size: 15px; margin-top: -10px; color: black;">
+
+                            </h4>
+
+                            <h5 style="margin-left: 40px; font-size: 15px; margin-top: -10px; color: black;">
+                                as <u>*Registered Owners/*Disponent Owners/*Time Chartered
+                                    Owners</u>
+                                (the “Owners”) of the Vessel described below<br> *delete as
+                                applicable
+                            </h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px; font-size: 16px;"> Name :
+                                <input matInput class="inputPrintCustom" [(ngModel)]="vesselName" name="vesselName"
+                                    [value]="vesselName" style="border-bottom:1px #aeaeae  dotted">
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px; font-size: 16px;"> IMO :
+                                <input matInput class="inputPrintCustom" [(ngModel)]="imoNumber" name="imoNumber"
+                                    [value]="imoNumber" style="border-bottom:1px #aeaeae  dotted">
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px; font-size: 16px;"> Flag :
+                                <input matInput class="inputPrintCustom" [(ngModel)]="vesselFlag" name="vesselFlag"
+                                    [value]="vesselFlag" style="border-bottom:1px #aeaeae  dotted">
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -40px; font-size: 16px;"> Built (year) :
+                                <input matInput class="inputPrintCustom" [(ngModel)]="vesselYear" name="vesselYear"
+                                    [value]="vesselYear" style="border-bottom:1px #aeaeae  dotted">
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -35px; font-size: 16px;">
+                                Deadweight All Told :
+                                <!-- gauri changes -->
+                                <!-- <mat-form-field style="width: 250px; overflow: hidden;">
+                                    <textarea matInput  class="inputPrintCustom" [(ngModel)]="metricTonValue" [value]="metricTonValue" matTextareaAutosize style="overflow: hidden"></textarea>
+                                  </mat-form-field>  -->
+                                <mat-form-field style="min-width: 150px; width: 50px;"
+                                    [ngStyle]="{'width.rem': width / 1.5}">
+
+                                    <input matInput [(ngModel)]="metricTonValue" [value]="metricTonValue"
+                                        (keydown)="width = $event.srcElement.value.length">
+
+                                </mat-form-field>
+                                metric tons
+
+                                <!-- end gauri changes -->
+
+                                <!-- <input matInput class="inputPrintCustom" 
+                                    [(ngModel)]="metricTonValue" [value]="metricTonValue"
+                                    style="border-bottom:1px #aeaeae  dotted">  -->
+
+
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 class="tableTDFont" style="margin-top: -35px; font-size: 16px;">
+                                (For Vessel’s charter party description see Appendix A (Vessel Description)),
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <!-- font size change  -->
+                            <h4 class="tableTDFont" style="margin-top: -35px; font-size: 16px;">
+                                and
+                                <!-- <mat-form-field style="width: 250px; overflow: hidden;">
+                                    <textarea matInput class="inputPrintCustom" [(ngModel)]="customInput1"
+                                        [value]="customInput1" matTextareaAutosize style="overflow: hidden;"></textarea>
+                                </mat-form-field> -->
+                                <mat-form-field  style="min-width: 150px; width: 50px;"
+                                [ngStyle]="{'width.rem': width / 1.5}">
+
+                                <input type ="text" matInput  [(ngModel)]="customInput1" [value]="customInput1"
+                                    (keydown)="width = $event.srcElement.value.length">
+
+                            </mat-form-field>
+                                <!-- <input matInput class="inputPrintCustom" [(ngModel)]="customInput1"
+                                    [value]="customInput1" style="border-bottom:1px #aeaeae dotted"> -->
+                                Charterers of
+                                <!-- <mat-form-field style="width: 250px; overflow: hidden;">
+                                    <textarea matInput class="inputPrintCustom" [(ngModel)]="customInput2"
+                                        [value]="customInput2" matTextareaAutosize
+                                        style="overflow: hidden; border: none;"></textarea>
+                                </mat-form-field> -->
+                                <mat-form-field style="min-width: 150px; width: 50px;"
+                                [ngStyle]="{'width.rem': width / 1.5}">
+
+                                <input matInput [(ngModel)]="customInput2" [value]="customInput2"
+                                    (keydown)="width = $event.srcElement.value.length">
+
+                            </mat-form-field>
+                                <!-- <input matInput class="inputPrintCustom" [(ngModel)]="customInput2"
+                                    [value]="customInput2" style="border-bottom:1px #aeaeae dotted">  -->
+                                (the “Charterers”)
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="customFontWeight" colspan="3">
+                            <h4 style="margin-left: 40px; font-size: 20px; margin-top: -20px; font-weight: bold;">
+                                Description
+                            </h4>
+                            <h4 style="margin-left: 20px; font-size: 20px; margin-top: -20px; font-weight: bold;">
+                                <textarea style="margin-top: -2px !important;
+                                margin-bottom: -2px !important;
+                                width: 96% !important;
+                                height: 152px !important;
+                                border-bottom: 1px dotted #aeaeae !important;"
+                                    placeholder="write your vessel description here . . . " matInput cols="6"
+                                    class="inputPrintCustom" [(ngModel)]="preamble_description"
+                                    [value]="preamble_description"> </textarea>
+                            </h4>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td *ngIf="drawStatus" class="customFontWeight" colspan="3">
+                            <h4 style="margin-left: 40px; font-size: 20px; margin-top: -20px; font-weight: bold;">
+                                CP Form Description
+                            </h4>
+                            <h4 style="margin-left: 20px; font-size: 20px; margin-top: -20px; font-weight: bold;">
+                                <br>
+                                <h4 *ngFor="let dynamicData of cpFormDynamicStringFormat; let i= index">
+
+                                    <h4 class="inputStringCustomDynamic"
+                                        style="margin-left: 20px !important; font-size: 22px !important; font-weight: bold !important; "
+                                        *ngIf="dynamicData.string != '#text'">
+                                        {{ dynamicData.string }}
+                                    </h4>
+                                    <input *ngIf="dynamicData.string != '#text'" type="hidden"
+                                        class="cpFormDynamicInput" [value]="dynamicData.string">
+                                    <input *ngIf="dynamicData.string == '#text'" type="hidden"
+                                        class="cpFormDynamicInput" value="#text">
+                                    <input class="" *ngIf="dynamicData.string == '#text'" style="margin-left: 20px !important;
+                                            font-size: 22px !important;
+                                            font-weight: bold !important;
+                                            font-style: italic !important;
+                                            border-bottom: 1px #aeaeae dotted !important;"
+                                        class="cpFormDynamicInput inputStringCustomDynamic"
+                                        [value]="dynamicData.hasValue">
+                                </h4>
+                            </h4>
+                            <br>
+                        </td>
+                    </tr>
+                </table>
+
+                <table style="float: right; width: 500px !important;">
+                    <tr class="tableTr">
+                        <td style="width: 200px;"></td>
+                        <td style="width: 100px;"></td>
+                        <td style="width: 200px;">
+                            <button class="submit-item submit-item--back-button display_hover" title="Next"
+                                *ngIf="firstScreen" style="float: right;  margin: 35px;"
+                                [disabled]="formId == undefined || formId == null || formId == '' "
+                                (click)="secondScreenView()"> <span class="display_"></span>
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_forward</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="content-card " *ngIf="secondScreen"
+                style="margin-left: -10px !important; margin-top: 20px !important; clear: both;">
+                <mat-checkbox style="margin-left: 35px" (change)="checkUncheckAllForClauseTermsSecondScreen($event)"
+                    [checked]="clauseCategoryRecordResponseDataAllChecked === 'Y'"
+                    class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause"
+                    [disabled]=" isCheckboxDisabled == 'Y' ">
+                    Check All
+                </mat-checkbox>
+                <br>
+                <br>
+                <mat-checkbox style="width: 350px !important; margin: -10px !important;
+                        margin-left: 35px !important; float: left; "
+                    *ngFor="let clauseCategoryData of clauseCategoryRecordResponseData; let i= index"
+                    (change)="checkUncheckClauseCategory($event,clauseCategoryData.id)"
+                    [checked]="clauseCategoryData.isChecked === 'Y'"
+                    class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause"
+                    [disabled]="clauseCategoryData.isChecked === 'Y' || isCheckboxDisabled == 'Y' " matTooltip="
+                        {{clauseCategoryData.name}}
+                        ">
+
+                    <h4 class="customElips">
+
+                        {{i+1}}) {{clauseCategoryData.name}}
+
+                    </h4>
+
+
+
+
+                </mat-checkbox>
+
+                <br><br><br><br><br><br>
+                <br><br><br><br><br><br>
+                <br><br><br><br><br><br>
+            </div>
+
+            <div class="content-card" *ngIf="secondScreen"
+                style="margin-left: -10px !important; margin-top: 20px !important; clear: both;">
+                <table style="margin-bottom: -100px;">
+                    <tr>
+                        <td>
+                            <button class="submit-item submit-item--back-button" title="Previous"
+                                style="clear: both !important;float: left; margin: 35px; background: green;"
+                                (click)="firstScreenView()">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_back</mat-icon>
+
+                            </button>
+                        </td>
+                        <td></td>
+                        <td>
+                            <button class="submit-item submit-item--back-button " title="Next"
+                                style="clear: both !important;float: right; margin: 35px;" (click)="thirdScreenView()"
+                                [disabled]="checkedClauseCategory.length == 0">
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_forward</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="content-card" *ngIf="thirdScreen"
+                style="margin-left: -10px !important; margin-top: -29px !important">
+                <form [formGroup]="clauseForm">
+                    <br>
+                    <br>
+                    <br>
+                    <!-- <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Valididate Time* </mat-label>
+                        <input [format]=24 matInput formControlName="cpTime"  class="timePickerCustomCSS " [ngxTimepicker]="cpTime" >
+                        <ngx-material-timepicker #cpTime ></ngx-material-timepicker>
+                        
+                        <mat-error *ngIf="clauseForm.get('cpTime').hasError('required')">
+                            Valididate Time is required
+                        </mat-error>
+                    </mat-form-field>
+                    <select class="customFormfullWidth dropdownCustomClass" formControlName="cityId"  (change)="changeCity($event)">
+                        <option [value]="0" selected>--- Select City ---</option>
+                        <option *ngFor="let cityManagementData of cityRecordsServerSideResponseData"  [ngClass]="{'d-none': cityManagementData.isActive === 'N'}" [value]="cityManagementData.id">{{cityManagementData.cityName}}</option>
+                    </select>
+                    <mat-form-field  class="customFormfullWidth" appearance="outline">
+                        <mat-label>C/P Date* </mat-label>
+                        <input formControlName="cpDate" matInput [matDatepicker]="datePicker" placeholder="C/P Date" [(ngModel)]="cpDate">
+                        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datePicker></mat-datepicker>
+                        <mat-error *ngIf="clauseForm.get('cpDate').hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field> -->
+                    <div *ngIf="loading" style="text-align: center;">
+
+                        <img class="rotate" src="http://18.216.106.180/Charter/Logo/logo.png">
+
+                        <!-- <h2 style="text-align: center;
+                        margin-top: 10%;
+                        font-size: 40px;
+                        font-weight: 800;">RETRIEVING. . . . . .</h2> -->
+                    </div>
+                    <div class="customFormfullWidthForClause">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon"
+                            style="float: right; font-size: 25px; margin-right: 10px;" (click)="togglePanel();">exposure
+                        </mat-icon>
+                        <br><br><br>
+                    </div>
+                    <div class="customFormfullWidthForClause"
+                        *ngFor="let clauseCategoryDataMain of termsReviewRecordsData; let i= index">
+                        <mat-accordion
+                            *ngIf="clauseCategoryDataMain.clauseCategoryTerms != 0 || clauseCategoryDataMain.clauseCategoryTermsUpdateCustom !=0">
+                            <!-- <mat-expansion-panel  [expanded]="i === step" (click)="changeExpandValue(i);"> -->
+                            <mat-expansion-panel [expanded]="panelOpenState">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+
+                                        <h4 class="matCheckboxLayoutCustom matCheckboxCustom customElips" matTooltip="
+                                        {{clauseCategoryDataMain.name}}
+                                        "> <b style="margin-left: 10px;"> {{ clauseCategoryDataMain.id }} .</b>
+                                            {{ clauseCategoryDataMain.name }} <i style="font-size: 16px !important;
+                                            color: #1e88e5 !important;
+                                            font-weight: 600 !important;" class="material-icons"
+                                                [ngClass]="{'d-none': clauseCategoryDataMain.isChecked === 'N'}">check</i>
+                                        </h4>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <br>
+                                <mat-checkbox *ngIf="clauseCategoryDataMain.clauseCategoryTerms !=0"
+                                    (change)="checkUncheckAllForClauseTerms($event,i)"
+                                    [checked]="clauseCategoryDataMain.isallChecked === 'Y'"
+                                    class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause">
+                                    Update All
+                                </mat-checkbox>
+                                <hr *ngIf="clauseCategoryDataMain.clauseCategoryTerms !=0">
+                                <table *ngIf="clauseCategoryDataMain.clauseCategoryTerms !=0">
+                                    <tr *ngFor="let ct of clauseCategoryDataMain.clauseCategoryTerms;let si=index">
+                                        <td>
+                                            <i *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                class="material-icons"
+                                                (click)="viewClauseCategoryTermsOfMainClause('viewMainClausePanel',ct.id,clauseCategoryDataMain.id)">remove_red_eye</i>
+                                        </td>
+                                        <td>
+                                            <i *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                class="material-icons"
+                                                (click)="editClauseCategoryTermsOfMainClause('editPanel',ct.id,clauseCategoryDataMain.id)"
+                                                aria-label="Toggle quick panel" style="color: #1e88e5;">create</i>
+                                        </td>
+                                        <td>
+                                            <mat-checkbox *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                class="clauseTermsCheckboxValueInfo clauseTermsOfClause"
+                                                [checked]="ct.isChecked === 'Y'" (change)="onChange($event,ct.id,i)">
+                                            </mat-checkbox>
+                                        </td>
+                                        <td>
+                                            <label *ngIf="ct.isApprovedInfo == 'Y'" style="font-size: 18px;
+                                            color: #155724;
+                                            font-weight: bold;">Approved</label>
+                                        </td>
+                                        <td style="width:100%">
+
+                                            <span class="inputStringIdentifierCustomDynamic"><b>{{ct.identifier}})</b>
+                                            </span>
+                                            <ng-container
+                                                *ngFor="let dynamicData of ct.mainTermRecordArray; let i =index">
+                                                <ng-container *ngIf="dynamicData.differenceInPercentage > 60">
+                                                    <h4
+                                                        *ngIf="ct.crossTerm != '' && i == 0 && ct.isApprovedInfo == 'N' ">
+                                                        <h4 class="inputStringCustomDynamic"
+                                                            style="text-decoration: line-through; font-weight: 400;">
+                                                            {{ ct.crossTerm }}
+                                                        </h4>
+                                                        <br>
+                                                    </h4>
+                                                </ng-container>
+
+
+                                            </ng-container>
+                                            <h4 *ngFor="let dynamicData of ct.mainTermRecordArray; let i= index">
+
+                                                <h4 class="inputStringCustomDynamic"
+                                                    style="font-weight: 600 !important;"
+                                                    *ngIf="dynamicData.string != '#date' && dynamicData.string != '#time' && dynamicData.string != '#number'
+                                                    && dynamicData.string != '#diff' && dynamicData.string != '#space' ">
+                                                    {{ dynamicData.string }}
+                                                </h4>
+
+                                                <h4 class="inputStringCustomDynamic"
+                                                    style="font-weight: bold; font-style: italic; color: #1e88e5"
+                                                    *ngIf="dynamicData.string == '#diff'  ">
+                                                    {{ dynamicData.hasValue }}
+                                                </h4>
+
+                                                <br *ngIf="dynamicData.string == '#space'  ">
+
+                                                <h4 class="datePickerMainDivCustom"
+                                                    *ngIf="dynamicData.string == '#date'">
+                                                    <input
+                                                        class="datePickerInputDynamicCustom {{dynamicData.timeStamp}}"
+                                                        [min]="current_date" [matDatepicker]="i"
+                                                        [value]="dynamicData.hasValue"
+                                                        (dateChange)="updateDynamicString(dynamicData.timeStamp,'Main')">
+                                                    <mat-datepicker-toggle class="datePickerDynamicCustom" matSuffix
+                                                        [for]="i"></mat-datepicker-toggle>
+                                                    <mat-datepicker #i></mat-datepicker>
+                                                </h4>
+
+                                                <h4 style="float: left; margin-top: -20px;"
+                                                    *ngIf="dynamicData.string == '#time'">
+                                                    <input [format]=24
+                                                        class="timePickerCustomCSS {{dynamicData.timeStamp}} "
+                                                        [ngxTimepicker]="i" [value]="dynamicData.hasTimeValue">
+                                                    <ngx-material-timepicker #i [cancelBtnTmpl]="cancelButton"
+                                                        [confirmBtnTmpl]="confirmBtn"></ngx-material-timepicker>
+                                                    <ng-template #cancelButton>
+                                                        <button style="padding: 5px !important;
+        background: transparent !important;
+        border: none !important;
+        color: deepskyblue !important;
+        font-size: 18px !important;
+        font-weight: 600 !important; margin-left: 15px;"> CANCEL </button>
+                                                    </ng-template>
+                                                    <ng-template #confirmBtn>
+                                                        <button style="padding: 5px !important;
+        background: transparent !important;
+        border: none !important;
+        color: deepskyblue !important;
+        font-size: 18px !important;
+        font-weight: 600 !important; margin-left: 15px;" (click)="updateDynamicString(dynamicData.timeStamp,'Main')">
+                                                            UPDATE </button>
+                                                    </ng-template>
+                                                </h4>
+
+                                                <h4 class="timePickerDivCustomCSS"
+                                                    *ngIf="dynamicData.string == '#number'">
+                                                    <select class="numberPickerCustom {{dynamicData.timeStamp}} "
+                                                        (change)="updateDynamicString(dynamicData.timeStamp,'Main')">
+                                                        <option
+                                                            *ngFor="let dynamicDropDownData of dynamicData.hasNumberPicker"
+                                                            [selected]="dynamicDropDownData.selected"
+                                                            [value]="dynamicDropDownData.number">
+                                                            {{dynamicDropDownData.number}}</option>
+                                                    </select>
+                                                </h4>
+
+                                            </h4>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <b *ngIf="clauseCategoryDataMain.clauseCategoryTermsUpdateCustom !=0">Custom Clause</b>
+                                <br>
+                                <br>
+                                <mat-checkbox *ngIf="clauseCategoryDataMain.clauseCategoryTermsUpdateCustom !=0"
+                                    (change)="checkUncheckAllForCustomClauseTermsOfClauseCategory($event,i)"
+                                    [checked]="termsReviewRecordsData[i].clauseCategoryTermsUpdateCustom.isAllCustomTermsChecked === 'Y'"
+                                    class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause">
+                                    Update All
+                                </mat-checkbox>
+                                <hr *ngIf="clauseCategoryDataMain.clauseCategoryTermsUpdateCustom !=0">
+                                <table *ngIf="clauseCategoryDataMain.clauseCategoryTermsUpdateCustom !=0">
+                                    <tr
+                                        *ngFor="let ct of clauseCategoryDataMain.clauseCategoryTermsUpdateCustom;let ti=index">
+                                        <td>
+                                            <i *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                class="material-icons"
+                                                (click)="viewCustomClauseCategoryTermsUpdateOfMainClause('viewMainCustomClausePanel',ct.id,clauseCategoryDataMain.id)">remove_red_eye</i>
+                                        </td>
+                                        <td>
+                                            <i *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                class="material-icons"
+                                                (click)="editCustomClauseCategoryTermsOfMainClause('editCustomClauseTerm',ct.id,clauseCategoryDataMain.id)"
+                                                aria-label="Toggle quick panel" style="color: #1e88e5;">create</i>
+                                        </td>
+                                        <td>
+                                            <mat-checkbox *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                [checked]="ct.isChecked === 'Y'"
+                                                (change)="onChangeCustom($event,ct.id,i)"></mat-checkbox>
+                                        </td>
+                                        <td>
+                                            <label *ngIf="ct.isApprovedInfo == 'Y'" style="font-size: 18px;
+                                            color: #155724;
+                                            font-weight: bold;">Approved</label>
+                                        </td>
+                                        <td style="width:100%">
+
+                                            <!-- <span style="margin-left: 10px;"> <b>{{ct.identifier}})</b> </span> -->
+
+                                            <!-- <div style="margin-left: 10px;"  [innerHTML]="ct.mainTermRecordCustom" ></div> -->
+
+                                            <span class="inputStringIdentifierCustomDynamic"><b>{{ct.identifier}})</b>
+                                            </span>
+
+                                            <h4 *ngIf="ct.crossTermCustom != ''">
+                                                <h4 class="inputStringCustomDynamic"
+                                                    style="text-decoration: line-through;">
+                                                    {{ ct.crossTermCustom }}
+                                                </h4>
+                                                <br>
+                                            </h4>
+
+                                            <h4 *ngFor="let dynamicData of ct.mainTermRecordCustomArray; let i= index">
+
+                                                <!-- <h4 class="inputStringCustomDynamic"
+                                                    *ngIf="dynamicData.string != '#date' && dynamicData.string != '#time' && dynamicData.string != '#number' ">
+                                                    {{ dynamicData.string }} </h4> -->
+
+
+                                                <h4 class="inputStringCustomDynamic"
+                                                    style="font-weight: 600 !important;"
+                                                    *ngIf="dynamicData.string != '#date' && dynamicData.string != '#time' && dynamicData.string != '#number'
+                                                    && dynamicData.string != '#diff'  && dynamicData.string != '#space' ">
+                                                    {{ dynamicData.string }}
+                                                </h4>
+                                                <h4 class="inputStringCustomDynamic"
+                                                    style="font-weight: bold; font-style: italic; color: #1e88e5"
+                                                    *ngIf="dynamicData.string == '#diff'  ">
+                                                    {{ dynamicData.hasValue }}
+                                                </h4>
+                                                <br *ngIf="dynamicData.string == '#space'  ">
+                                                <h4 class="datePickerMainDivCustom"
+                                                    *ngIf="dynamicData.string == '#date'">
+                                                    <input
+                                                        class="datePickerInputDynamicCustom {{dynamicData.timeStamp}}"
+                                                        [min]="current_date" [matDatepicker]="i"
+                                                        [value]="dynamicData.hasValue"
+                                                        (dateChange)="updateDynamicString(dynamicData.timeStamp,'Custom')">
+                                                    <mat-datepicker-toggle class="datePickerDynamicCustom" matSuffix
+                                                        [for]="i"></mat-datepicker-toggle>
+                                                    <mat-datepicker #i></mat-datepicker>
+                                                </h4>
+
+                                                <h4 style="float: left; margin-top: -20px;"
+                                                    *ngIf="dynamicData.string == '#time'">
+                                                    <input [format]=24
+                                                        class="timePickerCustomCSS {{dynamicData.timeStamp}} "
+                                                        [ngxTimepicker]="i" [value]="dynamicData.hasTimeValue">
+                                                    <ngx-material-timepicker #i [cancelBtnTmpl]="cancelButton"
+                                                        [confirmBtnTmpl]="confirmBtn"></ngx-material-timepicker>
+                                                    <ng-template #cancelButton>
+                                                        <button style="padding: 5px !important;
+            background: transparent !important;
+            border: none !important;
+            color: deepskyblue !important;
+            font-size: 18px !important;
+            font-weight: 600 !important; margin-left: 15px;"> CANCEL </button>
+                                                    </ng-template>
+                                                    <ng-template #confirmBtn>
+                                                        <button style="padding: 5px !important;
+            background: transparent !important;
+            border: none !important;
+            color: deepskyblue !important;
+            font-size: 18px !important;
+            font-weight: 600 !important; margin-left: 15px;"
+                                                            (click)="updateDynamicString(dynamicData.timeStamp,'Custom')">
+                                                            UPDATE </button>
+                                                    </ng-template>
+                                                </h4>
+
+                                                <h4 class="timePickerDivCustomCSS"
+                                                    *ngIf="dynamicData.string == '#number'">
+                                                    <select class="numberPickerCustom {{dynamicData.timeStamp}} "
+                                                        (change)="updateDynamicString(dynamicData.timeStamp,'Custom')">
+                                                        <option
+                                                            *ngFor="let dynamicDropDownData of dynamicData.hasNumberPicker"
+                                                            [selected]="dynamicDropDownData.selected"
+                                                            [value]="dynamicDropDownData.number">
+                                                            {{dynamicDropDownData.number}}</option>
+                                                    </select>
+                                                </h4>
+
+                                            </h4>
+
+                                        </td>
+                                    </tr>
+                                    <br />
+                                </table>
+                                <br />
+                                <br />
+                                <div class="row" style="padding: 3% 0;">
+                                    <button class="mat-fab mat-accent"
+                                        (click)="toggleOpen('addPanel',clauseCategoryDataMain.id)"
+                                        aria-label="Toggle quick panel"><span class="mat-button-wrapper"
+                                            style="font-size: 70px !important; color: #fff !important; padding: 6px 0px !important;">+</span></button>
+                                </div>
+                                <br />
+                                <br />
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                    <div class="customFormfullWidthForClause"
+                        *ngFor="let clauseCategoryDataMain of customClauseDataResponseData; let i= index">
+                        <mat-accordion>
+                            <mat-expansion-panel [expanded]="panelOpenState">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <h4 class="matCheckboxLayoutCustom matCheckboxCustom customElips" matTooltip="
+                                        {{clauseCategoryDataMain.clauseTitle}}
+                                        ">
+                                            <b style="margin-left: 10px;">{{ clauseCategoryDataMain.numberInfo }} </b>.
+                                            {{ clauseCategoryDataMain.clauseTitle }} <i style="font-size: 16px !important;
+                                            color: #1e88e5 !important;
+                                            font-weight: 600 !important;" class="material-icons"
+                                                [ngClass]="{'d-none': clauseCategoryDataMain.isChecked === 'N'}">check</i>
+                                        </h4>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <br>
+                                <mat-checkbox *ngIf="customClauseDataResponseData !=0"
+                                    (change)="checkUncheckAllForCustomClauseTermsOfCustomClause($event,i)"
+                                    [checked]="customClauseDataResponseData[i].isAllCustomTermsOfCustomClauseChecked === 'Y'"
+                                    class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause">
+                                    Update All
+                                </mat-checkbox>
+                                <hr>
+                                <table>
+                                    <tr *ngFor="let ct of clauseCategoryDataMain.clauseCategoryTerms;let si=index">
+                                        <td>
+                                            <i *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                class="material-icons"
+                                                (click)="ViewCustomTermsUpdatesOfCustomTermsOfCustomClause('ViewCustomTermsUpdatesOfCustomTermsOfCustomClause',ct.customClauseTermsId,clauseCategoryDataMain.id)">remove_red_eye</i>
+                                        </td>
+                                        <td>
+                                            <i *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                class="material-icons"
+                                                (click)="EditCustomClauseTermOfCustomClause('editCustomTermsOfCustomClause',ct.mainTermID,clauseCategoryDataMain.id,ct.customClauseTermsId)"
+                                                aria-label="Toggle quick panel" style="color: #1e88e5;">create</i>
+                                        </td>
+                                        <td>
+                                            <mat-checkbox *ngIf="ct.isApprovedInfo == 'N' || isDrawCP == '1'"
+                                                [checked]="ct.isChecked === 'Y'"
+                                                (change)="onChangeCustomClauseTerms($event,ct.id,i)"></mat-checkbox>
+                                        </td>
+                                        <td>
+                                            <label *ngIf="ct.isApprovedInfo == 'Y'" style="font-size: 18px;
+                                            color: #155724;
+                                            font-weight: bold;">Approved</label>
+                                        </td>
+                                        <td style="width:100%">
+
+                                            <span class="inputStringIdentifierCustomDynamic"><b>{{ct.identifier}})</b>
+                                            </span>
+
+                                            <h4 *ngIf="ct.crossTerm != ''">
+                                                <h4 class="inputStringCustomDynamic"
+                                                    style="text-decoration: line-through; font-weight: 400;">
+                                                    {{ ct.crossTerm }}
+                                                </h4>
+                                                <br>
+                                            </h4>
+
+                                            <!-- <h4 *ngFor="let dynamicData of ct.mainTermRecordCustomArray; let i= index">
+
+                                                <h4 class="inputStringCustomDynamic"
+                                                    style="font-weight: bold; font-style: italic; color: #1e88e5"
+                                                    *ngIf="dynamicData.string != '#date'
+                                                     && dynamicData.string != '#time' && dynamicData.string != '#number' "> {{ dynamicData.string }} </h4> -->
+
+
+                                            <h4 class="inputStringCustomDynamic" style="font-weight: 600 !important;"
+                                                *ngIf="dynamicData.string != '#date' && dynamicData.string != '#time' && dynamicData.string != '#number'
+                                                     && dynamicData.string != '#diff'  && dynamicData.string != '#space' ">
+                                                {{ dynamicData.string }}
+                                            </h4>
+
+                                            <h4 class="inputStringCustomDynamic"
+                                                style="font-weight: bold; font-style: italic; color: #1e88e5"
+                                                *ngIf="dynamicData.string == '#diff'  ">
+                                                {{ dynamicData.hasValue }}
+                                            </h4>
+                                            <br *ngIf="dynamicData.string == '#space'  ">
+                                            <h4 class="datePickerMainDivCustom" *ngIf="dynamicData.string == '#date'">
+                                                <input class="datePickerInputDynamicCustom {{dynamicData.timeStamp}}"
+                                                    [matDatepicker]="i" [value]="dynamicData.hasValue"
+                                                    (dateChange)="updateDynamicString(dynamicData.timeStamp,'CustomClauseTerms')">
+                                                <mat-datepicker-toggle class="datePickerDynamicCustom" matSuffix
+                                                    [for]="i"></mat-datepicker-toggle>
+                                                <mat-datepicker #i></mat-datepicker>
+                                            </h4>
+
+                                            <h4 style="float: left; margin-top: -20px;"
+                                                *ngIf="dynamicData.string == '#time'">
+                                                <input [format]=24
+                                                    class="timePickerCustomCSS {{dynamicData.timeStamp}} "
+                                                    [ngxTimepicker]="i" [value]="dynamicData.hasTimeValue">
+                                                <ngx-material-timepicker #i [cancelBtnTmpl]="cancelButton"
+                                                    [confirmBtnTmpl]="confirmBtn"></ngx-material-timepicker>
+                                                <ng-template #cancelButton>
+                                                    <button style="padding: 5px !important;
+                background: transparent !important;
+                border: none !important;
+                color: deepskyblue !important;
+                font-size: 18px !important;
+                font-weight: 600 !important; margin-left: 15px;"> CANCEL </button>
+                                                </ng-template>
+                                                <ng-template #confirmBtn>
+                                                    <button style="padding: 5px !important;
+                background: transparent !important;
+                border: none !important;
+                color: deepskyblue !important;
+                font-size: 18px !important;
+                font-weight: 600 !important; margin-left: 15px;"
+                                                        (click)="updateDynamicString(dynamicData.timeStamp,'CustomClauseTerms')">
+                                                        UPDATE </button>
+                                                </ng-template>
+                                            </h4>
+
+                                            <h4 class="timePickerDivCustomCSS" *ngIf="dynamicData.string == '#number'">
+                                                <select class="numberPickerCustom {{dynamicData.timeStamp}} "
+                                                    (change)="updateDynamicString(dynamicData.timeStamp,'CustomClauseTerms')">
+                                                    <option
+                                                        *ngFor="let dynamicDropDownData of dynamicData.hasNumberPicker"
+                                                        [selected]="dynamicDropDownData.selected"
+                                                        [value]="dynamicDropDownData.number">
+                                                        {{dynamicDropDownData.number}}</option>
+                                                </select>
+                                            </h4>
+
+                                            <!-- </h4> -->
+
+                                            <!-- <span  style="margin-left: 10px"><b>{{ct.identifier}})</b> </span><span style="margin-left: 10px" [innerHtml]="ct.mainTermRecord"></span> -->
+                                        </td>
+                                    </tr>
+                                    <br />
+                                </table>
+                                <br>
+                                <br>
+                                <div class="row" style="padding: 3% 0;">
+                                    <button class="mat-fab mat-accent"
+                                        (click)="addCustomTermsOfCustomClauseToggleOpen('addCustomTermsOfCustomClause',clauseCategoryDataMain.id)"
+                                        aria-label="Toggle quick panel"><span class="mat-button-wrapper"
+                                            style="font-size: 70px !important; color: #fff !important; padding: 6px 0px !important;">+</span></button>
+                                </div>
+                                <br />
+                                <br />
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+
+                    <br>
+                    <br>
+                    <b style="font-size: 20px;font-weight: bold;margin-left: 25px;margin-top: 21px;">Custom
+                        Amendments</b>
+                    <br>
+                    <button class="mat-fab mat-accent" (click)="customClauseToggleOpen('addCustomClausePanel')"
+                        style="margin-top: 30px; margin-left: 30px;">
+                        <span class="mat-button-wrapper"
+                            style="font-size: 70px !important; color: #fff !important; padding: 10px 0px !important;">+</span>
+                    </button>
+                    <br>
+                    <br>
+
+                    <mat-checkbox *ngIf="mainTermOwnerSignOffView" style="margin-left: 35px"
+                        (change)="ownerMainTermCheckBoxChange($event)" [checked]="ownerMainTermChecked === 'Y'"
+                        class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause"
+                        [disabled]=" ownerMainTermDisabled == 'Y' " [value]='1'> Owner Main Term Sign OFF
+                    </mat-checkbox>
+
+                    <mat-checkbox *ngIf="mainTermChartererSignOffView" style="margin-left: 35px"
+                        (change)="chartererMainTermCheckBoxChange($event)" [checked]="chartererMainTermChecked === 'Y'"
+                        class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause"
+                        [disabled]=" chartererMainTermDisabled == 'Y' " [value]='1'> Charterer Main Term Sign OFF
+                    </mat-checkbox>
+
+
+                    <mat-checkbox *ngIf="detailTermOwnerSignOffView" style="margin-left: 35px"
+                        (change)="ownerDetailTermCheckBoxChange($event)" [checked]="ownerDetailTermChecked === 'Y'"
+                        class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause"
+                        [disabled]=" ownerDetailTermDisabled == 'Y' " [value]='1'> Owner Detail Term Sign OFF
+                    </mat-checkbox>
+
+
+                    <mat-checkbox *ngIf="detailTermChartererSignOffView" style="margin-left: 35px"
+                        (change)="chartererDetailTermCheckBoxChange($event)"
+                        [checked]="chartererDetailTermChecked === 'Y'"
+                        class="matCheckboxLayoutCustom matCheckboxCustom clauseTermsOfClause"
+                        [disabled]=" chartererDetailTermDisabled == 'Y' " [value]='1'> Charterer Detail Term Sign OFF
+                    </mat-checkbox>
+
+
+                </form>
+                <br />
+                <br />
+
+                <style>
+                    #submitButtonInfo:disabled {
+                        cursor: not-allowed !important;
+                    }
+                </style>
+
+                <div class="text-right"
+                    *ngIf="isDrawCP == '1' && isOwnerLoggedIn == '1' && is_complete_draw_cp == '2' ">
+                    <button class="submit-item submit-item--back-button"
+                        style="clear: both !important;float: right; margin: 35px;" (click)="ownerCompleteCP()">
+                        Complete CP
+                    </button>
+                </div>
+
+                <div class="text-right" *ngIf="is_borker_submit != '1' && isBorkerLogin == 'Y' && drawStatus == true">
+                    <button class="submit-item submit-item--back-button"
+                        *ngIf="is_borker_submit != '1' && isBorkerLogin == 'Y' "
+                        style="clear: both !important;float: right; margin: 35px;" (click)="saveBid()">
+                        Save Bid
+                    </button>
+                </div>
+
+                <div class="text-right">
+                    <!-- <button class="submit-item submit-item--back-button" *ngIf="is_borker_submit != '1' && isBorkerLogin == 'Y' "
+                        style="clear: both !important;float: right; margin: 35px;" (click)="saveBid()">
+                        Save Bid
+                    </button> -->
+                    <button class="submit-item submit-item--back-button" title="Previous"
+                        style="clear: both !important;float: left; margin: 35px; background: green;"
+                        (click)="secondScreenView()">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_back</mat-icon>
+                    </button>
+                    <button id="submitButtonInfo" [disabled]="!isValidSubmit"
+                        class="submit-item submit-item--back-button "
+                        style="clear: both !important;float: right; margin: 35px;" (click)="submit()"
+                        style="margin: 30px">{{ submitButtonText }}</button>
+                </div>
+                <br />
+                <br />
+                <div class="review-modal" [ngClass]="{'review-modal--active' : showReviewModal}">
+                    <div class="review-modal__overlay"></div>
+                    <div class="review-modal__content">
+                        <div class="" style="padding:15px;">
+                            <button class="review-modal__close" style="float: right">&times;</button>
+                        </div>
+                        <div class="" style="padding:15px;">
+                            <h4 class="review-modal__title" style="float:left">Amendments In Clause</h4>
+                        </div>
+                        <hr>
+                        <div class="review-modal__body">
+
+                        </div>
+                        <div class="review-modal__footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+
+<fuse-sidebar name="viewMainClausePanel" style="max-width: 70%;  width: 70%;" position="right" class="quick-panel">
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <table mat-table [dataSource]="dataSource" class="viewtable">
+                <ng-container matColumnDef="userName">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.mainUserName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="updatedDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.updateDateTime}} </td>
+                </ng-container>
+                <ng-container matColumnDef="clauseTracker">
+                    <th mat-header-cell *matHeaderCellDef> Clause Tracker </th>
+                    <td mat-cell *matCellDef="let element"> <span [innerHtml]="element.termsName"></span> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</fuse-sidebar>
+
+<fuse-sidebar name="viewMainCustomClausePanel" style="max-width: 70%;  width: 70%;" position="right"
+    class="quick-panel">
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <table mat-table [dataSource]="dataSource" class="viewtable">
+                <ng-container matColumnDef="userName">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.mainUserName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="updatedDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.updateDateTime}} </td>
+                </ng-container>
+                <ng-container matColumnDef="clauseTracker">
+                    <th mat-header-cell *matHeaderCellDef> Clause Tracker </th>
+                    <td mat-cell *matCellDef="let element"> <span [innerHtml]="element.termsName"></span> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</fuse-sidebar>
+
+<fuse-sidebar name="addPanel" style="max-width: 70%;  width: 70%;" position="right" class="quick-panel">
+    <!-- <add-detail-clause></add-detail-clause> -->
+    <!-- hello -->
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <div class="">
+                <!-- <textarea [placeholder]="'Enter text here...'" [(ngModel)]="customClause"
+                    name="customClause"></textarea> -->
+
+                <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="customClause" name="customClause">
+                </angular-editor>
+            </div>
+        </div>
+
+        <div class="header-row text-right">
+            <div style="width: 100%; padding: 3% 0;">
+                <button class="submit-item submit-item--back-button" [disabled]="customClause == ''"
+                    (click)="addClause()">Add</button>
+            </div>
+
+        </div>
+    </div>
+</fuse-sidebar>
+
+<fuse-sidebar name="addCustomClausePanel" style="max-width: 70%; width: 70%;" position="right" class="quick-panel">
+    <h2 style="margin-left: 15px; font-weight: bold;">Clause Header</h2>
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <div>
+                <mat-form-field class="full-width" appearance="outline" style="width:100%;" placeholder="Clause Haeder">
+                    <input [(ngModel)]="clauseTitle" name="clauseTitle" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <br>
+    <h2 style="margin-left: 15px; font-weight: bold;">Clause Terms</h2>
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <div style="width: 80%;">
+                <mat-form-field class="full-width" appearance="outline" style="width:100%;" placeholder="Clause Haeder">
+                    <input [(ngModel)]="clauseTerms" name="clauseTerms" matInput>
+                </mat-form-field>
+            </div>
+            <div>
+                <button class="submit-item submit-item--back-button" (click)="addCustomClauseTerms()"
+                    style="margin-top: -75px;">Add Terms</button>
+            </div>
+        </div>
+    </div>
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <div class="customFormfullWidthForClause" *ngFor="let clauseTermsArray of clauseTermsArray; let i= index">
+                <div style="width: 80%;" id="clauseTermsArray.clauseTermCustomID">
+                    <mat-form-field class="full-width" appearance="outline" style="width:100%;">
+                        <input [value]="clauseTermsArray.clauseTermsName" matInput readonly>
+                    </mat-form-field>
+                </div>
+                <div id="clauseTermsArray.clauseTermCustomIDButton">
+                    <button class="submit-item submit-item--back-button"
+                        (click)="removeCustomClauseTerms(clauseTermsArray.clauseTermCustomID,clauseTermsArray.clauseTermCustomIDButton)"
+                        style="margin-top: -75px;">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <div class="header-row text-right">
+                <div style="width: 100%; padding: 3% 0;">
+                    <button class="submit-item submit-item--back-button" (click)="addCustomClause()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</fuse-sidebar>
+
+<fuse-sidebar name="editPanel" style="max-width: 70%;  width: 70%;" position="right" class="quick-panel">
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" style="float: right;
+        font-size: 25px;" (click)="showHelpModal();">help</mat-icon>
+            <br>
+            <div class="">
+                <!-- <textarea [placeholder]="'Enter text here...'" [(ngModel)]="editclausetext"
+                    name="editclausetext"></textarea> -->
+                <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editclausetext" name="editclausetext">
+                </angular-editor>
+            </div>
+        </div>
+        <div class="header-row text-right">
+            <div style="width: 100%; padding: 3% 0;">
+                <button class="submit-item submit-item--back-button" (click)="updateClauseTermOfMainClause()"
+                    [disabled]="editclausetext == ''">Update</button>
+            </div>
+        </div>
+    </div>
+</fuse-sidebar>
+
+<fuse-sidebar name="editCustomClauseTerm" style="max-width: 70%;  width: 70%;" position="right" class="quick-panel">
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" style="float: right;
+        font-size: 25px;" (click)="showHelpModal();">help</mat-icon>
+            <br>
+            <div class="">
+                <!-- <textarea [placeholder]="'Enter text here...'" [(ngModel)]="editCustomClauseTermDataInput"
+                    name="editCustomClauseTermDataInput"></textarea> -->
+                <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editCustomClauseTermDataInput"
+                    name="editCustomClauseTermDataInput"></angular-editor>
+            </div>
+        </div>
+        <div class="header-row text-right">
+            <div style="width: 100%; padding: 3% 0;">
+                <button class="submit-item submit-item--back-button" (click)="updateCustomClauseTermOfMainClause()"
+                    [disabled]="editCustomClauseTermDataInput == ''">Update</button>
+            </div>
+        </div>
+    </div>
+</fuse-sidebar>
+
+<fuse-sidebar name="customPanel" style="max-width: 70%;  width: 70%;" position="right" class="quick-panel">
+    <!-- <add-detail-clause></add-detail-clause> -->
+    <div class="heading center">
+        <form>
+            <div class="mat-elevation-z8" style="padding: 2%;">
+                <div class="">
+                    <!-- <textarea [placeholder]="'Enter text here...'" [(ngModel)]="editclausetext"
+                        name="editclausetext"></textarea> -->
+                    <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editclausetext"
+                        name="editclausetext"></angular-editor>
+                </div>
+            </div>
+            <div class="header-row text-right">
+                <div style="width: 100%; padding: 3% 0;">
+                    <button class="submit-item submit-item--back-button" [disabled]="editclausetext == ''"
+                        (click)="customEdit(editid)">Edit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</fuse-sidebar>
+
+<!-- view custome terms  -->
+<fuse-sidebar name="viewcustomclausePanel" style="max-width: 70%;  width: 70%;" position="right" class="quick-panel">
+    <!-- <add-detail-clause></add-detail-clause> -->
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+             <table mat-table [dataSource]="dataSourcecustom">
+
+                <ng-container matColumnDef="userName">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.mainUserName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="updatedDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> <span [innerHtml]="element.updateDateTime"></span> </td>
+                </ng-container>
+                <ng-container matColumnDef="clauseTracker">
+                    <th mat-header-cell *matHeaderCellDef> Clause Tracker </th>
+                    <td mat-cell *matCellDef="let element"> {{element.termsName}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+        </div>
+
+    </div>
+</fuse-sidebar>
+
+<!-- Add Custom Terms Of Custom Clause -->
+<fuse-sidebar name="addCustomTermsOfCustomClause" style="max-width: 70%;  width: 70%;" position="right"
+    class="quick-panel">
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <div>
+
+                <!-- <textarea [placeholder]="'Enter text here...'" [(ngModel)]="customTermsOfCustomClause"
+                    name="customTermsOfCustomClause"></textarea> -->
+                <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="customTermsOfCustomClause"
+                    name="customTermsOfCustomClause"></angular-editor>
+            </div>
+        </div>
+
+        <div class="header-row text-right">
+            <div style="width: 100%; padding: 3% 0;">
+                <button class="submit-item submit-item--back-button" (click)="addCustomTermsOfCustomClause()"
+                    [disabled]="customTermsOfCustomClause == ''">Add</button>
+            </div>
+
+        </div>
+    </div>
+</fuse-sidebar>
+
+<!-- Edit Custom Term Of Custom Clause -->
+<fuse-sidebar name="editCustomTermsOfCustomClause" style="max-width: 70%;  width: 70%;" position="right"
+    class="quick-panel">
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" style="float: right;
+        font-size: 25px;" (click)="showHelpModal();">help</mat-icon>
+            <br>
+            <div class="">
+                <!-- <textarea [placeholder]="'Enter text here...'" [(ngModel)]="customTermsOfCustomClauseEdit"
+                    name="customTermsOfCustomClauseEdit"></textarea> -->
+
+                <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="customTermsOfCustomClauseEdit"
+                    name="customTermsOfCustomClauseEdit"></angular-editor>
+            </div>
+        </div>
+        <div class="header-row text-right">
+            <div style="width: 100%; padding: 3% 0;">
+                <button class="submit-item submit-item--back-button" (click)="editCustomTermsOfCustomClause()"
+                    [disabled]="customTermsOfCustomClauseEdit == ''">Update</button>
+            </div>
+        </div>
+    </div>
+</fuse-sidebar>
+
+<!-- View Custom Terms Update Records Of Custom Terms Of Custom Clause -->
+<fuse-sidebar name="ViewCustomTermsUpdatesOfCustomTermsOfCustomClause" style="max-width: 70%;  width: 70%;"
+    position="right" class="quick-panel">
+    <div class="heading center">
+        <div class="mat-elevation-z8" style="padding: 2%;">
+            <table mat-table [dataSource]="dataSourceOfCustomTermsUpodateOfCustomTermsOfCustomClause" class="viewtable">
+                <ng-container matColumnDef="userName">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.mainUserName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="updatedDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.updateDateTime}} </td>
+                </ng-container>
+                <ng-container matColumnDef="clauseTracker">
+                    <th mat-header-cell *matHeaderCellDef> Clause Tracker </th>
+                    <td mat-cell *matCellDef="let element"> <span [innerHtml]="element.termsName"></span> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</fuse-sidebar>
+
+<!-- Owner Change Modal Start -->
+<div class="cst-modal" [ngClass]="{'cst-modal--active' : ownerModal } ">
+    <div class="cst-modal__overlay"></div>
+    <div class="cst-modal__content">
+        <div class="cst-modal__header">
+            <h4 class="cst-modal__title" style="margin: 0 auto;"> Are You Sure You Want To Select This Owner?</h4>
+            <button class="cst-modal__close" (click)="hideOwnerChangeModal()">&times;</button>
+        </div>
+        <div class="cst-modal__footer">
+            <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;"
+                (click)="changeOwner()">Yes</button>
+            <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;"
+                (click)="hideOwnerChangeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+<!-- Owner Change Modal End -->
+
+<!-- Vessel Change Modal Start -->
+<div class="cst-modal" [ngClass]="{'cst-modal--active' : vesselModal } ">
+    <div class="cst-modal__overlay"></div>
+    <div class="cst-modal__content">
+        <div class="cst-modal__header">
+            <h4 class="cst-modal__title" style="margin: 0 auto;"> Are You Sure You Want To Select This Vessel?</h4>
+            <button class="cst-modal__close" (click)="hideVesselChangeModal()">&times;</button>
+        </div>
+        <div class="cst-modal__footer">
+            <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;"
+                (click)="changeVessel()">Yes</button>
+            <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;"
+                (click)="hideVesselChangeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+<!-- Vessel Change Modal End -->
+
+<!-- Charterer Change Modal Start -->
+<div class="cst-modal" [ngClass]="{'cst-modal--active' : chartererModal } ">
+    <div class="cst-modal__overlay"></div>
+    <div class="cst-modal__content">
+        <div class="cst-modal__header">
+            <h4 class="cst-modal__title" style="margin: 0 auto;"> Are You Sure You Want To Select This Charterer?</h4>
+            <button class="cst-modal__close" (click)="hideChartererChangeModal()">&times;</button>
+        </div>
+        <div class="cst-modal__footer">
+            <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;"
+                (click)="changeCharterer()">Yes</button>
+            <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;"
+                (click)="hideChartererChangeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+<!-- Charterer Change Modal End -->
+
+<div class="cst-modal" [ngClass]="{'cst-modal--active' : helpModal}">
+    <div class="cst-modal__overlay"></div>
+    <div class="cst-modal__content">
+        <div class="cst-modal__header">
+            <h4 class="cst-modal__title">Fromula For Dynamic Input</h4>
+            <button class="cst-modal__close" (click)="showHelpModal()">&times;</button>
+        </div>
+        <div class="cst-modal__body">
+            <h4>For Set Dynamic Datepicker You Will Need To Put #date@value</h4>
+            <h4>For Example => This Is Dynamic Datepicker #date@{{current_date}}</h4>
+            <br>
+            <h4>For Set Dynamic Timepicker You Will Need To Put #time||value</h4>
+            <h4>For Example => This Is Dynamic Timepicker #time@{{current_time}}</h4>
+            <br>
+            <h4>For Set Dynamic Numberpicker You Will Need To Put #number||value</h4>
+            <h4>For Example => This Is Dynamic Numberpicker #number@11</h4>
+        </div>
+        <div class="cst-modal__footer">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1132 @@
+<div id="edit-vessel" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Vessel Management</h2>
+            </div>
+
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a routerLink="/apps/vessel-management"> Vessel
+                        Management </a> > <b> Edit Vessel </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Edit Vessel </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button class="add-role" routerLink="/apps/vessel-management"> Back </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <!-- <button class="btn" (click)="onchaa()">show</button> -->
+            <div class="content-card">
+                <form [formGroup]="addvesselForm">
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>IMO#:*</mat-label>
+                        <input matInput type="number" placeholder="IMO#:" formControlName="imo">
+                        <mat-error>
+                            IMO Number is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Status" (selectionChange)="changestats($event.value)"
+                            fromControlName="status">
+                            <mat-option *ngFor="let item of filteredStatusData" [value]="item.id">
+                                {{item.status_master_name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Please choose an animal</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Confirm IMO #:*</mat-label>
+                        <input matInput type="number" formControlName="imo">
+                        <mat-error>
+                            IMO Number is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Cost :</mat-label>
+                        <input matInput type="number" formControlName="cost">
+                        <mat-error>
+                            Cost is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Vessel Name:*</mat-label>
+                        <input matInput formControlName="vessel_name">
+                        <mat-error>
+                            Vessel Name is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Scrap Value:</mat-label>
+                        <input matInput type="number" formControlName="scrap_value">
+                        <mat-error>
+                            Scrap Value is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Amorization Period:</mat-label>
+                        <input matInput type="number" formControlName="amorization_period">
+                        <mat-error>
+                            Amorization Period is required
+                        </mat-error>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Vessel Ex-Name:
+                        <span (click)="addvessel()" style="cursor: pointer;color: #000;font-weight: bold;">
+                            Add Vessel Ex-Name
+                        </span>
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Operator:</mat-label>
+                        <input text="number" matInput formControlName="id_operator">
+                        <mat-error>
+                            Operator Id is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Cost of Capital:</mat-label>
+                        <input matInput type="number" formControlName="cost_of_capital">
+                        <mat-error>
+                            Cost of Capital is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Builder" (selectionChange)="changebuilder($event.value)"
+                            fromControlName="id_builder">
+                            <mat-option *ngFor="let item of filteredBuilderData" [value]="item.id">
+                                {{item.builder_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Annual Operating Cost :</mat-label>
+                        <input matInput type="number" formControlName="annual_operating_cost">
+                        <mat-error>
+                            Annual Operating Cost is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Comment" (selectionChange)="changecomment($event.value)"
+                            fromControlName="id_comment">
+                            <mat-option *ngFor="let item of filteredCommentData" [value]="item.id">
+                                {{item.comment_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Break-Even Daily Cost:</mat-label>
+                        <input matInput type="number" formControlName="breakeven_daily_cost">
+                        <mat-error>
+                            Break-Even Daily Cost is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Yard Number:</mat-label>
+                        <input matInput formControlName="yard_number">
+                        <mat-error>
+                            Yard Number is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Daily Operating Cost:</mat-label>
+                        <input matInput type="number" formControlName="daily_operating_cost">
+                        <mat-error>
+                            Daily Operating Cost is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Pandl Club:</mat-label>
+                        <input matInput formControlName="pandl_club">
+                        <mat-error>
+                            Pandl Club is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Port of Registry" (selectionChange)="changeport($event.value)"
+                            fromControlName="port_of_registry">
+                            <mat-option *ngFor="let item of filteredPortData" [value]="item.id">
+                                {{item.port_registry_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Holds:
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="length_hold">
+                        </mat-form-field>
+                        (I)
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="height_hold">
+                        </mat-form-field>
+                        (h)
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="width_hold_before">
+                        </mat-form-field>
+                        (w-fore)
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="width_hold_after">
+                        </mat-form-field>
+                        (aft)
+                    </div>
+                    <div style="display: inline;margin-left: 5px;">
+                        Hatches:
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="length_hatch">
+                        </mat-form-field>
+                        (I)
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="height_hatch">
+                        </mat-form-field>
+                        (h)
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="width_hatch_before">
+                        </mat-form-field>
+                        (w-fore)
+                        <mat-form-field appearance="outline" style="width: 7%;">
+                            <input matInput formControlName="width_hatch_after">
+                        </mat-form-field>
+                        (aft)
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Owner:</mat-label>
+                        <input matInput type="number" formControlName="owner">
+                        <mat-error> Owner Name is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Fuel Type 1:</mat-label>
+                        <input matInput formControlName="fuel_type_1">
+                        <mat-error> Fuel Type 1 is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Ship Manager" (selectionChange)="changeship($event.value)"
+                            fromControlName="ship_manager">
+                            <mat-option *ngFor="let item of companyListData" [value]="item.id">
+                                {{item.companyName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Fuel Type 2:</mat-label>
+                        <input matInput formControlName="fuel_type_2">
+                        <mat-error> Fuel Type 2 is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Call Sign:</mat-label>
+                        <input matInput formControlName="call_sign">
+                        <mat-error> Call Sign is required </mat-error>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Built
+                        <select formControlName="built_month" placeholder="Status" id="inputState"
+                            style="width:auto;padding: 15px 0px 15px 12px;">
+                            <option value="" hidden>....</option>
+                            <option [value]="">Status</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                        Month
+                        <select formControlName="built_year" placeholder="Status" id="inputState"
+                            style="width:auto;padding: 15px 0px 15px 12px;">
+                            <option value="" hidden>....</option>
+                            <option [value]="">Status</option>
+                            <option>2000</option>
+                            <option>2001</option>
+                            <option>2002</option>
+                            <option>2003</option>
+                            <option>2004</option>
+                            <option>2005</option>
+                            <option>2006</option>
+                            <option>2007</option>
+                            <option>2008</option>
+                            <option>2009</option>
+                            <option>2010</option>
+                            <option>2011</option>
+                            <option>2012</option>
+                            <option>2013</option>
+                            <option>2014</option>
+                            <option>2015</option>
+                            <option>2016</option>
+                            <option>2017</option>
+                            <option>2018</option>
+                            <option>2019</option>
+                            <option>2020</option>
+                            <option>2021</option>
+                            <option>2022</option>
+
+                        </select>
+                        Year
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Class Narrative:</mat-label>
+                        <input matInput formControlName="class_narrative">
+                        <mat-error> Class Narrative is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Group Beneficial owner:</mat-label>
+                        <input matInput formControlName="group_beneficial_owner">
+                        <mat-error> Group Beneficial owner is required </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Age of Ship:</mat-label>
+                        <input matInput type="number" formControlName="age_of_ship">
+                        <mat-error> Age of Ship is required </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>New Construction Entry Date:</mat-label>
+                        <input matInput formControlName="new_construction_entry_date">
+                        <mat-error> New Construction Entry Date is required </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Contract Date:</mat-label>
+                        <input matInput formControlName="contract_date">
+                        <mat-error> Contract Date is required </mat-error>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Ice Class:
+                        <mat-checkbox formControlName="ice_class" style="padding-left: 10px;"></mat-checkbox>
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Cancel Date:</mat-label>
+                        <input matInput formControlName="cancel_date">
+                        <mat-error> Cancel Date is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Inmarsat Fax:</mat-label>
+                        <input matInput formControlName="inmarsat_fax">
+                        <mat-error> Inmarsat Fax is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Country of Build:</mat-label>
+                        <input matInput formControlName="country_of_build">
+                        <mat-error> Country of Build is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Inmarsat Telex:</mat-label>
+                        <input matInput formControlName="inmarsat_telex">
+                        <mat-error> Inmarsat Telex is required </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Number of Holds:</mat-label>
+                        <input matInput formControlName="number_of_holds">
+                        <mat-error> Number of Holds is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Number of Hatches:</mat-label>
+                        <input matInput formControlName="number_of_hatches">
+                        <mat-error> Number of Hatches is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Fuel Consumption Main Engine Only:</mat-label>
+                        <input matInput formControlName="fuel_consumption_main_engine_only">
+                        <mat-error> Fuel Consumption is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>SMC Company:</mat-label>
+                        <input matInput formControlName="smc_company">
+                        <mat-error> SMC Company is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Hull Type:</mat-label>
+                        <input matInput formControlName="hull_type">
+                        <mat-error> Hull Type is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>SMC Issued:</mat-label>
+                        <input matInput formControlName="smc_issued">
+                        <mat-error>SMC Issued is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Main Engine Builder:</mat-label>
+                        <input matInput type="number" formControlName="main_engine_builder">
+                        <mat-error> Main Engine Builder is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <input matInput formControlName="smc_issued_date" [matDatepicker]="picker"
+                            placeholder="SMC Issued Date:">
+                        <mat-error> Date is required </mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Main Engine Model:</mat-label>
+                        <input matInput formControlName="main_engine_model">
+                        <mat-error> Engine Model is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>SMC Expiry Date:</mat-label>
+                        <input type="date" matInput formControlName="smc_expiry_date">
+                        <mat-error> Date is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Main Engine RPM:</mat-label>
+                        <input matInput formControlName="main_engine_rpm">
+                        <mat-error> Engine RPM is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Crew:</mat-label>
+                        <input matInput type="number" formControlName="crew">
+                        <mat-error> Crew is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Main Engine Stroke Type:</mat-label>
+                        <input matInput formControlName="main_engine_stroke_type">
+                        <mat-error> Engine Stroke Type is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Crew Nationality" (selectionChange)="changecountry($event.value)"
+                            fromControlName="crew_nationality">
+                            <mat-option *ngFor="let item of filteredNationalData" [value]="item.id">
+                                {{item.nationality_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Officiers Nationality" (selectionChange)="changeofficer($event.value)"
+                            fromControlName="officiers_nationality">
+                            <mat-option *ngFor="let item of filteredNationalData" [value]="item.id">
+                                {{item.nationality_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Hull Material:</mat-label>
+                        <input matInput formControlName="hull_material">
+                        <mat-error> Hull Material is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Cargo Capacities Narrative:</mat-label>
+                        <input matInput formControlName="cargo_capacities_narrative">
+                        <mat-error> Cargo Capacities is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Decks Number:</mat-label>
+                        <input matInput formControlName="decks_number">
+                        <mat-error> Decks Number Type is required </mat-error>
+                    </mat-form-field>
+                    <select formControlName="grabs" placeholder="Status" id="inputState" style="margin-bottom: 20px;">
+                        <option value="" hidden>...Grabs ( Please Select )...</option>
+                        <option [value]="">Yes</option>
+                        <option [value]="">No</option>
+                    </select>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Grabs Number:</mat-label>
+                        <input matInput type="number" formControlName="grabs_number">
+                        <mat-error>Grabs Number is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Grabs Capacity:</mat-label>
+                        <input matInput type="number" formControlName="grabs_capacity">
+                        <mat-error>Grabs Capacity is required </mat-error>
+                    </mat-form-field>
+
+                    <div style="display: inline;margin-left: 5px;">
+                        Bolbows Bow:
+                        <mat-checkbox formControlName="bulbows_bow" class="" style="padding: 0px 5px 0px 5px;">
+                        </mat-checkbox>
+                        Dbi Bottom:
+                        <mat-checkbox formControlName="dbl_bottom" class="" style="padding: 0px 5px 0px 5px;">
+                        </mat-checkbox>
+                    </div>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Winches:</mat-label>
+                        <input matInput type="number" formControlName="winches">
+                        <mat-error> Winches is required </mat-error>
+                    </mat-form-field>
+
+                    <div style="display: inline;margin-left: 5px;">
+                        Bollard Pull:
+                        <mat-checkbox formControlName="bollard_pull" class="" style="padding: 0px 5px 0px 5px;">
+                        </mat-checkbox>
+                        Dbi Deck:
+                        <mat-checkbox formControlName="dbl_deck" class="" style="padding: 0px 5px 0px 5px;">
+                        </mat-checkbox>
+                    </div>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Hull #:</mat-label>
+                        <input matInput formControlName="hull">
+                        <mat-error> Hull is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="activity" (selectionChange)="changeactivity($event.value)"
+                            fromControlName="activity">
+                            <mat-option *ngFor="let item of filteredActivityData" [value]="item.id">
+                                {{item.activity_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Delivery:
+                        <select formControlName="delivery_month" placeholder="Status" id="inputState"
+                            style="width: 14%;">
+                            <option value="" hidden>....</option>
+                            <option [value]="">Status</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                        Month
+                        <select placeholder="Status" formControlName="delivery_year" id="inputState"
+                            style="width: 14%;">
+                            <option value="" hidden>....</option>
+                            <option [value]="">Status</option>
+                            <option>2001</option>
+                            <option>2002</option>
+                            <option>2003</option>
+                            <option>2004</option>
+                            <option>2005</option>
+                            <option>2006</option>
+                            <option>2007</option>
+                            <option>2008</option>
+                            <option>2009</option>
+                            <option>2010</option>
+                            <option>2011</option>
+                            <option>2012</option>
+                            <option>2013</option>
+                            <option>2014</option>
+                            <option>2015</option>
+                            <option>2016</option>
+                            <option>2017</option>
+                            <option>2018</option>
+                            <option>2019</option>
+                            <option>2020</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                        </select>
+                        Year
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline" style="margin-top: 20px;">
+                        <mat-label>Consumption Speed:</mat-label>
+                        <input matInput type="number" formControlName="consumption_speed">
+                        <mat-error> Consumption Speed is required </mat-error>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Survey:
+                        <select formControlName="survey_month" placeholder="Status" id="inputState"
+                            style="width: 14%;margin-left: 17px;">
+                            <option value="" hidden>....</option>
+                            <option [value]="">Status</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                        Month
+                        <select formControlName="survey_year" placeholder="Status" id="inputState" style="width: 14%;">
+                            <option value="" hidden>....</option>
+                            <option [value]="">Status</option>
+                            <option>2001</option>
+                            <option>2002</option>
+                            <option>2003</option>
+                            <option>2004</option>
+                            <option>2005</option>
+                            <option>2006</option>
+                            <option>2007</option>
+                            <option>2008</option>
+                            <option>2009</option>
+                            <option>2010</option>
+                            <option>2011</option>
+                            <option>2012</option>
+                            <option>2013</option>
+                            <option>2014</option>
+                            <option>2015</option>
+                            <option>2016</option>
+                            <option>2017</option>
+                            <option>2018</option>
+                            <option>2019</option>
+                            <option>2020</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                        </select>
+                        Year
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Power:</mat-label>
+                        <input matInput type="number" formControlName="power">
+                        <mat-error> Power is required </mat-error>
+                    </mat-form-field>
+
+                    <div style="display: inline;margin-left: 5px;">
+                        Tropical:
+                        <mat-form-field appearance="outline" style="width: 16%;margin: 0 5px 0 0;">
+                            <input matInput type="number" formControlName="dwt_tropical">
+                            <!-- <mat-error> Field is required </mat-error> -->
+                        </mat-form-field>
+                        (dwat)
+                        <mat-form-field appearance="outline" style="width: 16%;margin: 0 5px 0 0;">
+                            <input matInput formControlName="draft_tropical">
+                            <!-- <mat-error> Field is required </mat-error> -->
+                        </mat-form-field>
+                        (dft)
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Main Engine Design:</mat-label>
+                        <input matInput type="number" formControlName="main_engine_design">
+                        <mat-error> Field is required </mat-error>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Tropical Freshwater:
+                        <mat-form-field appearance="outline" style="width: 11.6%;margin: 0 5px 0 0;">
+                            <input matInput type="number" formControlName="dwt_tropical_freshwater">
+                            <!-- <mat-error> Field is required </mat-error> -->
+                        </mat-form-field>
+                        (dwat)
+                        <mat-form-field appearance="outline" style="width: 11.6%;margin: 0 5px 0 0;">
+                            <input matInput formControlName="draft_tropical_freshwater">
+                            <!-- <mat-error> Field is required </mat-error> -->
+                        </mat-form-field>
+                        (dft)
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Main Engine Type:</mat-label>
+                        <input matInput type="number" formControlName="main_engine_type">
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Freshwater:
+                        <mat-form-field appearance="outline" style="width: 14.5%;margin: 0 5px 0 0;">
+                            <input matInput type="number" formControlName="dwt_freshwater">
+                        </mat-form-field>
+                        (dwat)
+                        <mat-form-field appearance="outline" style="width: 14.5%;margin: 0 5px 0 0;">
+                            <input matInput formControlName="draft_freshwater">
+                        </mat-form-field>
+                        (dft)
+                    </div>
+
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="flag" (selectionChange)="changeflag($event.value)"
+                            fromControlName="flag">
+                            <mat-option *ngFor="let item of filteredFlagData" [value]="item.id">
+                                {{item.vessel_flag_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Summer:
+                        <mat-form-field appearance="outline" style="width: 15.7%;margin: 0 5px 0 0;">
+                            <input matInput type="number" formControlName="dwt_summer">
+                        </mat-form-field>
+                        (dwat)
+                        <mat-form-field appearance="outline" style="width: 15.7%;margin: 0 5px 0 0;">
+                            <input matInput formControlName="draft_summer">
+                        </mat-form-field>
+                        (dft)
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <textarea matInput placeholder="Gear:" formControlName="gear" style="height: 20px;"></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>SWL</mat-label>
+                        <input matInput type="number" formControlName="swl">
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Vessel Type" (selectionChange)="changevessel($event.value)"
+                            fromControlName="vessel_type">
+                            <mat-option *ngFor="let item of filteredVesselData" [value]="item.id">
+                                {{item.ship_type_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Light Weight Tons:</mat-label>
+                        <input matInput formControlName="light_weight_tons">
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Bale Capacity:
+                        <mat-form-field appearance="outline" style="width: 15%;margin: 0 5px 0 0;">
+                            <input matInput formControlName="bale_meter_capacity">
+                        </mat-form-field>
+                        cbm
+                        <mat-form-field appearance="outline" style="width: 14%;margin: 0 5px 0 0;margin-right: 10px;">
+                            <input matInput type="number" formControlName="bale_feet_capacity">
+                        </mat-form-field>
+                        cbft
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Block Coeficient:</mat-label>
+                        <input matInput formControlName="block_coeficient">
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Grain Capacity:
+                        <mat-form-field appearance="outline" style="width: 14%;margin: 0 5px 0 0;">
+                            <input matInput type="number" formControlName="grain_meter_capacity">
+                        </mat-form-field>
+                        cbm
+                        <mat-form-field appearance="outline" style="width: 14.2%;margin: 0 5px 0 0;margin-right: 10px;">
+                            <input matInput type="number" formControlName="grain_feet_capacity">
+                        </mat-form-field>
+                        cbft
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Constants:</mat-label>
+                        <input matInput formControlName="constants">
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        LOA:
+                        <mat-form-field appearance="outline" style="width: 19.8%;margin: 0 5px 0 0;">
+                            <mat-label>LOA</mat-label>
+                            <input matInput type="number" formControlName="loa">
+                        </mat-form-field>
+                        LBP:
+                        <mat-form-field appearance="outline" style="width: 19.8%;margin: 0 5px 0 0;margin-right: 9px;">
+                            <mat-label>LBP</mat-label>
+                            <input matInput type="number" formControlName="lbp">
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>TPC</mat-label>
+                        <input matInput type="number" formControlName="tpc">
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Beam:
+                        <mat-form-field appearance="outline" style="width: 18.5%;margin: 0 5px 0 0;">
+                            <mat-label>Beam</mat-label>
+                            <input matInput type="number" formControlName="beam">
+                        </mat-form-field>
+                        Depth:
+                        <mat-form-field appearance="outline" style="width: 18.5%;margin: 0 5px 0 0;margin-right: 8px;">
+                            <mat-label>Depth</mat-label>
+                            <input matInput type="number" formControlName="depth">
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Breadth Moulded:</mat-label>
+                        <input matInput type="number" formControlName="breadth_moulded">
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Displacement:</mat-label>
+                        <input matInput formControlName="displacement">
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Dbi Side Skins:
+                        <mat-checkbox formControlName="dbl_side_skins" class="" style="padding-left: 10px;">
+                        </mat-checkbox>
+                    </div>
+
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Aux Engine Design" (selectionChange)="changeauxengine($event.value)"
+                            fromControlName="aux_engine_design">
+                            <mat-option *ngFor="let item of filteredAuxEngineData" [value]="item.id">
+                                {{item.aux_engine_design_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="display: inline;margin-left: 5px;">
+                        Fuel Consumptions: <span (click)="editshowModal()"
+                            style="cursor: pointer;color: #000;font-weight: bold;">Add Fuel
+                            Consumptions</span>
+                    </div>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Aux Engine Type" (selectionChange)="changeauxenginetype($event.value)"
+                            fromControlName="aux_engine_type">
+                            <mat-option *ngFor="let item of filteredAuxEngineTypeData" [value]="item.id">
+                                {{item.aux_engine_type_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="width: 47%;margin-left: 10px;margin-right: 15px;">
+                        <mat-select placeholder="Base" (selectionChange)="changebase($event.value)"
+                            fromControlName="base">
+                            <mat-option *ngFor="let item of filteredStateData" [value]="item.id">
+                                {{item.vessel_base_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div style="display: inline;margin-left: 5px;">
+                        Grt:
+                        <mat-form-field appearance="outline" style="width: 21%;margin: 0 5px 0 0;">
+                            <input matInput type="number" formControlName="grt">
+                        </mat-form-field>
+                        Nrt
+                        <mat-form-field appearance="outline" style="width: 20.5%;margin: 0 5px 0 0;margin-right: 8px;">
+                            <input matInput type="number" formControlName="nrt">
+                        </mat-form-field>
+                    </div>
+                    <div style="display: -webkit-inline-box;margin-top: 15px;margin-bottom: 15px;">
+                        <label>Company Background Sheet:</label>
+                        <input formControlName="company_background_sheet" name="file" type="file"
+                            (change)="onFileSelect($event)" />
+                    </div>
+
+                    <div style="display: -webkit-inline-box;margin-top: 15px;margin-bottom: 15px;">
+                        <label>Vessal History Sheet:</label>
+                        <input formControlName="vessal_history_sheet" name="file" type="file"
+                            (change)="onFileSelect2($event)" />
+                    </div>
+
+                    <div style="display: -webkit-inline-box;margin-top: 15px;margin-bottom: 15px;">
+                        <label>Operating Record Sheet:</label>
+                        <input name="file" formControlName="operating_record_sheet" type="file"
+                            (change)="onFileSelect3($event)" />
+                    </div>
+
+                    <div style="padding-left: 10px;display: inline-table;">
+                        <button class="cst-modal__button" [disabled]="showLoaderImg" (click)="onSubmit()"> Save
+                            <img src="assets/images/avatars/loader.gif" *ngIf="showLoaderImg"
+                                style="width:20px" /></button>
+                        <button class="cst-modal__button__close">Cancel</button>
+                    </div>
+
+
+
+                    <!-- first Modal entry form -->
+                    <div class="cst-modal" [ngClass]="{'cst-modal--active' : editshowModalStatus}">
+                        <div class="cst-modal__overlay"></div>
+                        <div class="cst-modal__content">
+                            <div class="cst-modal__header">
+                                <h4 class="cst-modal__title">Fuel Consumption</h4>
+                                <button class="cst-modal__close" (click)="editshowModal()">&times;</button>
+                            </div>
+                            <div class="fuel">
+                                <h5>Main Engine Fuel Consumptions</h5>
+                            </div>
+                            <div class="cst-modal__body">
+                                <div class="cst-modal__form-group">
+                                    <label style="padding-right: 8px;">Speed Laden 1</label>
+                                    <div style="display: contents;">
+                                        <input formControlName="speed_laden_1" type="number" />Kts
+                                        <input formControlName="laden_fuel_1" type="number" />mt
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder="" (selectionChange)="changefuelladen($event.value)"
+                                                fromControlName="id_fuel_type_laden_1">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label>Speed Ballast 1:</label>
+                                    <div style="display: contents;">
+                                        <input formControlName="speed_ballast_1" type="number" />Kts
+                                        <input formControlName="ballast_fuel_1" type="number" />mt
+                                    
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefuelballast($event.value)"
+                                                fromControlName="id_fuel_type_ballast_1">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label style="padding-right: 4px;">Speed Laden 2:</label>
+                                    <div style="display: contents;">
+                                        <input formControlName="speed_laden_2" type="number" />Kts
+                                        <input formControlName="laden_fuel_2" type="number" />mt
+                                     
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefueltypeladen($event.value)"
+                                                fromControlName="id_fuel_type_laden_2">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label>Speed Ballast 2:</label>
+                                    <div style="display: contents;">
+                                        <input formControlName="speed_ballast_2" type="number" />Kts
+                                        <input formControlName="ballast_fuel_2" type="number" />mt
+                                       
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefueltypeballast($event.value)"
+                                                fromControlName="id_fuel_type_ballast_2">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label style="padding-right: 4px;">Speed Laden 3:</label>
+                                    <div style="display: contents;">
+                                        <input formControlName="speed_laden_3" type="number" />Kts
+                                        <input formControlName="laden_fuel_3" type="number" />mt
+                                     
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefueltypeladenth($event.value)"
+                                                fromControlName="id_fuel_type_laden_3">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label>Speed Ballast 3:</label>
+                                    <div style="display: contents;">
+                                        <input formControlName="speed_ballast_3" type="number" />Kts
+                                        <input formControlName="ballast_fuel_3" type="number" />mt
+                                   
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefueltypeballastth($event.value)"
+                                                fromControlName="id_fuel_type_ballast_3">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <p>Anx Engine Fuel Consumptions(@ Port)</p>
+                                <div class="cst-modal__form-group">
+                                    <div style="display: inline;margin-left: 5px;">
+                                        Engine Hours
+                                        <select formControlName="engine_hours" placeholder="Engine Hours"
+                                            style="width:auto;padding: 15px 0px 15px 12px;">
+                                            <option value="" hidden>....</option>
+                                            <option [value]="">Status</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label>Aux Engine 1:</label>
+                                    <div style="display: contents;">
+                                        <input type="number" formControlName="fuel_aux_1" type="text" />mt
+                                    
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefueltypeaux($event.value)"
+                                                fromControlName="id_fuel_type_aux_1">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label>Aux Engine 2:</label>
+                                    <div style="display: contents;">
+                                        <input type="number" formControlName="fuel_aux_2" type="text" />mt
+                                      
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefueltypeauxtwo($event.value)"
+                                                fromControlName="id_fuel_type_aux_2">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="cst-modal__form-group">
+                                    <label>Aux Engine 3:</label>
+                                    <div style="display: contents;">
+                                        <input type="number" formControlName="fuel_aux_3" type="text" />mt
+                                     
+                                        <mat-form-field style="width: 24%;margin-left: 15px;margin-right: 15px;">
+                                            <mat-select placeholder=""
+                                                (selectionChange)="changefueltypeauxthree($event.value)"
+                                                fromControlName="id_fuel_type_aux_3">
+                                                <mat-option *ngFor="let item of ifoListData" [value]="item.id">
+                                                    {{item.fuel_types_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="cst-modal__footer">
+                                <button class="cst-modal__button" (click)="addform()" type="submit">Save</button>
+                                <button class="cst-modal__button__close" (click)="editshowModal()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- model-end -->
+
+                    <!-- second Modal entry form -->
+                    <div class="cst-modal" [ngClass]="{'cst-modal--active' : secondModalStatus}">
+                        <div class="cst-modal__overlay"></div>
+                        <div class="cst-modal__content">
+                            <div class="cst-modal__header">
+                                <h4 class="cst-modal__title">Fuel Consumption</h4>
+                                <button class="cst-modal__close" (click)="secondModal()">&times;</button>
+                            </div>
+                            <div class="cst-modal__body">
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">1)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">6)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">2)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">7)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">3)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">8)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">4)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">9)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">5)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">10)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">11)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">12)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">13)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">14)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-vessel">
+                                    <div class="col-md-6">
+                                        <label style="padding-right: 8px;">15)</label>
+                                        <div style="display: contents;">
+                                            <input type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cst-modal__footer">
+                                <button class="cst-modal__button" type="submit">Save</button>
+                                <button (click)="secondModal()" class="cst-modal__button__close">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- model-end -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

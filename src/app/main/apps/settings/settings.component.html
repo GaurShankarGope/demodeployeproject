@@ -1,0 +1,39 @@
+<div id="settings" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>Settings Management</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/settings-management"> Settings Management</a>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> Settings Mangement </h2>
+                    </div>
+                </div>
+            </div>
+            <hr>
+           <div class="content-card" style="margin-left: -10px !important; margin-top: -29px !important">
+                <form [formGroup]="SettingsManagementForm" (ngSubmit)="onSubmit()">
+                    <mat-label class="labelCustom customFormfullWidth" >Select Current Company.</mat-label>
+                    <br>
+                    <select style="margin-left: 10px !important; margin-top: 20px !important;" class="customFormfullWidth" formControlName="companyId"  (change)="setCurrentCompany($event)" required>
+                        <option [value]="0">--- Select ---</option>
+                        <option *ngFor="let companyManagementData of companyManagementData"  [ngClass]="{'d-none': companyManagementData.isActive === 'N'}" [value]="companyManagementData.id">{{companyManagementData.companyName}}</option>
+                    </select>
+                    <br>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit " type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

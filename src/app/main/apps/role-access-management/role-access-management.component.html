@@ -1,0 +1,72 @@
+<div id="role-access" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Role Access Management</h2>
+            </div>
+            <div class="row-col-5">
+                <div style="width: 40%;">
+
+                </div>
+            </div>
+            <div class="row-col-4">
+                <div class="link">
+                    <mat-icon>home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <b> Role Access
+                        Management </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+
+            <div class="mat-elevation-z8">
+
+                <div class="main-tab">
+
+                    <div class="select-section">
+                        <select class="form-control" (change)="changeRole($event)">
+                            <option [value]="">Select Role</option>
+                            <option *ngFor="let item of roleListData" [value]="item.id"
+                                [ngClass]="{'d-none': item.isActive === 'N'}">{{item.roleName}}</option>
+                        </select>
+                        <!-- <form [formGroup]="roleaccessForm"> -->
+                        <!-- <mat-form-field>
+                            <mat-select placeholder="Select Role" (change)="changeRole($event)">
+                                <mat-option [ngClass]="{'d-none': item.isActive === 'N'}" *ngFor="let item of roleListData" [value]="item.id">
+                                    {{item.roleName}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Please choose an animal</mat-error>
+                        </mat-form-field> -->
+                        <!-- </form> -->
+
+                    </div>
+
+                </div>
+
+                <div class="sc">
+                    <div ng-app="" class="section" *ngFor="let userMangeName of roleAccessListData">
+                        <div class="head">
+                            <mat-checkbox type="checkbox" [(ngModel)]="userMangeName.selected"
+                                [name]="userMangeName.moduleName" (change)="changeSelectAccess($event, userMangeName)"
+                                ng-model="selectall">{{userMangeName.moduleName}}</mat-checkbox>
+                        </div>
+                        <div *ngFor="let item of userMangeName.action_arr">
+                            <mat-checkbox [name]="item.actionName" [(ngModel)]="item.selected"
+                                (change)="changeSelectAccess($event, item)" type="checkbox" ng-checked="selectall">
+                                {{item.actionName}} </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="end-button">
+                    <button mat-button class="button button--cancel" (click)="resetdata()">CANCEL</button>
+                    <button mat-button class="button button--submit" type="submit"
+                        (click)="submitdata()">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

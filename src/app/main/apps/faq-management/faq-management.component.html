@@ -1,0 +1,46 @@
+<div id="message" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>FAQ</h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> >  FAQ
+                </div>
+            </div>
+        </div>
+        <!-- FAQ Records Server Side Start -->
+        <div class="mat-elevation-z8">
+            <div class="content-card" style="margin: 35px; width: 95%; margin-top: 10px;">
+                <table>
+                    <tr>
+                        <th style="width:80%; text-align: left;">
+                            <label style="font-size: 25px;">FAQ </label>
+                        </th>
+                    </tr>
+                </table>
+                <hr>
+                <div class="customFormfullWidthForClause" *ngFor="let faqRecordsResponseArray of faqRecordsResponseArray; let i= index">
+                    <br>
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <h4 class="matCheckboxLayoutCustom"> 
+                                        <b style="margin-left: 10px;">{{ faqRecordsResponseArray.question }}</b>
+                                    </h4>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            {{ faqRecordsResponseArray.answer }}
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <!-- FAQ Records Server Side End -->
+    </div>
+</div>

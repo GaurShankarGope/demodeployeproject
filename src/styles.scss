@@ -1,0 +1,13 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+@import '~ngx-toastr/toastr';
+
+.mat-progress-bar-fill::after  {
+    background-color: #5cb85c !important;
+}
+.mat-progress-bar-buffer {
+    background-color: #fff !important;
+}

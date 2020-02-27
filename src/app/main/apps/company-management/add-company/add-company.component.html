@@ -1,0 +1,153 @@
+<div id="add-company" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <div class="heading center">
+        <!-- <div>
+            <h2>Broker Management</h2>
+        </div> -->
+
+        <div class="header-row">
+                <div class="row-col-3">
+                    <h2>Company Management</h2>
+                </div>                
+                <div class="row-col-3">
+                    <div style="float: right;">
+                        <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a routerLink="/apps/master/company-management"> Company Management </a> > <b> Add Company </b>
+                    </div>
+                </div>
+            </div>
+
+        <div class="mat-elevation-z8">
+            <div class="main-tab">                
+                <div class="header-row">
+                    <div class="row-col-3 ">
+                       <h2> <b> Add Company </b></h2>
+                    </div>
+                    
+                    <div class="row-col-3">
+                        <button class="add-role"  routerLink="/apps/master/company-management"> Back </button>
+                    </div>
+                </div>
+                <!-- <button class="add-role" (click)="showModal()"> Add User </button> -->
+                           
+            </div>
+            <hr class="mr-30">
+            <form [formGroup]="addcompanyForm" (ngSubmit)="onSubmit()">          
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput formControlName="companyName" placeholder="Company Name*"
+                                [ngClass]="{ 'is-invalid': submitted && f.companyName.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.companyName.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('companyName').hasError('required')">
+                                        Company Name is required
+                                    </mat-error>
+                                </div>                                              
+                            </mat-form-field>
+                        </div>
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput formControlName="companyAddress" placeholder="Location*"
+                                [ngClass]="{ 'is-invalid': submitted && f.companyAddress.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.companyAddress.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('companyAddress').hasError('required')">
+                                        Location is required
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput formControlName="owner" placeholder="Owner*"
+                                [ngClass]="{ 'is-invalid': submitted && f.owner.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.owner.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('owner').hasError('required')">
+                                        Owner is required
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput (keypress)="numberOnly($event)" onKeyPress="if(this.value.length==12) return false;" min="10" formControlName="companyFax" placeholder="Business Fax*"
+                                [ngClass]="{ 'is-invalid': submitted && f.companyFax.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                
+                                <div *ngIf="submitted && f.companyFax.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('companyFax').hasError('required')">
+                                        Business Fax is required
+                                    </mat-error>
+                                </div>
+                                <div *ngIf="submitted && f.companyFax.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('companyFax').hasError('pattern')">
+                                        Only Numbers are allowed.
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput (keypress)="numberOnly($event)" onKeyPress="if(this.value.length==12) return false;" min="10" formControlName="mobile" placeholder="Mobile Phone*"
+                                [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('mobile').hasError('required')">
+                                        Mobile Phone is required
+                                    </mat-error>
+                                </div>
+                                <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('mobile').hasError('pattern')">
+                                        Only Numbers are allowed.
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput formControlName="companyEmail" placeholder="Email*"
+                                [ngClass]="{ 'is-invalid': submitted && f.companyEmail.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.companyEmail.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('companyEmail').hasError('required')">
+                                        Email is required
+                                    </mat-error>
+                                </div>
+                                <div *ngIf="submitted && f.companyEmail.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="addcompanyForm.get('companyEmail').hasError('pattern')">
+                                        Enter valid Email Id
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <p class="invalid-feedback"> * This Field is required</p> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row-col-6">
+                    <button class="add-role-save"> Save </button> 
+                </div>
+            </form>                                
+        </div>
+    </div>
+
+</div>
+

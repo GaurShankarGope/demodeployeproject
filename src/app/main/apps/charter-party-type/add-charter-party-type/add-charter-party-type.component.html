@@ -1,0 +1,59 @@
+<div id="clause-category" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Charter Party Type Management</h2>
+            </div>
+
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/charter-type-management"> Charter Party Type
+                        Management </a> > <b> Charter Party Type Add </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Add Chater Party Type </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button routerLink="/apps/charter-type-management" class="add-item add-item--back-button"> Back
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+            <div class="content-card">
+
+                <form [formGroup]="typeManagementForm" (ngSubmit)="onSubmit()">
+
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Charter Party Type Name* </mat-label>
+                        <input matInput formControlName="name">
+                        <mat-error *ngIf="typeManagementForm.get('name').hasError('required')">
+                            Type Name is required
+                        </mat-error>
+                        <mat-error *ngIf="typeManagementForm.get('name').hasError('name')">
+                            Type enter a valid User Name
+                        </mat-error>
+                    </mat-form-field>
+
+
+
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>

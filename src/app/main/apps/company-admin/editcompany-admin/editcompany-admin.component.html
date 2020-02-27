@@ -1,0 +1,168 @@
+<div id="editcompany-admin" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <div class="heading center">
+        <!-- <div>
+            <h2>Broker Management</h2>
+        </div> -->
+
+        <div class="header-row">
+                <div class="row-col-3">
+                    <h2>Company Admin</h2>
+                </div>
+                <div class="row-col-3">
+                    <div style="float: right;">
+                        <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a routerLink="/apps/master/company-admin"> Company Admin </a> > <b> Edit Company Admin </b>
+                    </div>
+                </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+            <div class="main-tab">                
+                <div class="header-row">
+                    <div class="row-col-3 ">
+                        <h2> <b> Edit Admin </b></h2>
+                    </div>
+                    <div class="row-col-6">
+                        <div>                            
+                        </div>
+                    </div>
+                    <div class="row-col-3">
+                        <button class="add-role"  routerLink="/apps/master/company-admin"> Back </button>
+                    </div>
+                </div>
+                <!-- <button class="add-role" (click)="showModal()"> Add User </button> -->
+                                
+            </div>
+            <hr class="mr-30">
+            <form [formGroup]="updatecompanyadminForm" (ngSubmit)="onSubmit()">          
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never"   class="example-full-width">
+                                <input matInput  formControlName="username" placeholder="User Name*"
+                                [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.username.errors" class="invalid-feedback"> </div>
+                                <mat-error *ngIf="updatecompanyadminForm.get('username').hasError('required')">
+                                    User Name is required
+                                </mat-error>                                              
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input (keypress)="numberOnly($event)" onKeyPress="if(this.value.length==12) return false;"
+                                min="10"  matInput formControlName="mobileNo" placeholder="Mobile Phone*"
+                                [ngClass]="{ 'is-invalid': submitted && f.mobileNo.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.mobileNo.errors" class="invalid-feedback">
+                                    <mat-error *ngIf="updatecompanyadminForm.get('mobileNo').hasError('required')">
+                                        Mobile Phone is required
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput formControlName="firstName" placeholder="First Name"
+                                [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">                                    
+                                </div>
+                            </mat-form-field>
+                        </div>
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput formControlName="lastName" placeholder="Last Name"
+                                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">                                    
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                           
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Select Company</mat-label>
+                                <select matNativeControl (change)="changecompany($event)"
+                                [(ngModel)]="companyName" [ngModelOptions]="{standalone: true}">
+                                  <option *ngFor="let company of companyListData" [value]="company.id">{{company.companyName}}</option>
+                                  
+                                </select>
+                            </mat-form-field>
+                        </div>
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input (keypress)="numberOnly($event)" onKeyPress="if(this.value.length==12) return false;"
+                                min="10"  matInput formControlName="businessPhone" placeholder="Business Phone"
+                                [ngClass]="{ 'is-invalid': submitted && f.businessPhone.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.businessPhone.errors" class="invalid-feedback">                                    
+                                </div>
+                            </mat-form-field>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Select Role</mat-label>
+                                <select matNativeControl (change)="changeRole($event)"
+                                [(ngModel)]="userRole" [ngModelOptions]="{standalone: true}">
+                                  <!-- <option *ngFor="let role of roleListData" [value]="role.id">{{role.roleName}}</option> -->
+                                  <option value="2">{{companyRol}}</option>
+                                </select>
+                            </mat-form-field>
+                        </div>
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never"  class="example-full-width">
+                                <input matInput  formControlName="email" placeholder="Email"
+                                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">                                    
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <mat-form-field floatLabel="never" class="example-full-width">
+                                <input matInput formControlName="address" placeholder="Location"
+                                [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                <div *ngIf="submitted && f.address.errors" class="invalid-feedback">                                    
+                                </div>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-tab">                
+                    <div class="header-row">
+                        <div class="row-col-6">
+                            <p class="invalid-feedback"> * This Field is required</p> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row-col-6">
+                    <button class="add-role-save"> Save </button> 
+                </div>
+            </form>                                
+        </div>
+    </div>
+</div>
+

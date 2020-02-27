@@ -1,0 +1,469 @@
+<div id="draw" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>Draw C/P </h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> >  Draw C/P
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <!-- Existing Draw C/P Platform Records -->
+            <div class="main-tab" *ngIf="brokerDivShow">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> My Charter Parties</h2>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                        <button class="add-item add-item--main-button" style="float:right" (click)="drawCPFormView()"> Draw New C/P</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Existing Draw C/P Platform Records -->
+            <!-- Draw C/P Platform -->
+            <div class="main-tab" *ngIf="mainDrawCPDiv">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> Select Charter Party </h2>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                        <button class="add-item add-item--back-button" style="float:right" (click)="existingDrawCPView()"> Back</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Draw C/P Platform -->
+            <hr *ngIf="brokerDivShow">
+            <!-- Existing Draw C/P Platform Records -->
+            <table mat-table [dataSource]="dataSource" *ngIf="existingDrawCP">
+                <ng-container matColumnDef="identifier">
+                    <th mat-header-cell *matHeaderCellDef> Identifier </th>
+                    <td mat-cell *matCellDef="let element"> {{element.identifier}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> CP Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpDateInfo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="companyName" >
+                    <th mat-header-cell *matHeaderCellDef> Company </th>
+                    <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ownerName">
+                    <th mat-header-cell *matHeaderCellDef [ngClass]="{'d-none': isOwnerLogin === 'Y'}"> Owner </th>
+                    <td mat-cell *matCellDef="let element" [ngClass]="{'d-none': isOwnerLogin === 'Y'}"> {{element.ownerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="brokerName" >
+                    <th mat-header-cell *matHeaderCellDef [ngClass]="{'d-none': isBrokerLogin === 'Y'}">  Broker </th>
+                    <td mat-cell *matCellDef="let element" [ngClass]="{'d-none': isBrokerLogin === 'Y'}"> {{element.brokerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="chartererName" >
+                    <th mat-header-cell *matHeaderCellDef [ngClass]="{'d-none': isChartererLogin === 'Y'}" > Charterer </th>
+                    <td mat-cell *matCellDef="let element" [ngClass]="{'d-none': isChartererLogin === 'Y'}" > {{element.chartererName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="vesselName">
+                    <th mat-header-cell *matHeaderCellDef> Vessel </th>
+                    <td mat-cell *matCellDef="let element"> {{element.vesselName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef> Progress </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-progress-bar mode="determinate" value="{{element.progress}}"></mat-progress-bar>    
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="statusInfo">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element" ><h4 class="{{ element.classInfo }}">{{ element.statusInfo }}</h4></td>
+                </ng-container>
+
+                
+                <ng-container matColumnDef="newAction" >
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="action-head" > Action </th>
+                    <td mat-cell  *matCellDef="let row" class="action" >
+
+                        <button 
+                                [ngClass]="{'d-none': row.progress == '100'}" 
+                                *ngIf="isBrokerLogin == 'Y'"
+                                mat-button class="click-icon click-icon--done"  
+                                style="background:#f28a38;"
+                                (click)="editView(row.id,row.formId,row.chartererId,row.is_std_bid,row.ownerId,row.std_bid_name)"
+                        >
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">edit</mat-icon>
+                        </button>
+
+                        <button 
+                                [ngClass]="{'d-none': row.progress == '100'}" 
+                                *ngIf="isChartererLogin == 'Y' && row.is_complete_draw_cp == '2' "
+                                mat-button class="click-icon click-icon--done"  
+                                style="background:#f28a38;"
+                                (click)="editView(row.id,row.formId,row.chartererId,row.is_std_bid,row.ownerId,row.std_bid_name)"
+                        >
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">edit</mat-icon>
+                        </button>
+
+                        <button 
+                                [ngClass]="{'d-none': row.progress == '100'}" 
+                                *ngIf="isOwnerLogin == 'Y' && row.is_complete_draw_cp == '2' "
+                                mat-button class="click-icon click-icon--done"  
+                                style="background:#f28a38;"
+                                (click)="editView(row.id,row.formId,row.chartererId,row.is_std_bid,row.ownerId,row.std_bid_name)"
+                        >
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">edit</mat-icon>
+                        </button>
+
+                        <button mat-button class="click-icon click-icon--done" 
+                            *ngIf="isRecapView" 
+                            (click)="recapView(row.id,row.formId,row.chartererId)"
+                        >
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">remove_red_eye</mat-icon>
+                        </button>
+
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div class="no_data_found" *ngIf="dataSource.filteredData.length === 0">
+                No Records Found!
+            </div>
+            <mat-paginator #paginator showFirstLastButtons showFirstLastButtons [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" *ngIf="existingDrawCP"></mat-paginator>
+
+            <button *ngIf="existingDrawCPButton" id="submitButtonDrawCP" class="add-item add-item--back-button" 
+            style="float:right; margin: 30px !important;" (click)="getTermsReviewData()"> {{ buttonInfo }} </button>
+
+            <mat-radio-group *ngIf="mainDrawCPDiv" aria-label="Please select the applicable Charter Party." class="customFormfullWidth" style="margin-top: 20px;">
+                <!-- <mat-label class="labelCustom">Please select the applicable Charter Party.</mat-label> -->
+                <br>
+                <mat-radio-button 
+                style="margin-left: 40px !important; margin-top: 20px !important; margin-bottom: 20px !important; " 
+                class="customFormfullWidth" 
+                [value]="1" 
+                (click)="setApplicabelCharterParty(1)"> Executed Charter Party </mat-radio-button>
+
+                <mat-radio-button 
+                style="margin-left: 140px !important; margin-top: 20px !important; margin-bottom: 20px !important; " 
+                class="customFormfullWidth" 
+                [value]="2" 
+                (click)="setApplicabelCharterParty(2)"> Proforma Charter Party </mat-radio-button>
+            </mat-radio-group>
+            <!-- Charter Party Type Selection End -->
+
+            <!-- Accept Draw Modal Start -->
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : activeModalStatus}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title" style="margin: 0 auto;">Are you sure you want to Accept this Draw C/P Platform?</h4>
+                        <button class="cst-modal__close" (click)="hideActiveModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__footer">
+                        <button class="cst-modal__button cst-modal__button--active" (click)="updateDataStatus()">Accept</button>
+                        <button class="cst-modal__button cst-modal__button--cancel" (click)="hideActiveModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Active Modal End -->
+            <!-- In Active Modal Start -->
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : inActiveModalStatus}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title" style="margin: 0 auto;">Are you sure you want to Reject this Draw C/P Platform?</h4>
+                        <button class="cst-modal__close" (click)="hideInActiveModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__footer">
+                        <button class="cst-modal__button cst-modal__button--inactive" (click)="updateDataStatus()">Reject</button>
+                        <button class="cst-modal__button cst-modal__button--cancel" (click)="hideInActiveModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- In Active Modal End -->
+                
+            <!-- Draw Filter Start -->
+            <div class="content-card" id="drawcpFormDiv" *ngIf="drawRecordsFilterShow" style="margin-left: -10px !important; margin-top: 10px !important">
+                <form [formGroup]="DrawManagementSearchForm" (ngSubmit)="fetchDrawRecords()">
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>CP Form</mat-label>
+                        <mat-select formControlName="formIdSearch" matSelect (selectionChange)="changeCPForm($event)">
+                            <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field  class="full-width" appearance="outline" class="customFormfullWidth">
+                            <mat-label>C/P Date</mat-label>
+                            <input formControlName="cpDateSearch" matInput [max]="current_date"  [matDatepicker]="cpDateSearch" placeholder="C/P Date">
+                            <mat-datepicker-toggle  matSuffix [for]="cpDateSearch"></mat-datepicker-toggle>
+                            <mat-datepicker #cpDateSearch></mat-datepicker>
+                            <mat-error *ngIf="DrawManagementSearchForm.get('cpDateSearch').hasError('required')">
+                                Date is required
+                            </mat-error>
+                        </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel</mat-label>
+                        <mat-select formControlName="vesselIdSearch" matSelect>
+                            <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                   
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charterer</mat-label>
+                        <mat-select formControlName="chartererIdSearch" matSelect (selectionChange)="changeChartererType($event)">
+                            <mat-option *ngFor="let chartererRecordData of chartererRecordData" [ngClass]="{'d-none': chartererRecordData.isActive === 'N'}" [value]="chartererRecordData.id"> {{chartererRecordData.username}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Owner</mat-label>
+                        <mat-select formControlName="ownerIdSearch" matSelect>
+                            <mat-option *ngFor="let ownerRecordData of ownerRecordData" [ngClass]="{'d-none': ownerRecordData.isActive === 'N'}" [value]="ownerRecordData.id"> {{ownerRecordData.username}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Identifier</mat-label>
+                        <mat-select formControlName="drawCPIDSearch" matSelect (selectionChange)="changeCPForm($event)">
+                            <mat-option *ngFor="let drawCPDataData of drawCPDataData" [ngClass]="{'d-none': drawCPDataData.isActive === 'N'}" [value]="drawCPDataData.id"> {{drawCPDataData.id}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <br>
+                <button class="cst-modal__button cst-modal__button--submit "  (click)="resetexecutedForm();" type="reset" >reset</button>
+                   
+                    <button class="cst-modal__button cst-modal__button--submit " type="submit">Search</button>
+                </form>
+            </div>
+        <!-- Draw Filter End -->
+
+        <!-- Draw Filter For Document User Start -->
+        <div class="content-card" *ngIf="drawRecordsFilterForDocumentShow" style="margin-left: -10px !important; margin-top: -29px !important">
+            <form [formGroup]="DrawManagementSearchFormDocument" (ngSubmit)="fetchDrawRecords()">
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Company</mat-label>
+                    <mat-select formControlName="companyIdDocSearch" matSelect (selectionChange)="onChangeCompany($event)">
+                        <mat-option *ngFor="let companyRecordData of companyRecordData" [ngClass]="{'d-none': companyRecordData.isActive === 'N'}" [value]="companyRecordData.id"> {{companyRecordData.companyName}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Owner</mat-label>
+                    <mat-select formControlName="ownerIdDocSearch" matSelect (selectionChange)="onChangeOwner($event)">
+                        <mat-option *ngFor="let ownerRecordData of ownerRecordData" [ngClass]="{'d-none': ownerRecordData.isActive === 'N'}" [value]="ownerRecordData.id"> {{ownerRecordData.username}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Broker</mat-label>
+                    <mat-select formControlName="brokerIdDocSearch" matSelect (selectionChange)="onChangeBroker($event)">
+                        <mat-option *ngFor="let brokerRecordData of brokerRecordData" [ngClass]="{'d-none': brokerRecordData.isActive === 'N'}" [value]="brokerRecordData.id"> {{brokerRecordData.username}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Charterer</mat-label>
+                    <mat-select formControlName="chartererIdDocSearch" matSelect (selectionChange)="changeChartererType($event)">
+                        <mat-option *ngFor="let chartererRecordData of chartererRecordData" [ngClass]="{'d-none': chartererRecordData.isActive === 'N'}" [value]="chartererRecordData.id"> {{chartererRecordData.username}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>CP Form</mat-label>
+                    <mat-select formControlName="formIdDocSearch" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field  class="full-width" appearance="outline" class="customFormfullWidth">
+                        <mat-label>C/P Date </mat-label>
+                        <input formControlName="cpDateDocSearch" [max]="current_date" matInput [matDatepicker]="cpDateDocSearch" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="cpDateDocSearch"></mat-datepicker-toggle>
+                        <mat-datepicker #cpDateDocSearch></mat-datepicker>
+                    </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Vessel</mat-label>
+                    <mat-select formControlName="vesselIdDocSearch" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+             
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Identifier</mat-label>
+                    <mat-select formControlName="drawCPIDDocSearch" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let drawCPDataData of drawCPDataData" [ngClass]="{'d-none': drawCPDataData.isActive === 'N'}" [value]="drawCPDataData.id"> {{drawCPDataData.id}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br>
+                <button class="cst-modal__button cst-modal__button--submit " type="submit">Search</button>
+            </form>
+        </div>
+        <!-- Draw Filter For Document User End -->
+
+        <!-- Draw Datatable Start -->
+            <div class="main-tab" *ngIf="drawRecordsTableShow">
+                <div class="header-row">
+                    <div class="row-col-3" style="float:right">
+                        <mat-form-field floatLabel="never" class="custom-search-field">
+                            <mat-icon class="search">search</mat-icon> <input matInput (keyup)="applyFilterExecuted($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <table mat-table [dataSource]="dataSourceFilter" *ngIf="drawRecordsTableShow" >
+                <ng-container matColumnDef="identifier">
+                    <th mat-header-cell *matHeaderCellDef> Identifier </th>
+                    <td mat-cell *matCellDef="let element"> {{element.identifier}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> CP Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpDateInfo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="companyName" >
+                    <th mat-header-cell *matHeaderCellDef> Company </th>
+                    <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ownerName">
+                    <th mat-header-cell *matHeaderCellDef> Owner </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ownerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="brokerName" >
+                    <th mat-header-cell *matHeaderCellDef> Broker </th>
+                    <td mat-cell *matCellDef="let element"> {{element.brokerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="chartererName">
+                    <th mat-header-cell *matHeaderCellDef> Charter </th>
+                    <td mat-cell *matCellDef="let element"> {{element.chartererName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="vesselName">
+                    <th mat-header-cell *matHeaderCellDef> Vessel </th>
+                    <td mat-cell *matCellDef="let element"> {{element.vesselName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef> Progress </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-progress-bar mode="determinate" value="{{element.progress}}"></mat-progress-bar>    
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="statusInfo">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element" ><h4 class="{{ element.classInfo }}">{{ element.statusInfo }}</h4></td>
+                </ng-container>
+                <ng-container matColumnDef="newAction" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="action-head" > Action </th>
+                        <td mat-cell  *matCellDef="let row" class="action" >
+                          
+                        <button mat-button class="click-icon click-icon--done" *ngIf="isEditView" style="background:#f28a38;" (click)="createNew(row)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">file_copy</mat-icon>
+                        </button>
+                        </td>
+                    </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+           
+            </table>
+            <div class="no_data_found" *ngIf="dataSourceFilter.filteredData.length === 0 && drawRecordsTableShow">
+                No Records Found!
+            </div>
+            <mat-paginator [pageSize]="5"  showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" *ngIf="drawRecordsTableShow" ></mat-paginator>
+
+
+            <button *ngIf="drawRecordsTableShowButton" class="add-item add-item--back-button" style="float:right; margin: 30px !important;" (click)="getTermsReviewData()"> Submit</button>
+        <!-- Draw Datatable End -->
+
+        <!-- Draw Form Div Start -->
+            <div class="content-card" *ngIf="drawFormDivShow" style="margin-top: 10px !important">
+                <form [formGroup]="DrawManagementForm" (ngSubmit)="onSubmit()">
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>CP Form*</mat-label>
+                        <mat-select formControlName="formId" matSelect (selectionChange)="changeCPForm($event)">
+                            <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('formId').hasError('required')"> CP Form Is Required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field  class="customFormfullWidth" appearance="outline">
+                            <mat-label>C/P Date* </mat-label>
+                            <input formControlName="cpDate" matInput [max]="current_date" [matDatepicker]="picker" placeholder="C/P Date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="DrawManagementForm.get('cpDate').hasError('required')">
+                                Date is required
+                            </mat-error>
+                        </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel*</mat-label>
+                        <mat-select formControlName="vesselId" matSelect (selectionChange)="changeVesselEvent($event)">
+                            <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('vesselId').hasError('required')"> Vessel Is Required</mat-error>
+                    </mat-form-field>
+                   
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charterer*</mat-label>
+                        <mat-select formControlName="chartererId" matSelect (selectionChange)="changeChartererType($event)">
+                            <mat-option *ngFor="let chartererRecordData of chartererRecordData" [ngClass]="{'d-none': chartererRecordData.isActive === 'N'}" [value]="chartererRecordData.id"> {{chartererRecordData.username}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('chartererId').hasError('required')"> Charterer Is Required</mat-error>
+                    </mat-form-field>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+        <!-- Draw Form Div End -->
+
+        <!-- Draw Form Div For Document Role User Start -->
+        <div class="content-card" *ngIf="drawFormDivShowForDocumentUser" style="margin-top: 10px !important">
+            <form [formGroup]="DrawManagementFormForDocumentUser" (ngSubmit)="onSubmitDoc()">
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Company</mat-label>
+                    <mat-select formControlName="companyIdDocForm" matSelect (selectionChange)="onChangeCompany($event)">
+                        <mat-option *ngFor="let companyRecordData of companyRecordData" [ngClass]="{'d-none': companyRecordData.isActive === 'N'}" [value]="companyRecordData.id"> {{companyRecordData.companyName}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('companyIdDocForm').hasError('required')"> Company Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Owner</mat-label>
+                    <mat-select formControlName="ownerIdDocForm" matSelect (selectionChange)="onChangeOwner($event)">
+                        <mat-option *ngFor="let ownerRecordData of ownerRecordData" [ngClass]="{'d-none': ownerRecordData.isActive === 'N'}" [value]="ownerRecordData.id"> {{ownerRecordData.username}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('ownerIdDocForm').hasError('required')"> Owner Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Broker</mat-label>
+                    <mat-select formControlName="brokerIdDocForm" matSelect (selectionChange)="onChangeBroker($event)">
+                        <mat-option *ngFor="let brokerRecordData of brokerRecordData" [ngClass]="{'d-none': brokerRecordData.isActive === 'N'}" [value]="brokerRecordData.id"> {{brokerRecordData.username}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('brokerIdDocForm').hasError('required')"> Broker Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Charterer*</mat-label>
+                    <mat-select formControlName="chartererIdDocForm" matSelect (selectionChange)="changeChartererType($event)">
+                        <mat-option *ngFor="let ChartereInfoData of ChartereInfoData" [ngClass]="{'d-none': ChartereInfoData.isActive === 'N'}" [value]="ChartereInfoData.id"> {{ChartereInfoData.username}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('chartererIdDocForm').hasError('required')"> Charterer Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>CP Form*</mat-label>
+                    <mat-select formControlName="formIdDocForm" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('formIdDocForm').hasError('required')"> CP Form Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Vessel*</mat-label>
+                    <mat-select formControlName="vesselIdDocForm" matSelect (selectionChange)="changeVesselEvent($event)">
+                        <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('vesselIdDocForm').hasError('required')"> Vessel Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field  class="customFormfullWidth" appearance="outline">
+                    <mat-label>C/P Date* </mat-label>
+                    <input formControlName="cpDateDocForm" matInput [max]="current_date" [matDatepicker]="picker" placeholder="C/P Date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('cpDateDocForm').hasError('required')">
+                        Date is required
+                    </mat-error>
+                </mat-form-field>
+                <br>
+                <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+            </form>
+        </div>
+        <!-- Draw Form Div For Document Role User End -->
+
+        </div>
+    </div>
+</div>

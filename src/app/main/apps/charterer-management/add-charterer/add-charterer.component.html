@@ -1,0 +1,164 @@
+<div id="add-charterer" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <div class="heading center">
+        <!-- <div>
+            <h2>Broker Management</h2>
+        </div> -->
+
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Charter Management</h2>
+            </div>
+
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a routerLink="/apps/charterer-management"> Charter Management </a> > <b> Add Charter </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Add Charter  </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button routerLink="/apps/charterer-management" class="add-role"> Back </button>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+            <div class="content-card">
+
+                <form [formGroup]="addChartererForm" (ngSubmit)="onSubmit()">
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>User Name *</mat-label>
+                        <input matInput formControlName="username">
+                        <mat-error *ngIf="addChartererForm.get('username').hasError('required')">
+                            User Name is required
+                        </mat-error>
+                        <mat-error *ngIf="addChartererForm.get('username').hasError('username')">
+                            Please enter a valid User Name
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- <select placeholder="select role" id="inputState" (change)="changecompany($event)" formControlName="companyName">
+                        <option value="" hidden>Select Company</option>
+                        <option *ngFor="let company of companyListData" [value]="company.id">{{company.companyName}}</option>
+                    </select>  -->
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>First Name *</mat-label>
+                        <input matInput formControlName="firstName">
+                        <mat-error *ngIf="addChartererForm.get('firstName').hasError('required')">
+                            FirstName is required
+                        </mat-error>
+                        <mat-error *ngIf="addChartererForm.get('firstName').hasError('firstName')">
+                            Please enter a valid FirstName
+                        </mat-error>
+                    </mat-form-field>
+    
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Last Name *</mat-label>
+                        <input matInput formControlName="lastName">
+                        <mat-error *ngIf="addChartererForm.get('lastName').hasError('required')">
+                            LastName is required
+                        </mat-error>
+                        <mat-error *ngIf="addChartererForm.get('lastName').hasError('lastName')">
+                            Please enter a valid LastName
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Password *</mat-label>
+                        <input matInput type="password" formControlName="password">
+                        <mat-error>
+                            Password is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Repeat Password *</mat-label>
+                        <input matInput type="password" formControlName="repassword">
+                        <mat-error *ngIf="addChartererForm.get('repassword').hasError('required')">
+                            Repeat Password is required
+                        </mat-error>
+                        <mat-error *ngIf="!addChartererForm.get('repassword').hasError('required') &&
+                            addChartererForm.get('repassword').hasError('passwordsNotMatching')">
+                            Passwords must match
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Business Phone *</mat-label>
+                        <input type="text" (keypress)="numberOnly($event)" onKeyPress="if(this.value.length==12) return false;" min="10" matInput formControlName="businessPhone">
+                        <mat-error *ngIf="addChartererForm.get('businessPhone').hasError('required')">
+                            BusinessPhone number is required
+                        </mat-error>
+                        <mat-error *ngIf="addChartererForm.get('businessPhone').hasError('businessPhone')">
+                            Please enter a valid business phone number
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- <select class=""  placeholder="select role" (change)="changeRole($event)" formControlName="userRoleId">
+                        <option value="" hidden>Select Role</option>
+                     
+                        <option value="4">{{charterRol}}</option>
+
+                    </select> -->
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Mobile Number *</mat-label>
+                        <input type="text" (keypress)="numberOnly($event)" onKeyPress="if(this.value.length==12) return false;" min="10" matInput formControlName="mobileNo">
+                        <mat-error *ngIf="addChartererForm.get('mobileNo').hasError('required')">
+                            Mobile Number is required
+                        </mat-error>
+                        <mat-error *ngIf="addChartererForm.get('mobileNo').hasError('mobileNo')">
+                            Please enter a valid mobile no
+                        </mat-error>
+                    </mat-form-field>                   
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Email *</mat-label>
+                        <input matInput formControlName="email">
+                        <mat-error *ngIf="addChartererForm.get('email').hasError('required')">
+                            Email is required
+                        </mat-error>
+                        <mat-error *ngIf="addChartererForm.get('email').hasError('email')">
+                            Please enter a valid email address
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label> Location * </mat-label>
+                        <input matInput formControlName="address">
+                        <mat-error *ngIf="addChartererForm.get('address').hasError('required')">
+                            Location is required
+                        </mat-error>
+                        <mat-error *ngIf="addChartererForm.get('address').hasError('address')">
+                            Please enter a valid Location
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- <div class="sc">
+                        <div  class="section" *ngFor="let userMangeName of roleAccessListData">
+                            <div class="head">
+                                <mat-label>{{userMangeName.categoryName}}</mat-label>
+                            </div>
+                            <div *ngFor="let item of userMangeName.alertdata">
+                                <mat-checkbox [name]="item.categoryName" [(ngModel)]="item.selected" (change)="changeSelectAccessPush($event, item, userMangeName.categoryName)" type="checkbox" [checked]="selectall" [ngModelOptions]="{standalone: true}">
+                                    {{item.categoryName}} </mat-checkbox>
+                            </div>
+                        </div>    
+                    </div> -->
+
+                    
+
+                    <button class="cst-modal__button" type="submit">Save</button>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>

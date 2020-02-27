@@ -1,0 +1,153 @@
+<div id="cptp" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Charter Party Trading Platform</h2>
+            </div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/cptp-management"> Charter Party Trading Platform </a> > <b> Start New Trade </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Charterers Are Pleased To Bid Firm To Owners For Reply </h2>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="content-card">
+                <form [formGroup]="CPTPManagementForm" (ngSubmit)="onSubmit()" class="customForm">
+                    
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>CP Time* </mat-label>
+                        <input matInput formControlName="cpTime">
+                        <mat-error *ngIf="CPTPManagementForm.get('cpTime').hasError('required')">
+                            CP Name is required
+                        </mat-error>
+                        <mat-error *ngIf="CPTPManagementForm.get('cpTime').hasError('cpTime')">
+                            Type enter a valid CP Time
+                        </mat-error>
+                    </mat-form-field>
+
+                    <select class="customFormfullWidth" placeholder="select City" formControlName="cpCity"  (change)="onCityChangeEvent($event)" required>
+                        <option [value]="0">--- Select City ---</option>
+                        <option *ngFor="let cityFormData of cityFormData"  [ngClass]="{'d-none': cityFormData.isActive === 'N'}" [value]="cityFormData.id">{{cityFormData.cityName}}</option>
+                    </select>
+
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>C/P Date* </mat-label>
+                        <input formControlName="cpDate" matInput [matDatepicker]="picker" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="CPTPManagementForm.get('cpDate').hasError('required')">
+                            CP Date is required
+                        </mat-error>
+                    </mat-form-field>
+                    <h2 class="customFormfullWidth" style="padding-bottom: 0;"> This fixture is subject to </h2>
+                    <select class="customFormfullWidth" placeholder="This fixture is subject to" formControlName="cpCity"  (change)="onCityChangeEvent($event)" required>
+                        <option [value]="0">--- Select Agreement ---</option>
+                        <option *ngFor="let cityFormData of cityFormData"  [ngClass]="{'d-none': cityFormData.isActive === 'N'}" [value]="cityFormData.id">{{cityFormData.cityName}}</option>
+                    </select>
+                    <h2 class="customFormfullWidth" style="padding-bottom: 0;"> Which is to be lifted by </h2>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Time* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Date* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Date* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charter Party Place* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charter Party Fully Style* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>And Domicile* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Owner's Fully Style* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>And Domicile* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <select class="customFormfullWidth" placeholder="This fixture is subject to" formControlName="cpCity"  (change)="onCityChangeEvent($event)" required>
+                        <option [value]="0">--- As Select Type Of Owner ---</option>
+                        <option *ngFor="let cityFormData of cityFormData"  [ngClass]="{'d-none': cityFormData.isActive === 'N'}" [value]="cityFormData.id">{{cityFormData.cityName}}</option>
+                    </select>
+                    <br>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel's Name* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>IMO Number* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Flag* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Year Built* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Dwat In Matric Tons* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Draft On Summer Marks* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Length Overalll* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Beam* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Holds* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Hatches* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Gear* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Safe Working Load* </mat-label>
+                        <input matInput>
+                    </mat-form-field>
+
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

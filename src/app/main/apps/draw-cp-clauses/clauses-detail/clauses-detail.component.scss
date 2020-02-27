@@ -1,0 +1,257 @@
+@import 'src/@fuse/scss/fuse';
+quick-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    z-index: 99;
+
+    .mat-slide-toggle-content {
+        flex: 1;
+    }
+    .mb-12 {
+        color: #000;
+    }
+    .date__time span {
+        color: #000;
+    }
+ 
+}
+#vessel {
+   
+    
+    .heading {
+        padding: 3rem;
+        h2 {
+            margin: 0;
+            padding-bottom: 2rem;
+        }
+    }
+    .custom-search-field {
+        .mat-form-field-infix {
+            margin-top: -5px;
+        }
+        input {
+            line-height: 30px;
+            margin-top: -5px;
+        }
+        .mat-form-field-flex {
+            padding: 0px 30px;
+        }
+        .mat-form-field-appearance-legacy .mat-form-field-infix {
+            padding-left: 10px;
+        }
+    
+        .search {
+            margin-left: -25px;
+        }
+    
+    }
+    .header-row {
+        display: flex;
+        width: 100%;
+        .row-col-3 {
+            padding: 10px;
+            width: 33.33%;
+        }
+        .row-col-6 {
+            padding: 10px;
+            width: 50%;
+        }
+        a {
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        .home {
+            position: relative;
+            top: 3px;
+        } 
+    }
+    button.add-role {
+        width: 150px;
+        border: none;
+        height: 40px !important;
+        box-shadow: 0px 3px 5px #00000038;
+        cursor: pointer;
+        border-radius: 10px !important;
+        background: #1e88e5;
+        color: #fff;
+    }
+    .mat-elevation-z8 {
+        background: #fff;
+        border-radius: 10px;
+        border-top: 2px solid #1e88e5;
+    }
+    .ui-table table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: initial !important;
+    }
+    .ui-table .ui-table-caption {
+        border-bottom: 0 none;
+        font-weight: 700;
+        background: #fff;
+    }
+    tr{
+        vertical-align: top;
+    height: 59px;
+    }
+    td{
+        padding: 0 0.3% !important ;
+
+    }
+    th,td {
+        text-align: left;
+    font-size: 1.3rem;
+    }
+    .action-button {
+        //common
+        border-radius: 50%;
+        color: #fff;
+        border: none;
+        margin: 0px 5px;
+        box-shadow: 0px 2px 2px #00000080;
+        cursor: pointer;
+        font-size: 30px;
+        justify-content: center;
+        &--edit {
+            // specific
+            background: #f17a20;
+        }
+        &--delete {
+            background: #fe313a;
+        }
+        &--view {
+            background: #1e88e5;
+        }
+    }
+    .cst-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999999999999;
+
+        &--active {
+            display: block;
+            overflow: scroll;
+        }
+
+        &__content {
+            max-width: 540px;
+            width: 100%;
+            border-radius: 10px;
+            margin: 0 auto;
+            background: #fff;
+            margin-top: 120px;
+            border: none !important;
+        }
+        &__header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &__title {
+            color: #333;
+            margin: 0 auto;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        &__close {
+            font-size: 30px;
+            background: transparent;
+            border: none;
+            font-weight: 600;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        &__body {
+            padding: 15px;
+        }
+       
+        &__footer {
+            padding: 25px;
+            text-align: right;
+            padding-bottom: 15px;
+
+        .cst-modal__button {
+            background: #1e88e5;
+            color: #fff;
+            border: none;
+            padding: 7px 25px;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            margin: 0px 15px 0px 0px;
+            letter-spacing: 1px;
+
+        }
+        .cst-modal__close__button {
+            background: #fff;
+            color: #333333a8;
+            padding: 6px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            letter-spacing: 1px;
+
+        }
+      }
+   }
+   .submit-item {
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px #0000009c;
+    cursor: pointer;
+    font-size: 15px;
+    letter-spacing: 0.6px;
+    &--back-button {
+        float: right;
+        background: #1e88e5;
+    }
+}
+   .add-item {
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px #0000009c;
+    cursor: pointer;
+    font-size: 15px;
+    letter-spacing: 0.6px;
+    &--back-button {
+        float: left;
+        background: #f7a000;
+    }
+}
+   span {
+    font-weight: bold;
+    color: #000;
+   }
+   .add-button{
+    background: #1e88e5;
+    color: #fff;
+    padding: 2%;
+    width:7%;
+    border-radius: 79%;
+    cursor: pointer;
+   }
+
+   .angular-editor-textarea{
+       height: 250px;
+   }
+  
+    
+}
+ 

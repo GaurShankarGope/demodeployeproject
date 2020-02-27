@@ -1,0 +1,498 @@
+<div id="vessel-detail" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Vessel Management</h2>
+            </div>
+
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <a
+                        routerLink="/apps/vessel-management"> Vessel
+                        Management </a> > <b> Vessel Detail </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <h2 style="padding-bottom: 0;"> Vessel Detail </h2>
+                    </div>
+                    <div class="row-col-3">
+                        <button class="add-role" routerLink="/apps/vessel-management"> Back </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="content-card">
+                <form [formGroup]="editvesselForm" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>IMO#: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].imo}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Status: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].status_master_name}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Confirm IMO #: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].imo}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Cost: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].cost}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Vessel Name: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].vessel_name}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Scrap Value: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].scrap_value}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Amorization Period: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].amo_period}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Operator Id: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_operator}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Cost of Capital: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].cost_capital}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Builder: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_builder}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Annual Operating Cost: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].annual_cost}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Comment: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].comment_name}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Break-Even Daily Cost: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].be_cost}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Yard Number: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].yard}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Daily Operating Cost: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].daily_cost}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Pandl Club: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].pandl_club}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Port of Registry: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].pandl_club}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Fuel Consumption Total: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].pandl_club}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Owner: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_owner}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Fuel Type 1: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].fuel_type_1}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Ship Manager: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_ship_manager}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Fuel Type 2: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].fuel_type_2}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Call Sign: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].call_sign}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Class Narrative: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].class_narrative}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Built Month: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].built_month}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Built Year: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].built_year}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Age of Ship: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].ship_age}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>New Construction Entry Date: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].construction_entry}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Ice Class: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].ice_class}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Contract Date: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].contract_date}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Cancel Date: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].cancel_date}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Inmarsat Fax: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].in_fax}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Country of Build: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].cb}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Inmarsat Telex: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].in_telex}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Number of Holds: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].number_holds}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Number of Hatches: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].hatches}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Fuel Consumption Main Engine Only: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].fuel_consumption_main_engine_only}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>SMC Company: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].smc_company}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Hull Type: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].hull_type}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>SMC Issued: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].smc_issued}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Main Engine Builder: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].main_engine_builder}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>SMC Issued Date: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].smc_issued_date}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Main Engine Model: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].main_engine_model}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>SMC Expiry Date: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].smc_expiry_date}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Main Engine RPM: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].engine_rpm}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Crew: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].crew}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Main Engine Stroke Type: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].cylinder_stroke}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Crew Nationality: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[1].id_crew_nationality}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Consumption Speed: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].consumption_speed}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Hull Material: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].hull_material}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Cargo Capacities Narrative: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].cargo_capacities_narrative}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Decks Number: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].decks}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Grabs: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].grabs}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Grabs Number: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].grabs_number}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Bulbous Bow: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].bulbows_bow}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Double Bottom: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].dbl_bottom}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Grabs Capacity: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].grabs_capacity}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Bollard Pull: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].bollard_pull}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Double Deck: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].dbl_deck}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Winches: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].winches}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Hull: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].hull_number}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Activity: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_activity}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Delivered: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].grabs_capacity}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Officiers Nationality: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[2].id_officer_nationality}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Survey Month: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].survey_month}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Survey Year: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].survey_year}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Main Engine Type: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_main_engine_type}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Flag: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_ship_flag}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Gear: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].gear}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Grt: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].grt}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Nrt: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].nrt}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Block Coeficient: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].block_coeficient}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>LOA: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].loa}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>LBP: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].lbp}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>TPC: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].tpc}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Beam: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].beam}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Depth: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].depth}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Double Skin: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].dbl_side_skins}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Aux Engine Design: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_aux_engine_design}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Aux Engine Type: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_aux_engine_type}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Group Beneficial owner: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].group_beneficial_owner}}</span></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Main Engine Design: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].id_main_engine_design}}</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Power: <span
+                                    *ngIf="vesseldetailListData && vesseldetailListData[0]">{{vesseldetailListData[0].ship_power}}</span></label>
+                        </div>
+                    </div>
+                </form>
+                <!-- <mat-tab-group>
+                    <mat-tab label="Position">
+                        <p-table #dt [columns]="cols" [value]="PositionListData" [(selection)]="selectedVessels"
+                            dataKey="id" [paginator]="true" [rows]="10">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th style="width: 3em">
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th *ngFor="let col of columns">
+                                        {{col.header}}
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr [pSelectableRow]="rowData">
+                                    <td>
+                                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                                    </td>
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                    <td class="" style="display: inline-flex;">
+                                        <button class="action-button action-button--edit" (click)="editVessel(rowData)">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                        <button class="action-button action-button--delete"
+                                            (click)="showVesselDeleteModal(rowData.id)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                        <button class="action-button action-button--view"
+                                            (click)="detailVessel(rowData)">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </mat-tab>
+                    <mat-tab label="Tracking">
+                        Deepak Panchal
+                    </mat-tab>
+                </mat-tab-group> -->
+            </div>
+        </div>
+    </div>
+</div>

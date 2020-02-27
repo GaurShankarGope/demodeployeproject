@@ -1,0 +1,157 @@
+<div id="ctpt" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-3">
+                <h2>Charter Party Tranding Platform</h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > <b> Charter Party Tranding Platform </b>
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-3">
+                        <button class="add-item add-item--main-button" routerLink="/apps/cptp-management/add"> Start New Trade </button>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                        <mat-form-field floatLabel="never" class="custom-search-field">
+                            <mat-icon class="search">search</mat-icon> <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <table mat-table [dataSource]="dataSource">
+                <!-- Position Column -->
+                <!-- <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> S NO. </th>
+                    <td mat-cell *matCellDef="let row; let i = index;"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="charterPartyTypeName">
+                    <th mat-header-cell *matHeaderCellDef> Charter Party Type  </th>
+                    <td mat-cell *matCellDef="let element"> {{element.charterPartyTypeName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="CharterPartyFormName">
+                    <th mat-header-cell *matHeaderCellDef> CP Form </th>
+                    <td mat-cell *matCellDef="let element"> {{element.CharterPartyFormName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="vesselName">
+                    <th mat-header-cell *matHeaderCellDef> Vessel </th>
+                    <td mat-cell *matCellDef="let element"> {{element.vesselName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ownerName">
+                    <th mat-header-cell *matHeaderCellDef> Owner </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ownerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="chartererName">
+                    <th mat-header-cell *matHeaderCellDef> Charter </th>
+                    <td mat-cell *matCellDef="let element"> {{element.chartererName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="charterBrokerName">
+                    <th mat-header-cell *matHeaderCellDef> Broker Of Charter </th>
+                    <td mat-cell *matCellDef="let element"> {{element.charterBrokerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ownerBrokerName">
+                    <th mat-header-cell *matHeaderCellDef> Owner Of Broker </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ownerBrokerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpDate">
+                    <th mat-header-cell *matHeaderCellDef> CP Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpDate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpTime">
+                    <th mat-header-cell *matHeaderCellDef> CP Time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpTime}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpCity">
+                    <th mat-header-cell *matHeaderCellDef> CP City </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpCity}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpSubject">
+                    <th mat-header-cell *matHeaderCellDef> CP Subject </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpSubject}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpLiftDate">
+                    <th mat-header-cell *matHeaderCellDef> CP Lift Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpLiftDate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpLiftTime">
+                    <th mat-header-cell *matHeaderCellDef> CP Lift Time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpLiftTime}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpLiftCity">
+                    <th mat-header-cell *matHeaderCellDef> CP Lift City </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpLiftCity}} </td>
+                </ng-container> -->
+
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> S NO. </th>
+                    <td mat-cell *matCellDef="let row; let i = index;"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpDate">
+                    <th mat-header-cell *matHeaderCellDef> CP Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpDate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="chartererName">
+                    <th mat-header-cell *matHeaderCellDef> Charter </th>
+                    <td mat-cell *matCellDef="let element"> {{element.chartererName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ownerName">
+                    <th mat-header-cell *matHeaderCellDef> Owner </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ownerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="vesselName">
+                    <th mat-header-cell *matHeaderCellDef> Vessel </th>
+                    <td mat-cell *matCellDef="let element"> {{element.vesselName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef> Progress </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-progress-bar mode="determinate" value="{{element.progress}}"></mat-progress-bar>    
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="statusInfo">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element" ><h4 class="{{ element.classInfo }}">{{ element.statusInfo }}</h4></td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="action-head"> Action </th>
+                    <td mat-cell *matCellDef="let row" class="action">
+                        <button mat-button class="click-icon click-icon--edit">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="editdrawManagementData(row)">
+                                edit</mat-icon>
+                        </button>
+                        <button mat-button class="click-icon click-icon--delete" (click)="showDeleteModal(row.id)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+        <!-- Delete-Modal -->
+        <div class="cst-modal" [ngClass]="{'cst-modal--active' : showModalStatus}">
+            <div class="cst-modal__overlay"></div>
+            <div class="cst-modal__content">
+                <div class="cst-modal__header">
+                    <h4 class="cst-modal__title">"Are you sure you want to delete this record??"</h4>
+                    <button class="cst-modal__close" (click)="showDeleteModal(id)">&times;</button>
+                </div>
+                <div class="cst-modal__footer">
+                    <button class="cst-modal__button cst-modal__button--delete" (click)="deletedrawManagementData()">Delete</button>
+                    <button class="cst-modal__button cst-modal__button--cancel" (click)="showDeleteModal(id)">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <!-- Delete-Modal-end -->
+    </div>
+</div>

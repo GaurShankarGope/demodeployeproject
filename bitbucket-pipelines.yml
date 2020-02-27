@@ -1,0 +1,26 @@
+# This is a sample build configuration for JavaScript.
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:10.15.3
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - npm install
+          - npm install -g @angular/cli
+          - ng build
+          - ls -ltr
+          - cd dist/fuse
+          - pipe: atlassian/aws-s3-deploy:0.2.4
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: 'us-east-1'
+              ACL: "public-read"
+              S3_BUCKET: 'cpfront'
+              LOCAL_PATH: $(pwd)

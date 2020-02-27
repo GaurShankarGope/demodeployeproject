@@ -1,0 +1,64 @@
+<div id="draw" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>Shared Trade </h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a>
+                     >  Shared Trade
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="main-tab">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> Shared Trade </h2>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="tradingId">
+                    <th mat-header-cell *matHeaderCellDef> Fixture </th>
+                    <td mat-cell *matCellDef="let element"> {{element.tradingId}} </td>
+                </ng-container>
+                <ng-container matColumnDef="transferedTo">
+                    <th mat-header-cell *matHeaderCellDef> Shared To </th>
+                    <td mat-cell *matCellDef="let element"> {{element.transferedTo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                </ng-container>
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef> Time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+                </ng-container>
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef> View Recap </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-button class="click-icon click-icon--done"  style="background:#f28a38;" 
+                        (click)="recapView(element.tradingId)">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">remove_red_eye</mat-icon>
+                    </button>
+                    <!-- <h4 [ngClass]="{'d-none': element.progress == 100}" >In Progress</h4> -->
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div class="no_data_found" *ngIf="dataSource.filteredData.length === 0">
+                No Records Found!
+            </div>
+            <mat-paginator #paginator showFirstLastButtons showFirstLastButtons [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+        </div>
+    </div>
+</div>

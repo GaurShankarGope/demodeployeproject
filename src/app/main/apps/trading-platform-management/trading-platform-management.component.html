@@ -1,0 +1,822 @@
+<div id="trading" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="heading center">
+        <div class="header-row">
+            <div class="row-col-9">
+                <h2>Trading Platform</h2>
+            </div>
+            <div class="row-col-6"></div>
+            <div class="row-col-3">
+                <div style="float: right;">
+                    <mat-icon class="home">home</mat-icon> <a routerLink="/apps/dashboards/analytics"> Home </a> > Trading Platform
+                </div>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <!-- Trading Records Start -->
+            <div class="main-tab" *ngIf="tradeRecordsDiv">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> My Trade </h2>
+                    </div>
+                    <div class="row-col-6"></div>
+                    <div class="row-col-3">
+                        <button *ngIf="createTradeButtonView" class="add-item add-item--main-button" style="float:right" (click)="divShowHide(2)"> Create Trade </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Trading Records End -->
+            <!-- Trading Form Start -->
+            <div class="main-tab" *ngIf="tradingFormDiv">
+                <div class="header-row">
+                    <div class="row-col-9">
+                        <h2 style="padding-bottom: 0;"> Select Trade </h2>
+                    </div>
+                    <div class="row-col-6"></div>
+
+                    <div class="row-col-3">
+                        <button class="add-item add-item--back-button" style="float:right" (click)="divShowHide(1)"> Back </button>
+                    </div>
+                </div>
+            </div>
+            <hr *ngIf="tradingFormDiv">
+            <!-- Trading Form End -->
+            <!-- Trading Records Start -->
+            <table mat-table [dataSource]="tradingRecordsData" *ngIf="tradeRecordsDiv">
+                <ng-container matColumnDef="identifier">
+                    <th mat-header-cell *matHeaderCellDef> Identifier </th>
+                    <td mat-cell *matCellDef="let element"> {{element.identifier}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> CP Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpDateInfo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="brokerName">
+                    <th mat-header-cell *matHeaderCellDef [ngClass]="{'d-none': isBrokerView === 'Y'}"> Broker </th>
+                    <td mat-cell *matCellDef="let element" [ngClass]="{'d-none': isBrokerView === 'Y'}"> {{element.brokerName}} ( {{ element.cityName }} ) </td>
+                </ng-container>
+                <ng-container matColumnDef="chartererName">
+                    <th mat-header-cell *matHeaderCellDef [ngClass]="{'d-none': isChartererView === 'Y'}"> Charterer </th>
+                    <td mat-cell *matCellDef="let element" [ngClass]="{'d-none': isChartererView === 'Y'}"> {{element.chartererName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ownerName">
+                    <th mat-header-cell *matHeaderCellDef [ngClass]="{'d-none': isOwnerView === 'Y'}"> Owner </th>
+                    <td mat-cell *matCellDef="let element" [ngClass]="{'d-none': isOwnerView === 'Y'}"> {{element.ownerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="vesselName">
+                    <th mat-header-cell *matHeaderCellDef> Vessel </th>
+                    <td mat-cell *matCellDef="let element"> {{element.vesselName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef> Progress </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-progress-bar mode="determinate" value="{{element.progress}}"></mat-progress-bar>    
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="statusInfo">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element" ><h4 class="{{ element.classInfo }}">{{ element.statusInfo }}</h4></td>
+                </ng-container>
+                <ng-container matColumnDef="isChartererAccepted" >
+
+                    <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="action-head" 
+                        [ngClass]="{'d-none': isChartererView === 'N' || isChartererView != 'Y' }"
+                    > 
+                        {{ acceptRejectTitle }}
+                    
+                    </th>
+
+                    <td mat-cell *matCellDef="let row" class="action" 
+                        
+                        [ngClass]="{'d-none': isChartererView === 'N'}" >
+                        
+                        <button 
+                            [ngClass]="{'d-none': row.isChartererAccepted != 'P' || isChartererView != 'Y' }" 
+                            mat-button class="click-icon click-icon--done"
+                            (click)="showActiveModal('Y', row.id,row.ownerId,row.chartererId,row.brokerId)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">done</mat-icon>
+                        </button>
+
+                        <h4 style="font-size: 22px;font-weight: bold; color: #23da28;" [ngClass]="{'d-none': row.isChartererAccepted != 'Y' || isChartererView != 'Y' }" >{{ row.trade_type }}</h4>
+
+                        <button [ngClass]="{'d-none': row.isChartererAccepted != 'P' || isChartererView != 'Y'}" mat-button class="click-icon click-icon--clear" [disabled]="row.isChartererAccepted === 'N'"
+                            (click)="showInActiveModal('N', row.id,row.ownerId,row.chartererId,row.brokerId)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
+                        </button>
+
+                        <h4 style="font-size: 22px;font-weight: bold; color: #78b8ef;" [ngClass]="{'d-none': row.isChartererAccepted != 'N' || isChartererView != 'Y'}">Boycotted</h4>
+                        
+                    </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="isOwnerAccepted" >
+                   
+                    <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="action-head" 
+                        [ngClass]="{'d-none': isOwnerView == 'N'}"
+                    > 
+                        {{ acceptRejectTitle }}
+                    
+                    </th>
+
+                    <td mat-cell  *matCellDef="let row" class="action" [ngClass]="{'d-none': isOwnerView === 'N'}">
+                        
+                        <button 
+                                [ngClass]="{'d-none': row.isOwnerAccepted != 'P'}"  
+                                mat-button class="click-icon click-icon--done" 
+                                [disabled]="row.isOwnerAccepted === 'Y'"
+                                (click)="showActiveModal('Y', row.id,row.ownerId,row.chartererId)"
+                        >
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">done</mat-icon>
+                        </button>
+
+                        <h4 style="font-size: 22px;font-weight: bold; color: #23da28;" [ngClass]="{'d-none': row.isOwnerAccepted != 'Y'}" >{{ row.trade_type }}</h4>
+
+
+                        <button [ngClass]="{'d-none': row.isOwnerAccepted != 'P'}" mat-button class="click-icon click-icon--clear" [disabled]="row.isOwnerAccepted === 'N'"
+                            (click)="showInActiveModal('N', row.id,row.ownerId,row.chartererId)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
+                        </button>
+
+                        <h4 style="font-size: 22px;font-weight: bold; color: #78b8ef;" [ngClass]="{'d-none': row.isOwnerAccepted != 'N'}">Boycotted</h4>
+                        
+                    </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="approvalStatus" >
+                   
+                    <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="action-head" 
+                        [ngClass]="{'d-none': is_broker_approval === '2' || isBrokerView == 'N'}"
+                    > 
+                        Approval Request
+                    
+                    </th>
+                    <td mat-cell  *matCellDef="let row" class="action" [ngClass]="{'d-none': row.is_broker_approval === '2' || isBrokerView == 'N'}">
+                        <h4 style="font-size: 22px;font-weight: bold; color: #78b8ef;" [ngClass]="{'d-none': row.is_broker_approval == '2' || isBrokerView == 'N'}">Approval Request</h4>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ownershipChange" >
+                   
+                    <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="action-head" 
+                        [ngClass]="{'d-none': isOwnerView == 'N'}"
+                    > 
+                        Change Ownership
+                    
+                    </th>
+                    <td mat-cell  *matCellDef="let row" class="action" [ngClass]="{'d-none': isOwnerView == 'N'}">
+                        <select (change)="changeOwnerShip($event,row.identifier,row.brokerId,row.chartererId,row.id)" style="padding: 10px;
+                        font-size: 14px;
+                        font-weight: bold;">
+                            <option value="0"> Select Owner </option>
+                            <option 
+                                *ngFor="let ownerData of ownerRecordsServerSideResponseData"
+                                [ngClass]="{'d-none': ownerData.isActive === 'N' || row.ownerId == ownerData.id }" 
+                                [value]="ownerData.id"
+                            > 
+                                {{ownerData.username}}
+                            </option>
+                        </select>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action" >
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="action-head"> Action </th>
+                    <td mat-cell  *matCellDef="let row" class="action">
+
+                        <!-- Broker Edit Button Start -->
+                        <button 
+                            [ngClass]="{'d-none': isBrokerView == 'N' || row.isDetailTermDone == '1' }" 
+                            mat-button class="click-icon click-icon--done"  style="background:#f28a38;"
+                            (click)="editView(row.id)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">edit</mat-icon>
+                        </button>
+                        <!-- Broker Edit Button End -->
+
+                        <!-- Charterer Edit Button Start -->
+                        <button 
+                            [ngClass]="{'d-none': row.isChartererAccepted != 'Y' || isChartererView == 'N' || row.isDetailTermDone == '1' }" 
+                            mat-button class="click-icon click-icon--done"  style="background:#f28a38;"
+                            (click)="editView(row.id)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">edit</mat-icon>
+                        </button>
+                        <!-- Charterer Edit Button End -->
+
+                        <!-- Owner Edit Button Start -->
+                        <button 
+                            [ngClass]="{'d-none': row.isOwnerAccepted != 'Y' || isOwnerView == 'N' || row.isDetailTermDone == '1' }" 
+                            mat-button class="click-icon click-icon--done"  style="background:#f28a38;"
+                            (click)="editView(row.id)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">edit</mat-icon>
+                        </button>
+                        <!-- Owner Edit Button End -->
+
+                        <!-- Recap View Button Start -->
+                        <button 
+                            [ngClass]="{'d-none': row.isMainTermDone != '1'}" 
+                            mat-button class="click-icon click-icon--done"  style="background:#f28a38;"
+                            (click)="recapView(row.id)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">remove_red_eye</mat-icon>
+                        </button>
+                        <!-- Recap Viwe Edit Button End -->
+  <!-- Share trade Button Start -->
+  <button mat-button class="click-icon click-icon--done" style="background:#f28a38;"
+  (click)="changeTradeModal(row.identifier,row.brokerId,row.chartererId,row.ownerId,row.id)">
+  <mat-icon aria-hidden="false" aria-label="Example share icon">share</mat-icon>
+</button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="tradingRecordsDisplayColumn"></tr>
+                <tr mat-row *matRowDef="let row; columns: tradingRecordsDisplayColumn;"></tr>
+            </table>
+            <ng-container *ngIf="tradeRecordsDiv">
+                <div class="no_data_found" *ngIf="tradingRecordsData.filteredData.length === 0">
+                    No Records Found!
+                </div>
+            </ng-container>
+            
+            <mat-paginator #paginator  [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" *ngIf="tradeRecordsDiv" ></mat-paginator>
+            <!-- Trading Records End -->
+            <!-- Std Div Start -->
+            
+            <mat-radio-group *ngIf="tradingFormDiv" aria-label="Please select the applicable Charter Party." class="customFormfullWidth" style="margin-top: 20px;">
+                <!-- <mat-label class="labelCustom">Please select the applicable Charter Party.</mat-label> -->
+                <br>
+                <mat-radio-button 
+                style="margin-left: 40px !important; margin-top: 20px !important; margin-bottom: 20px !important; " 
+                class="customFormfullWidth" 
+                [value]="1" 
+                (click)="setApplicabelCharterParty(1)"> Executed Charter Party </mat-radio-button>
+
+                <mat-radio-button 
+                style="margin-left: 40px !important; margin-top: 20px !important; margin-bottom: 20px !important; " 
+                class="customFormfullWidth" 
+                [value]="2" 
+                (click)="setApplicabelCharterParty(2)"> Proforma Charter Party </mat-radio-button>
+                <mat-radio-button 
+                style="margin-left: 40px !important; margin-top: 20px !important; margin-bottom: 20px !important; " 
+                class="customFormfullWidth" 
+                [value]="3" 
+                (click)="setApplicabelCharterParty(3)">Standard bids + Offers </mat-radio-button>
+            </mat-radio-group>
+            <div class="content-card" *ngIf="tradingbids" style="margin-top: -25px !important">
+                <form [formGroup]="tradingForm" (ngSubmit)="tradingFormSubmit()">
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Trade Type</mat-label>
+                        <mat-select formControlName="tradeType" matSelect (selectionChange)="setTradeFormView($event)">
+                            <mat-option [value]="1"> Bid </mat-option>
+                            <mat-option [value]="2"> Offer </mat-option>
+                            <!-- <mat-option [value]="3"> Both</mat-option> -->
+                        </mat-select>
+                        <mat-error *ngIf="tradingForm.get('tradeType').hasError('required')"> Trade Type Is Required</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="tradeChartererView || tradeOwnerView" class="customFormfullWidth" appearance="outline">
+                        <mat-label>Saved {{ bidNameLabelDropdown }}</mat-label>
+                        <mat-select formControlName="savedBids" matSelect (selectionChange)="setBIDNAME($event)">
+                            <mat-option *ngFor="let savedBidData of savedBidRecordsResponseData" [ngClass]="{'d-none': savedBidData.isActive === 'N'}" 
+                            [value]="savedBidData.id"> {{savedBidData.bid_name}} - Fixture - {{savedBidData.tradingId}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="tradeBothView" class="customFormfullWidth" appearance="outline">
+                        <mat-label> {{ bidNameLabel }}* </mat-label>
+                        <input matInput formControlName="std_bid_name" >
+                        <mat-error *ngIf="tradingForm.get('std_bid_name').hasError('required')"> {{ bidNameLabel }} is required </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="tradeChartererView" class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charterer*</mat-label>
+                        <mat-select formControlName="chartererId" matSelect (selectionChange)="onChangeCharterer($event)">
+                            <mat-option *ngFor="let chartererData of chartererRecordsServerSideResponseData" [ngClass]="{'d-none': chartererData.isActive === 'N'}" 
+                            [value]="chartererData.id"> {{chartererData.username}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="tradingForm.get('chartererId').hasError('required')"> Charterer Is Required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="tradeOwnerView" class="customFormfullWidth" appearance="outline">
+                        <mat-label>Owner*</mat-label>
+                        <mat-select formControlName="ownerId" [disabled]="ownerStatusInfo == 'Y'"  matSelect (selectionChange)="onChangeOwner($event)" >
+                            <mat-option *ngFor="let ownerData of ownerRecordsServerSideResponseData" [ngClass]="{'d-none': ownerData.isActive === 'N'}" 
+                            [value]="ownerData.id" > {{ownerData.username}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="tradingForm.get('ownerId').hasError('required')"> Owner Is Required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="tradeOwnerView" class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel*</mat-label>
+                        <mat-select formControlName="vesselId"  matSelect >
+                            <mat-option *ngFor="let vesselData of vesselRecordsServerSideResponseData" [ngClass]="{'d-none': vesselData.isActive === 'N'}" 
+                            [value]="vesselData.id" > {{vesselData.vessel_name}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="tradingForm.get('vesselId').hasError('required')"> Vessel Is Required</mat-error>
+                    </mat-form-field>
+                    <button *ngIf="tradeBothView" style="margin-right: 200px; margin-top: 10px;" class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+                <br>
+                <br>
+                <br>
+                    
+
+                <table *ngIf="tradeSubmitInformationView"
+                    style="
+                        background: white;
+                        border: 0.1px #e2e2e2 solid;
+                        /* border-radius: 50px; */
+                        padding: 1%;
+                        margin-top: -80px;
+                        clear: both;
+                        width: 90%;
+                        margin-left: 50px;
+                        margin-bottom: 60px;
+                    "
+                >
+                    <tr style="text-align: center;">
+                        <th>
+                            <table>
+                                <tr>
+                                    <th colspan="5" style="padding: 10px;background: #1e88e5;color: white;font-size: 22px;margin-bottom: 10px; border-radius: 5px;">
+                                        Counter Parties
+                                    </th>
+                                </tr>
+                                <tr style="text-align: center;">
+                                    <th style="border: 1px #bababa solid;font-size: 22px;font-weight: bold;">Invited User</th>
+                                    <th style="border: 1px #bababa solid;font-size: 22px;font-weight: bold;">Role</th>
+                                    <th style="border: 1px #bababa solid;font-size: 22px;font-weight: bold;">Email</th>
+                                    <th style="border: 1px #bababa solid;font-size: 22px;font-weight: bold;">Mobile</th>
+                                    <th style="border: 1px #bababa solid;font-size: 22px;font-weight: bold;">Status</th>
+                                </tr>
+                                <tr style="text-align: center;">
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> {{ ownerName }} </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> Owner </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> {{ ownerEmailID }} </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> {{ ownerMobileNumber }} </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> Pending </td>
+                                </tr>
+                                <tr style="text-align: center;">
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> {{ chartererName }} </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> Charterer </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> {{ chartererEmailID }} </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> {{ chartererMobileNumber }} </td>
+                                    <td style="border: 1px #bababa solid;font-size: 22px;color: #474343;font-weight: bold;"> Pending </td>
+                                </tr>
+                            </table>
+                        </th>
+                    </tr>
+
+                    <tr><th><button class="cst-modal__button cst-modal__button--submit " (click)="editView(tradingId)" type="submit">Continue</button></th></tr>
+                </table>
+            </div>
+                        <!-- Draw Filter Start -->
+            <div class="content-card" id="drawcpFormDiv" *ngIf="drawRecordsFilterShow" style="margin-left: -10px !important; margin-top: 10px !important">
+                <form [formGroup]="DrawManagementSearchForm" (ngSubmit)="fetchDrawRecords()">
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>CP Form</mat-label>
+                        <mat-select formControlName="formIdSearch" matSelect (selectionChange)="changeCPForm($event)">
+                            <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel</mat-label>
+                        <mat-select formControlName="vesselIdSearch" matSelect>
+                            <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field  class="full-width" appearance="outline" class="customFormfullWidth">
+                        <mat-label>C/P Date </mat-label>
+                        <input formControlName="cpDateSearch" [max]="current_date" matInput [max]="current_date" [matDatepicker]="cpDateSearch" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="cpDateSearch"></mat-datepicker-toggle>
+                        <mat-datepicker #cpDateSearch></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charterer</mat-label>
+                        <mat-select formControlName="chartererIdSearch" matSelect (selectionChange)="changeChartererType($event)">
+                            <mat-option *ngFor="let chartererRecordData of chartererRecordData" [ngClass]="{'d-none': chartererRecordData.isActive === 'N'}" [value]="chartererRecordData.id"> {{chartererRecordData.username}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Owner</mat-label>
+                        <mat-select formControlName="ownerIdSearch" matSelect >
+                            <mat-option *ngFor="let ownerData of ownerRecordsServerSideResponseData" [ngClass]="{'d-none': ownerData.isActive === 'N'}" [value]="ownerData.id"> {{ownerData.username}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Identifier</mat-label>
+                        <mat-select formControlName="drawCPIDSearch" matSelect (selectionChange)="changeCPForm($event)">
+                            <mat-option *ngFor="let drawCPDataData of drawCPDataData" [ngClass]="{'d-none': drawCPDataData.isActive === 'N'}" [value]="drawCPDataData.id"> {{drawCPDataData.id}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <br>
+                <button class="cst-modal__button cst-modal__button--submit " type="reset" (click)="resetexecutedForm();" >reset</button>
+
+                    <button class="cst-modal__button cst-modal__button--submit " type="submit">Search</button>
+                </form>
+
+            </div>
+        <!-- Draw Filter End -->
+
+        <!-- Draw Filter For Document User Start -->
+        <div class="content-card" *ngIf="drawRecordsFilterForDocumentShow" style="margin-left: -10px !important; margin-top: -29px !important">
+            <form [formGroup]="DrawManagementSearchFormDocument" (ngSubmit)="fetchDrawRecords()">
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Company</mat-label>
+                    <mat-select formControlName="companyIdDocSearch" matSelect (selectionChange)="onChangeCompany($event)">
+                        <mat-option *ngFor="let companyRecordData of companyRecordData" [ngClass]="{'d-none': companyRecordData.isActive === 'N'}" [value]="companyRecordData.id"> {{companyRecordData.companyName}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Owner</mat-label>
+                    <mat-select formControlName="ownerIdDocSearch" matSelect (selectionChange)="onChangeOwner($event)">
+                        <mat-option *ngFor="let ownerRecordData of ownerRecordData" [ngClass]="{'d-none': ownerRecordData.isActive === 'N'}" [value]="ownerRecordData.id"> {{ownerRecordData.username}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Broker</mat-label>
+                    <mat-select formControlName="brokerIdDocSearch" matSelect (selectionChange)="onChangeBroker($event)">
+                        <mat-option *ngFor="let brokerRecordData of brokerRecordData" [ngClass]="{'d-none': brokerRecordData.isActive === 'N'}" [value]="brokerRecordData.id"> {{brokerRecordData.username}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Charterer</mat-label>
+                    <mat-select formControlName="chartererIdDocSearch" matSelect (selectionChange)="changeChartererType($event)">
+                        <mat-option *ngFor="let chartererRecordData of chartererRecordData" [ngClass]="{'d-none': chartererRecordData.isActive === 'N'}" [value]="chartererRecordData.id"> {{chartererRecordData.username}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>CP Form</mat-label>
+                    <mat-select formControlName="formIdDocSearch" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Vessel</mat-label>
+                    <mat-select formControlName="vesselIdDocSearch" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field  class="full-width" appearance="outline" class="customFormfullWidth">
+                    <mat-label>C/P Date* </mat-label>
+                    <input formControlName="cpDateDocSearch" [max]="current_date" matInput [matDatepicker]="cpDateDocSearch" placeholder="C/P Date">
+                    <mat-datepicker-toggle matSuffix [for]="cpDateDocSearch"></mat-datepicker-toggle>
+                    <mat-datepicker #cpDateDocSearch></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Identifier</mat-label>
+                    <mat-select formControlName="drawCPIDDocSearch" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let drawCPDataData of drawCPDataData" [ngClass]="{'d-none': drawCPDataData.isActive === 'N'}" [value]="drawCPDataData.id"> {{drawCPDataData.id}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br>
+                <button class="cst-modal__button cst-modal__button--submit " type="submit">Search</button>
+            </form>
+        </div>
+        <!-- Draw Filter For Document User End -->
+
+        <!-- Draw Datatable Start -->
+            <div class="main-tab" *ngIf="drawRecordsTableShow">
+                <div class="header-row">
+                    <div class="row-col-3" style="float:right">
+                        <mat-form-field floatLabel="never" class="custom-search-field">
+                            <mat-icon class="search">search</mat-icon> <input matInput (keyup)="applyFilterExecuted($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <table mat-table [dataSource]="dataSourceFilter" *ngIf="drawRecordsTableShow" >
+                <ng-container matColumnDef="identifier">
+                    <th mat-header-cell *matHeaderCellDef> Identifier </th>
+                    <td mat-cell *matCellDef="let element"> {{element.identifier}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpDateInfo">
+                    <th mat-header-cell *matHeaderCellDef> CP Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpDateInfo}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="ownerName">
+                    <th mat-header-cell *matHeaderCellDef> Owner </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ownerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="brokerName" >
+                    <th mat-header-cell *matHeaderCellDef> Broker </th>
+                    <td mat-cell *matCellDef="let element"> {{element.brokerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="chartererName">
+                    <th mat-header-cell *matHeaderCellDef> Charter </th>
+                    <td mat-cell *matCellDef="let element"> {{element.chartererName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="vesselName">
+                    <th mat-header-cell *matHeaderCellDef> Vessel </th>
+                    <td mat-cell *matCellDef="let element"> {{element.vesselName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef> Progress </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-progress-bar mode="determinate" value="{{element.progress}}"></mat-progress-bar>    
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="statusInfo">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element" ><h4 class="{{ element.classInfo }}">{{ element.statusInfo }}</h4></td>
+                </ng-container>
+                <ng-container matColumnDef="newAction" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="action-head" > Action </th>
+                        <td mat-cell  *matCellDef="let row" class="action" >
+                          
+                        <button mat-button class="click-icon click-icon--done" *ngIf="isEditView" style="background:#f28a38;" (click)="executedFormSubmit(row.id,row.identifier)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">file_copy</mat-icon>
+                        </button>
+                        </td>
+                    </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+           
+            </table>
+            <ng-container *ngIf="drawRecordsTableShow">
+                <div class="no_data_found"   *ngIf="tradingRecordsData.filteredData.length === 0">
+                    No Records Found!
+                </div>
+            </ng-container>
+           
+            <mat-paginator [pageSize]="5" showFirstLastButtons [pageSizeOptions]="[5, 10, 20]" *ngIf="drawRecordsTableShow" ></mat-paginator>
+
+
+            <button *ngIf="drawRecordsTableShowButton" class="add-item add-item--back-button" style="float:right; margin: 30px !important;" (click)="getTermsReviewData()"> Submit</button>
+        <!-- Draw Datatable End -->
+
+        <!-- Draw Form Div Start -->
+            <div class="content-card" *ngIf="drawFormDivShow" style="margin-top: 10px !important">
+                <form [formGroup]="DrawManagementForm" (ngSubmit)="tradingFormSubmitPerfoma()">
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>CP Form*</mat-label>
+                        <mat-select formControlName="formId" matSelect (selectionChange)="changeCPForm($event)">
+                            <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('formId').hasError('required')"> CP Form Is Required</mat-error>
+                    </mat-form-field>
+                      <mat-form-field  class="customFormfullWidth" appearance="outline">
+                        <mat-label>C/P Date* </mat-label>
+                        <input formControlName="cpDate" matInput [max]="current_date" [matDatepicker]="picker" placeholder="C/P Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="DrawManagementForm.get('cpDate').hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Vessel*</mat-label>
+                        <mat-select formControlName="vesselId" matSelect (selectionChange)="changeVesselEvent($event)">
+                            <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('vesselId').hasError('required')"> Vessel Is Required</mat-error>
+                    </mat-form-field>
+                  
+                    <mat-form-field class="customFormfullWidth" appearance="outline">
+                        <mat-label>Charterer*</mat-label>
+                        <mat-select formControlName="chartererId" matSelect (selectionChange)="changeChartererType($event)">
+                            <mat-option *ngFor="let chartererRecordData of chartererRecordData" [ngClass]="{'d-none': chartererRecordData.isActive === 'N'}" [value]="chartererRecordData.id"> {{chartererRecordData.username}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="DrawManagementForm.get('chartererId').hasError('required')"> Charterer Is Required</mat-error>
+                    </mat-form-field>
+                    <br>
+                    <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+                </form>
+            </div>
+        <!-- Draw Form Div End -->
+
+        <!-- Draw Form Div For Document Role User Start -->
+        <div class="content-card" *ngIf="drawFormDivShowForDocumentUser" style="margin-top: 10px !important">
+            <form [formGroup]="DrawManagementFormForDocumentUser" (ngSubmit)="onSubmitDoc()">
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Company</mat-label>
+                    <mat-select formControlName="companyIdDocForm" matSelect (selectionChange)="onChangeCompany($event)">
+                        <mat-option *ngFor="let companyRecordData of companyRecordData" [ngClass]="{'d-none': companyRecordData.isActive === 'N'}" [value]="companyRecordData.id"> {{companyRecordData.companyName}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('companyIdDocForm').hasError('required')"> Company Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Owner</mat-label>
+                    <mat-select formControlName="ownerIdDocForm" matSelect (selectionChange)="onChangeOwner($event)">
+                        <mat-option *ngFor="let ownerRecordData of ownerRecordData" [ngClass]="{'d-none': ownerRecordData.isActive === 'N'}" [value]="ownerRecordData.id"> {{ownerRecordData.username}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('ownerIdDocForm').hasError('required')"> Owner Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Broker</mat-label>
+                    <mat-select formControlName="brokerIdDocForm" matSelect (selectionChange)="onChangeBroker($event)">
+                        <mat-option *ngFor="let brokerRecordData of brokerRecordData" [ngClass]="{'d-none': brokerRecordData.isActive === 'N'}" [value]="brokerRecordData.id"> {{brokerRecordData.username}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('brokerIdDocForm').hasError('required')"> Broker Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Charterer*</mat-label>
+                    <mat-select formControlName="chartererIdDocForm" matSelect (selectionChange)="changeChartererType($event)">
+                        <mat-option *ngFor="let ChartereInfoData of ChartereInfoData" [ngClass]="{'d-none': ChartereInfoData.isActive === 'N'}" [value]="ChartereInfoData.id"> {{ChartereInfoData.username}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('chartererIdDocForm').hasError('required')"> Charterer Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>CP Form*</mat-label>
+                    <mat-select formControlName="formIdDocForm" matSelect (selectionChange)="changeCPForm($event)">
+                        <mat-option *ngFor="let cpFormData of cpFormData" [ngClass]="{'d-none': cpFormData.isActive === 'N'}" [value]="cpFormData.id"> {{cpFormData.cpformName}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('formIdDocForm').hasError('required')"> CP Form Is Required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="customFormfullWidth" appearance="outline">
+                    <mat-label>Vessel*</mat-label>
+                    <mat-select formControlName="vesselIdDocForm" matSelect (selectionChange)="changeVesselEvent($event)">
+                        <mat-option *ngFor="let VesselData of VesselData" [ngClass]="{'d-none': VesselData.isActive === 'N'}" [value]="VesselData.id"> {{VesselData.vessel_name}} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('vesselIdDocForm').hasError('required')"> Vessel Is Required</mat-error>
+                </mat-form-field>
+                <!-- <mat-form-field  class="customFormfullWidth" appearance="outline">
+                    <mat-label>C/P Date* </mat-label>
+                    <input formControlName="cpDateDocForm" matInput [max]="current_date" [matDatepicker]="picker" placeholder="C/P Date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="DrawManagementFormForDocumentUser.get('cpDateDocForm').hasError('required')">
+                        Date is required
+                    </mat-error>
+                </mat-form-field> -->
+                <br>
+                <button class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button>
+            </form>
+        </div>
+        <!-- Draw Form Div For Document Role User End -->
+
+            <!-- Std Div End -->
+            <!-- Active Modal  Start -->
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : activeModalStatus}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title" style="margin: 0 auto;"> Do you want to participate this Trade ?</h4>
+                        <button class="cst-modal__close" (click)="hideActiveModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__footer">
+                        <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;" (click)="performaFormSubmit()">Participate</button>
+                        <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;" (click)="hideActiveModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Active Modal End -->
+            <!-- In Active Modal Start -->
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : inActiveModalStatus}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title" style="margin: 0 auto;"> Do you want to boycott this Trade finally?</h4>
+                        <button class="cst-modal__close" (click)="hideInActiveModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__footer">
+                        <button class="cst-modal__button cst-modal__button--inactive" style="width: 110px !important;" (click)="acceptRejectChartererOwnerTradeRequest()">Boycott</button>
+                        <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;" (click)="hideInActiveModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- In Active Modal End -->
+            <!-- Action Type Modal Start -->
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : actionTypeModal}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title" style="margin: 0 auto;"> Choose In Which You Want To Participate On This Trade ?</h4>
+                        <button class="cst-modal__close" (click)="hideActionTypeModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__footer">
+                        <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;" (click)="showPerformaModal()">Proforma</button>
+                        <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;" (click)="showExecutedModal()">Executed</button>
+                        <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;" (click)="hideActionTypeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Action Type Modal End -->
+            <!-- Performa Modal Start -->
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : performaModal}">
+                <div class="cst-modal__overlay"></div>
+                <div class="cst-modal__content">
+                    <div class="cst-modal__header">
+                        <h4 class="cst-modal__title" style="margin: 0 auto;"> Please select CP FORM to continue</h4>
+                        <button class="cst-modal__close" (click)="hidePerformaModal()">&times;</button>
+                    </div>
+                    <div class="cst-modal__body">
+                        <form [formGroup]="performaForm">
+                            <mat-form-field class="customFormfullWidth" appearance="outline">
+                                <mat-label>CP FORM*</mat-label>
+                                <mat-select formControlName="cpFormId" matSelect>
+                                    <mat-option *ngFor="let performaData of cpFormRecordsServerSideResponseData" [ngClass]="{'d-none': performaData.isActive === 'N'}" 
+                                    [value]="performaData.id"> {{performaData.cpformName}} </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="performaForm.get('cpFormId').hasError('required')"> CP FORM Is Required</mat-error>
+                            </mat-form-field>
+                            <button class="cst-modal__button cst-modal__button--cancel" style="width: 150px !important;margin-right: -30px;background: #f48730;" (click)="hidePerformaModal();">Cancel</button>
+                            <button style="width: 150px;" class="cst-modal__button cst-modal__button--submit" (click)="performaFormSubmit()">Submit</button>
+                        </form>
+                    </div>
+                    <div class="cst-modal__footer">
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- Performa Modal End -->
+            <!-- Executed Modal Start -->
+            <div class="cst-modal" [ngClass]="{'cst-modal--active' : executedModal}">
+            <div class="cst-modal__overlay"></div>
+            <div class="cst-modal__content">
+                <div class="cst-modal__header">
+                    <h4 class="cst-modal__title" style="margin: 0 auto;"> Please select Fixture to continue</h4>
+                    <button class="cst-modal__close" (click)="hideExecutedModal()">&times;</button>
+                </div>
+                <div class="cst-modal__body">
+                    <form [formGroup]="executedForm" >
+                        <mat-form-field class="customFormfullWidth" appearance="outline">
+                            <mat-label>Fixture*</mat-label>
+                            <mat-select formControlName="copyTradingId" matSelect>
+                                <mat-option *ngFor="let executedData of fixtureRecordsServerSideResponseData" [ngClass]="{'d-none': executedData.isActive === 'N'}" 
+                                [value]="executedData.id"> {{executedData.identifier}} </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="executedForm.get('copyTradingId').hasError('required')"> Fixture Is Required</mat-error>
+                        </mat-form-field>
+                        <button class="cst-modal__button cst-modal__button--cancel" style="width: 150px !important;margin-right: -30px;background: #f48730;" (click)="hideExecutedModal()">Cancel</button>
+                        <!-- <button style="width: 150px;" class="cst-modal__button cst-modal__button--submit" (click)="executedFormSubmit()">Submit</button> -->
+                        <!-- <button style="margin-right: 200px; margin-top: 10px;" class="cst-modal__button cst-modal__button--submit" type="submit">Submit</button> -->
+                    </form>
+                </div>
+                <div class="cst-modal__footer">
+                    <!-- <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;" (click)="hideExecutedModal()">Cancel</button> -->
+                </div>
+            </div>
+        </div>
+        <!-- Executed Modal End -->
+
+        <div class="cst-modal" [ngClass]="{'cst-modal--active' : ownerShipChangeModal}">
+            <div class="cst-modal__overlay"></div>
+            <div class="cst-modal__content">
+                <div class="cst-modal__header">
+                    <h4 class="cst-modal__title" style="margin: 0 auto;"> Are you sure to change ownership?</h4>
+                    <button class="cst-modal__close" (click)="hideOwnerShipChangeModal()">&times;</button>
+                </div>
+                <div class="cst-modal__footer">
+                    <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;" (click)="changeOwnerShipTrade()">Yes</button>
+                    <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;" (click)="hideOwnerShipChangeModal()">No</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cst-modal" [ngClass]="{'cst-modal--active' : shareChangeModal}">
+            <div class="cst-modal__overlay"></div>
+            <div class="cst-modal__content">
+                <div class="cst-modal__header">
+                    <h4 class="cst-modal__title" style="margin: 0 auto;">Please select your user to share this trade
+                    </h4>
+                    <button class="cst-modal__close" (click)="hideShareModal()">&times;</button>
+                </div>
+                <div class="cst-modal__body">
+                    
+                        <select  (change)="ChangeUserList($event)"
+                        style="padding: 10px;
+                                font-size: 14px;
+                                     font-weight: bold;">
+                        <option value="0"> Select User Role </option>
+                        <option value="1">Broker</option>
+                        <option value="2">Charterer</option>
+                        <option value="3">Owner</option>
+                    </select>
+
+                        <select  *ngIf="brokerDropdown" (change)="setShareToUserID($event)"
+                        style="padding: 10px;
+                                font-size: 14px;
+                                     font-weight: bold;">
+                        <option value="0"> Select User </option>
+                        <option *ngFor="let ownerData of userRecordsServerSideResponseData"
+                            [ngClass]="{'d-none': ownerData.isActive === 'N'}"
+                            [value]="ownerData.id">
+                            {{ownerData.username}}
+                        </option>
+                    </select>
+                </div>
+                <div class="cst-modal__footer">
+                    <button class="cst-modal__button cst-modal__button--active" style="width: 110px !important;"
+                        (click)="shareTrade()">Share</button>
+                    <button class="cst-modal__button cst-modal__button--cancel" style="width: 110px !important;"
+                        (click)="hideShareModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</div>
