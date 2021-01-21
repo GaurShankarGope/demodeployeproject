@@ -71,7 +71,7 @@
         "prismjs": "1.16.0",
         "rxjs": "6.5.2",
         "save": "2.4.0",
-        "socket.io": "2.3.0",
+        "socket.io": "2.4.0",
         "socket.io-client": "2.3.0",
         "web-animations-js": "2.3.2",
         "zone.js": "0.9.1"
