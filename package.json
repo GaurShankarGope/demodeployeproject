@@ -57,7 +57,7 @@
         "intl-tel-input": "14.1.0",
         "jquery": "3.4.1",
         "lodash": "4.17.15",
-        "moment": "2.24.0",
+        "moment": "2.29.2",
         "ng2-charts": "2.3.0",
         "ngrx-store-freeze": "0.2.4",
         "ngx-color-picker": "8.1.0",
